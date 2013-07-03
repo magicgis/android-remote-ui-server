@@ -69,6 +69,7 @@ public class GUIInitSMessage extends Message {
             writer.writeEndElement();
             
             writer.writeStartElement("image");
+            writer.writeAttribute("format", "png");
             writer.writeCharacters(renderedComponentXml);
             
             writer.writeEndElement();
