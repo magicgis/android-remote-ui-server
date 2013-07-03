@@ -4,6 +4,9 @@
  */
 package manager;
 
+import java.awt.image.BufferedImage;
+import main.Component;
+
 /**
  *
  * @author tomique
@@ -11,6 +14,8 @@ package manager;
 public class GUIManager {
 
     private static GUIManager instance;
+    private Component component;
+    private BufferedImage renderedComponent;
 
     private GUIManager() {
         // setup available GUI components
@@ -21,5 +26,17 @@ public class GUIManager {
             instance = new GUIManager();
         }
         return instance;
+    }
+    
+    public BufferedImage getImage() {
+        
+        // read xml config file
+        // based on xml, create component
+        // render component into an image
+        // encode image into String
+        // return string
+        
+        
+        return null;
     }
 }
