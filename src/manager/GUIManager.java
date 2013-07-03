@@ -4,8 +4,11 @@
  */
 package manager;
 
+import bitmap.Codec;
 import java.awt.image.BufferedImage;
 import main.Component;
+import parser.ComponentParser;
+import renderer.SimpleRenderer;
 
 /**
  *
@@ -16,9 +19,14 @@ public class GUIManager {
     private static GUIManager instance;
     private Component component;
     private BufferedImage renderedComponent;
+    private ComponentParser componentParser;
 
     private GUIManager() {
         // setup available GUI components
+        this.componentParser = ComponentParser.getInstance();
+        this.component = componentParser.getComponent();
+        // TODO zajistit, aby byl vzdy predavan aktualni objekt renderedComponent
+        renderedComponent = SimpleRenderer.getRenderedComponent(component);
     }
 
     public static GUIManager getInstance() {
@@ -29,14 +37,11 @@ public class GUIManager {
     }
     
     public BufferedImage getImage() {
-        
-        // read xml config file
-        // based on xml, create component
-        // render component into an image
-        // encode image into String
-        // return string
-        
-        
-        return null;
+        return renderedComponent;
+    }
+
+    public String getEncodedImage() {
+        String codedImage = Codec.encodeToString(renderedComponent, "png");
+        return codedImage;
     }
 }

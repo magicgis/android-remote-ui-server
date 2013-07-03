@@ -4,8 +4,6 @@
  */
 package parser;
 
-import bitmap.Codec;
-import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -21,8 +19,6 @@ import main.Background;
 import main.Component;
 import main.Font;
 import main.Text;
-import renderer.SimpleRenderer;
-import view.SimpleViewer;
 
 /**
  *
@@ -48,6 +44,12 @@ public class ComponentParser {
         // TODO better to load component destination from config xml file
         String path = "src/xml/component.xml";
         setupComponent(path);
+    }
+    
+    
+    
+    public Component getComponent() {
+        return component;
     }
 
     private void setupComponent(String configFile) {
@@ -236,10 +238,10 @@ public class ComponentParser {
 
 //            System.out.println(component);
             
-            BufferedImage img = SimpleRenderer.getRenderedComponent(component);
-            String source = Codec.encodeToString(img, "png");
-            img = Codec.decodeToImage(source);
-            SimpleViewer viewer = new SimpleViewer(img);
+//            BufferedImage img = SimpleRenderer.getRenderedComponent(component);
+//            String source = Codec.encodeToString(img, "png");
+//            img = Codec.decodeToImage(source);
+//            SimpleViewer viewer = new SimpleViewer(img);
 
         } catch (FileNotFoundException | XMLStreamException ex) {
             ex.printStackTrace();
