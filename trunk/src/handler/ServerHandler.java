@@ -4,6 +4,8 @@
  */
 package handler;
 
+import java.awt.image.BufferedImage;
+import manager.GUIManager;
 import messaging.GUIInitSMessage;
 import messaging.InitCMessage;
 import messaging.InitSMessage;
@@ -21,6 +23,7 @@ public class ServerHandler {
     private static ServerHandler instance;
     private SessionManager sessionManager;
     private XMLHandler xmlHandler;
+    private GUIManager guiManager;
 
     private ServerHandler() {
         sessionManager = SessionManager.getInstance();
@@ -30,6 +33,7 @@ public class ServerHandler {
         if (instance == null) {
             instance = new ServerHandler();
             instance.xmlHandler = XMLHandler.getInstance();
+            instance.guiManager = GUIManager.getInstance();
         }
         return instance;
     }
@@ -54,12 +58,21 @@ public class ServerHandler {
                 // TODO session je null, proto pokud bude sezeni vice, bude vyhazovat nullPointerException
                 ((InitSMessage) resMessage).setServerAnswer("400");
                 ((InitSMessage) resMessage).setSession(session);
+                xmlHandler.send(resMessage);
+                return;
             }
             
             xmlHandler.send(resMessage);
             
             // comunication almost set, lets send some GUI!
             Message guiInitSMessage = new GUIInitSMessage();
+            
+            BufferedImage img = guiManager.getImage();
+            
+            ((GUIInitSMessage)guiInitSMessage).setRenderedComponent(img);
+            ((GUIInitSMessage)guiInitSMessage).setSession(session);
+            
+//            xmlHandler.send(guiInitSMessage);
             
             return;
         }
