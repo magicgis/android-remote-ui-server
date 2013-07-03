@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
+<cln state="connection_init">
+    <device name="android_001">
+        <resolution>
+            <width>400</width>
+            <height>800</height>
+        </resolution>
+    </device>
+</cln>
