@@ -28,20 +28,29 @@ import view.SimpleViewer;
  *
  * @author tomique
  */
-public class SimpleParser {
+public class ComponentParser {
+    
+    private static ComponentParser instance;
+    private Component component;
 
-    private SimpleParser() {
+    private ComponentParser() {
         init();
+    }
+    
+    public static ComponentParser getInstance() {
+        if(instance == null) {
+            instance = new ComponentParser();
+        }
+        return instance;
     }
 
     private void init() {
+        // TODO better to load component destination from config xml file
         String path = "src/xml/component.xml";
-        readConfig(path);
+        setupComponent(path);
     }
 
-    private Component readConfig(String configFile) {
-
-        Component component = null;
+    private void setupComponent(String configFile) {
 
         try {
             // create XMLInputFactory
@@ -225,7 +234,7 @@ public class SimpleParser {
                 }
             }
 
-            System.out.println(component);
+//            System.out.println(component);
             
             BufferedImage img = SimpleRenderer.getRenderedComponent(component);
             String source = Codec.encodeToString(img, "png");
@@ -235,11 +244,5 @@ public class SimpleParser {
         } catch (FileNotFoundException | XMLStreamException ex) {
             ex.printStackTrace();
         }
-
-        return null;
-    }
-
-    public static void main(String[] args) {
-        new SimpleParser();
     }
 }
