@@ -18,7 +18,7 @@ import sun.misc.BASE64Encoder;
  */
 public class Codec {
 
-    public static String encodeToString(BufferedImage image, String type) {
+    public static String encodeToBase64(BufferedImage image, String type) {
         String imageString = null;
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
@@ -37,7 +37,7 @@ public class Codec {
     }
 
     // bude se odehravat na androidu
-    public static BufferedImage decodeToImage(String imageString) {
+    public static BufferedImage decodeBase64(String imageString) {
 
         BufferedImage image = null;
         byte[] imageByte;

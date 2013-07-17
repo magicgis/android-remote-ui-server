@@ -2,30 +2,36 @@
 
 <!--pro parsovani pouzivat STAX-->
 
-<component id="comp1" width="220" height="100">
+<component id="comp1" width="220" height="100" posx="0" posy="0">
     
     <!--definice jednotlivych action areas-->    
-    <action-area id="area1" width="150" height="30" posx="1" posy="2" color="#ff0000">
+    <action-area id="area1" width="250" height="80" posx="150" posy="2" color="#ff0000">
         <!--urcuje, jak bude vykresleno pozadi action area-->
         <background style="border" color="#00ff00">
-            <!--<background style="solid|border|border-dashed|user">-->
-            <!--hodnota "user" vynucuje pouziti tagu <user-src>, 
-            ktery definuje vlastni styl pozadi-->
-            <!--<user-src src="source/action1.png" />-->
         </background>
         
         <!--textovy popisek-->
         <content>
-<!--            <text value="Button text" posx="10" posy="10" color="#00ffff">
-                <font name="Arial" style="bold" size="12" />
-            </text>-->
             <text value="Button text2" posx="10" posy="5" color="#ffffff">
-                <font name="Arial" style="bold" size="18"/>
+                <font name="Arial" style="bold" size="24"/>
             </text>
         </content>
+        
+        <!--definovat, na ktere eventy se ocekava jaka reakce
+            (napr. prekresleni gui po vykonani uzivatelskych crtu, ...)
+            listener se vzdy tyka cele oblasti action-area
+        -->
+        <event-list>
+            
+            <event type="onClick" />
+            <event type="onTouch" />
+            <event type="longClick" />
+            
+        </event-list>
+        
     </action-area>
     
-    <action-area id="area1" width="155" height="31" posx="10" posy="35" color="#ffffff">
+    <action-area id="area2" width="250" height="80" posx="150" posy="100" color="#ffffff">
         <!--urcuje, jak bude vykresleno pozadi action area-->
         <background style="border-dashed" color="#0000ff">
 
@@ -37,7 +43,7 @@
                 <font name="Arial" style="bold" size="12" />
             </text>-->
             <text value="Button text1" posx="10" posy="5" color="#00ff00">
-                <font name="Arial" style="bold" size="18"/>
+                <font name="Arial" style="bold" size="24"/>
             </text>
         </content>
     </action-area>

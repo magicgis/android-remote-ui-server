@@ -4,6 +4,7 @@
  */
 package loader;
 
+import handler.EventHandler;
 import networking.ServerAgentReceiver;
 import networking.ServerAgentSender;
 
@@ -11,11 +12,17 @@ import networking.ServerAgentSender;
  *
  * @author tomique
  */
-public class Loader {
+public class Server {
     
+    private EventHandler eventHandler;
 
-    public Loader() {
+    public Server() {
+        eventHandler = EventHandler.getInstance();
         init();
+    }
+    
+    public EventHandler getEventHandler() {
+        return eventHandler;
     }
     
     private void init() {
@@ -29,10 +36,9 @@ public class Loader {
         tWrite.start();
 
         System.out.println("server side up and running");
-        
     }
     
     public static void main(String[] args) {
-        new Loader();
+        new Server();
     }
 }

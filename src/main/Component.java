@@ -17,6 +17,13 @@ public class Component {
     private String id;
     private int width;
     private int height;
+    // TODO dodelat vcetne vykreslovani
+    private int posx = 0;
+    private int posy = 0;
+    private int minx, miny;
+    private int maxx, maxy;
+    
+    
 
     public Component() {
         actionAreas = new ArrayList<>();

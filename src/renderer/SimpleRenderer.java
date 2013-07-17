@@ -4,7 +4,9 @@
  */
 package renderer;
 
+import entity.Resolution;
 import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
@@ -23,14 +25,25 @@ import main.Text;
  */
 public class SimpleRenderer {
 
-    public SimpleRenderer() {
-//        init();
-    }
-
     public static BufferedImage getRenderedComponent(Component component) {
         BufferedImage img = new BufferedImage(component.getWidth(), component.getHeight(), BufferedImage.TYPE_INT_RGB);
 
-        Graphics2D g = img.createGraphics();
+        // render action  areas
+        List<ActionArea> actionAreas = component.getActionAreas();
+        for (ActionArea area : actionAreas) {
+            renderActionArea(area, img);
+        }
+
+        return img;
+    }
+
+    public static BufferedImage getRenderedComponent(Component component, Resolution resolution) {
+        BufferedImage img = new BufferedImage(resolution.getWidth(), resolution.getHeight(), BufferedImage.TYPE_INT_RGB);
+
+        // set the background color to custom
+        Graphics2D graphics = img.createGraphics();
+        graphics.setPaint(new Color(0, 0, 255));
+        graphics.fillRect(0, 0, img.getWidth(), img.getHeight());
 
         // render action  areas
         List<ActionArea> actionAreas = component.getActionAreas();
@@ -59,7 +72,7 @@ public class SimpleRenderer {
     }
 
     private static void renderBackground(ActionArea area, BufferedImage img) {
-        
+
         Background back = area.getBackground();
         Graphics2D g = img.createGraphics();
         g.setColor(back.getColor());

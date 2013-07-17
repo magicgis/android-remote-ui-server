@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<component id="comp1" width="220" height="100">
+    
+    <!--definice jednotlivych action areas-->    
+    <action-area id="area1" width="150" height="30" posx="1" posy="2" color="#ff0000">
+        <!--vzhled action area-->
+        <appearance>
+            <!--action area ve vychozim stavu--> 
+            <default>
+            
+            </default>
+            <!--action area behem udalosti kliknuti--> 
+            <on-click>
+            
+            </on-click>
+            <!--action area po skonceni udalosti kliknuti-->
+            <off-click>
+            
+            </off-click>
+        </appearance>
+        
+        <!--ktere eventy chce uzivatel odchytavat-->
+        <event-list>
+            
+            <event type="onClick" ></event>
+            <event type="onLongClick" ></event>
+            <event type="onTouch" ></event>
+            
+        </event-list>
+        
+    </action-area>
+    
+    <action-area id="area1" width="155" height="31" posx="10" posy="35" color="#ffffff">
+        <!--urcuje, jak bude vykresleno pozadi action area-->
+        <background style="border-dashed" color="#0000ff">
+
+        </background>
+        
+        <!--textovy popisek-->
+        <content>
+            <!--            <text value="Button text" posx="10" posy="10" color="#00ffff">
+                <font name="Arial" style="bold" size="12" />
+            </text>-->
+            <text value="Button text1" posx="10" posy="5" color="#00ff00">
+                <font name="Arial" style="bold" size="18"/>
+            </text>
+        </content>
+    </action-area>
+</component>

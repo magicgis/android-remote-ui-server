@@ -19,8 +19,14 @@ public class ActionArea {
     private int width;
     private int height;
     private int posx;
+    private int posy;
     private List<Text> texts;
     private Color color;
+    // TODO to dole, dbat, aby bylo aktualni
+    private int minx = -1;
+    private int miny = -1;
+    private int maxx = -1;
+    private int maxy = -1;
 
     public Color getColor() {
         return color;
@@ -49,7 +55,6 @@ public class ActionArea {
     public void setPosy(int posy) {
         this.posy = posy;
     }
-    private int posy;
 
     public String getId() {
         return id;
@@ -75,6 +80,14 @@ public class ActionArea {
         this.id = id;
     }
 
+    public void setLimits() {
+        minx = posx;
+        miny = posy;
+        maxx = posx + width;
+        maxy = posy + height;
+//        System.out.println(minx + " " + miny + " " + maxx + " " + maxy);
+    }
+
     public Background getBackground() {
         return background;
     }
@@ -86,9 +99,25 @@ public class ActionArea {
     public void addText(Text text) {
         texts.add(text);
     }
-    
+
     public List<Text> getTexts() {
         return texts;
+    }
+
+    public int getMinx() {
+        return minx;
+    }
+
+    public int getMaxx() {
+        return maxx;
+    }
+
+    public int getMiny() {
+        return miny;
+    }
+
+    public int getMaxy() {
+        return maxy;
     }
 
     @Override
