@@ -15,6 +15,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
+import messaging.EventCMessage;
 import messaging.InitCMessage;
 import messaging.Message;
 
@@ -23,9 +24,9 @@ import messaging.Message;
  * @author tomique
  */
 public class XMLToolkit {
-    
+
     public static Message decodeXML(String xml) {
-        
+
         Message message = null;
 
         try {
@@ -52,9 +53,14 @@ public class XMLToolkit {
 
                                 switch (attribute.getName().toString()) {
                                     case "state": {
-                                        if (attribute.getValue().equals("connection_init")) {
-                                            message = new InitCMessage();
-                                            message.decodeXML(xml);
+                                        switch (attribute.getValue()) {
+                                            case "connection_init":
+                                                message = new InitCMessage();
+                                                message.decodeXML(xml);
+                                                break;
+                                            case "event_occurred":
+                                                message = new EventCMessage();
+                                                message.decodeXML(xml);
                                         }
                                         break;
                                     }

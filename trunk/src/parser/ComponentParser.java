@@ -125,6 +125,9 @@ public class ComponentParser {
                                     break;
                             }
                         }
+                        
+                        actionArea.setLimits();
+                        
                         continue;
                     }
 

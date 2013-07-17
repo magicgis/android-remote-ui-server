@@ -40,7 +40,7 @@ public class ServerAgentReceiver implements Runnable {
         try {
 
             ServerSocket serverSocket = new ServerSocket(port);
-
+            
             while (!stop) {
                 
                 Socket socket = serverSocket.accept();

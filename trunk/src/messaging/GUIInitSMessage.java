@@ -21,6 +21,7 @@ public class GUIInitSMessage extends Message {
 
     private BufferedImage renderedComponent;
     private String renderedComponentXml;
+    private String renderedComponentFormat;
     private Session session;
 
     public GUIInitSMessage() {
@@ -28,13 +29,17 @@ public class GUIInitSMessage extends Message {
 
     public void setRenderedComponent(BufferedImage renderedComponent) {
         this.renderedComponent = renderedComponent;
-        renderedComponentXml = Codec.encodeToString(renderedComponent, "png");
+        renderedComponentXml = Codec.encodeToBase64(renderedComponent, "png");
         altered = true;
     }
 
     public void setSession(Session session) {
         this.session = session;
         altered = true;
+    }
+
+    public void setRenderedComponentFormat(String renderedComponentFormat) {
+        this.renderedComponentFormat = renderedComponentFormat;
     }
 
     public BufferedImage getRenderedComponent() {
@@ -45,13 +50,17 @@ public class GUIInitSMessage extends Message {
         return session;
     }
 
+    public String getRenderedComponentFormat() {
+        return renderedComponentFormat;
+    }
+
     @Override
     public void setXML() {
-        
-        if(!altered) {
+
+        if (!altered) {
             return;
         }
-        
+
         String xml = null;
         XMLOutputFactory factory = XMLOutputFactory.newInstance();
 
@@ -67,15 +76,15 @@ public class GUIInitSMessage extends Message {
             writer.writeStartElement("session");
             writer.writeAttribute("id", session.getId());
             writer.writeEndElement();
-            
+
             writer.writeStartElement("image");
-            writer.writeAttribute("format", "png");
+            writer.writeAttribute("format", renderedComponentFormat);
             writer.writeCharacters(renderedComponentXml);
-            
+
             writer.writeEndElement();
             writer.writeEndElement();
             writer.writeEndDocument();
-            
+
             writer.flush();
             writer.close();
 
@@ -86,7 +95,7 @@ public class GUIInitSMessage extends Message {
         }
         xmlRep = xml;
         altered = false;
-        
+
     }
 
     @Override

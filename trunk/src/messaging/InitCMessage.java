@@ -28,11 +28,6 @@ public class InitCMessage extends Message {
      */
     private AndroidDevice device;
 
-    /*
-     * filled by server
-     */
-    private String sessionId;
-
     /**
      * Default constructor
      */
@@ -50,14 +45,6 @@ public class InitCMessage extends Message {
         this.device = device;
     }
 
-    /**
-     *
-     * @param sessionId
-     */
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
-    }
-
     /*
      * GETTERS
      */
@@ -67,14 +54,6 @@ public class InitCMessage extends Message {
      */
     public AndroidDevice getDevice() {
         return device;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public String getSessionId() {
-        return sessionId;
     }
 
     /**
