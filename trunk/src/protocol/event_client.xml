@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<cln state="event_occurred">
+    <event type="onTouch|onClick" location="100 200" action="ACTION_UP">
+</cln>
