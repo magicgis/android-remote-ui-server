@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<svr state="gui_init">
+    
+    <session id="session_01">
+        
+    </session>
+    
+    <image format="png">
+        Byte64 representation of the image
+    </image>
+    
+</svr>
