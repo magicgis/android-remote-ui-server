@@ -46,29 +46,32 @@ public class ServerAgentSender implements Runnable {
 
         boolean stop = false;
 
-        try {
+        while (!stop) {
+            try {
 
-            ServerSocket serverSocket = new ServerSocket(port);
+                ServerSocket serverSocket = new ServerSocket(port);
 
-            while (!stop) {
+                while (true) {
 
-                Socket socket = serverSocket.accept();
+                    Socket socket = serverSocket.accept();
 
-                ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+                    ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
 
-                synchronized (lock) {
-                    try {
-                        lock.wait();
-                    } catch (InterruptedException ex) {
-                        ex.printStackTrace();
+                    synchronized (lock) {
+                        try {
+                            lock.wait();
+                        } catch (InterruptedException ex) {
+                            ex.printStackTrace();
+                        }
                     }
+
+                    oos.writeObject(message);
                 }
 
-                oos.writeObject(message);
+            } catch (IOException ex) {
+                // TODO osetrit lepe
+//                ex.printStackTrace();
             }
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
         }
     }
 }

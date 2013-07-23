@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import user.test.GUIServer;
 import xml.XMLHandler;
 
 /**
@@ -19,6 +20,7 @@ public class ServerAgentReceiver implements Runnable {
     private static ServerAgentReceiver instance;
     private int port;
     private XMLHandler xmlHandler;
+    private GUIServer guiServer;
 
     private ServerAgentReceiver() {
         port = 6788;
@@ -28,6 +30,7 @@ public class ServerAgentReceiver implements Runnable {
         if (instance == null) {
             instance = new ServerAgentReceiver();
             instance.xmlHandler = XMLHandler.getInstance();
+            instance.guiServer = GUIServer.getInstance();
         }
         return instance;
     }
@@ -37,22 +40,28 @@ public class ServerAgentReceiver implements Runnable {
 
         boolean stop = false;
 
-        try {
+        while (!stop) {
 
-            ServerSocket serverSocket = new ServerSocket(port);
-            
-            while (!stop) {
-                
-                Socket socket = serverSocket.accept();
-                
-                ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-                String message = (String) ois.readObject();
-                
-                xmlHandler.receive(message);
+            try {
+
+                ServerSocket serverSocket = new ServerSocket(port);
+
+                while (true) {
+
+                    Socket socket = serverSocket.accept();
+
+                    ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+                    String message = (String) ois.readObject();
+
+                    xmlHandler.receive(message);
+                }
+
+            } catch (IOException | ClassNotFoundException ex) {
+//                ex.printStackTrace();
+                // TODO jeste lepe osetrit!
+                guiServer.setStatus(GUIServer.Status.DISCONNECTED);
+                guiServer.setDevice(null);
             }
-
-        } catch (IOException | ClassNotFoundException ex) {
-            ex.printStackTrace();
         }
     }
 }

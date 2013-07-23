@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<svr state="connection_init">
+    <response state="200">
+        <session id="android_phone_001">
+            
+        </session>
+    </response>
+</svr>
