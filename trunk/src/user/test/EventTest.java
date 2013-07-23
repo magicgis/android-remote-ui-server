@@ -16,11 +16,14 @@ import user.observer.EventObserver;
  */
 public class EventTest implements EventObserver {
 
+    private GUIServer guiServer;
+    
     public EventTest() {
         init();
     }
 
     private void init() {
+        guiServer = GUIServer.getInstance();
         Server server = new Server();
         server.getEventHandler().registerObserver(this);
     }
@@ -31,7 +34,20 @@ public class EventTest implements EventObserver {
             if (area == null) {
                 System.out.println(((OnTouchEvent) event).getAction() + ", area NEBUDE!!");
             } else {
-                System.out.println(((OnTouchEvent) event).getAction() + ", area " + area.getId());
+                switch(area.getId()) {
+                    case "area1":
+                        guiServer.setAction1(((OnTouchEvent) event).getAction());
+                        guiServer.setEvent1("OnTouchEvent");
+                        break;
+                    case "area2":
+                        guiServer.setAction2(((OnTouchEvent) event).getAction());
+                        guiServer.setEvent2("OnTouchEvent");
+                        break;
+                    default:
+                        throw new RuntimeException("Impossible state!");
+                        
+                }
+//                System.out.println(((OnTouchEvent) event).getAction() + ", area " + area.getId());
             }
         }
     }

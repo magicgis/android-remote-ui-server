@@ -10,7 +10,6 @@ import event.OnClickEvent;
 import event.OnLongClickEvent;
 import event.OnTouchEvent;
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
 import main.ActionArea;
 import gui_manager.GUIManager;
 import java.util.ArrayList;
@@ -21,6 +20,7 @@ import messaging.InitSMessage;
 import messaging.Message;
 import networking.Session;
 import networking.SessionManager;
+import user.test.GUIServer;
 import xml.XMLHandler;
 
 /**
@@ -34,6 +34,7 @@ public class ServerHandler {
     private XMLHandler xmlHandler;
     private GUIManager guiManager;
     private EventHandler eventHandler;
+    private GUIServer guiServer;
 
     private ServerHandler() {
         sessionManager = SessionManager.getInstance();
@@ -45,6 +46,7 @@ public class ServerHandler {
             instance.xmlHandler = XMLHandler.getInstance();
             instance.guiManager = GUIManager.getInstance();
             instance.eventHandler = EventHandler.getInstance();
+            instance.guiServer = GUIServer.getInstance();
         }
         return instance;
     }
@@ -91,6 +93,10 @@ public class ServerHandler {
 
             xmlHandler.send(guiInitSMessage);
             System.out.println("GUIInitSMessage sent.");
+            
+            // update GUIServer
+            guiServer.setDevice(android);
+            guiServer.setStatus(GUIServer.Status.CONNECTED);
 
             return;
         }
