@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<cln state="event_occurred">
+    
+    <!--onTouch sample-->
+    <!--    type="onTouch|onClick|onLongClick|"-->
+    <!--    action="ACTION_DOWN|ACTION_MOVE|ACTION_UP" ... appears only when onTouch type is specified-->
+    <event type="onTouch" action="" location="120 250,115 249,112 247">
+        
+        
+    </event>
+    
+</cln>
