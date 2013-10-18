@@ -9,6 +9,7 @@ import cz.ctu.guiproject.server.networking.ServerNetworkAgentImpl;
 import cz.ctu.guiproject.server.networking.ServerNetworkObserver;
 import java.util.ArrayList;
 import messaging.Message;
+import xml.XMLToolkit;
 
 /**
  *
@@ -35,7 +36,7 @@ public class ServerXMLAgentImpl implements ServerNetworkObserver, ServerXMLAgent
     @Override
     public void update(String message) {
         // TODO parse message, get message object and send it to the superior layer
-        currentMessage = null;
+        currentMessage = XMLToolkit.decodeXML(message);
         notifyObservers();
     }
 
@@ -63,12 +64,14 @@ public class ServerXMLAgentImpl implements ServerNetworkObserver, ServerXMLAgent
     @Override
     public void broadcast(Message message) {
         // TODO encode the message to plain String
-        serverNetworkAgent.broadcast("encoded message from the server...");
+        String xmlMessage = message.getXML();
+        serverNetworkAgent.broadcast(xmlMessage);
     }
 
     @Override
     public void send(int sessionId, Message message) {
-        // TODO encode the message to plain String
-        serverNetworkAgent.send(sessionId, "another encoded message from the server");
+        // TODO encode the message to plain String        
+        String xmlMessage = message.getXML();
+        serverNetworkAgent.send(sessionId, xmlMessage);
     }
 }
