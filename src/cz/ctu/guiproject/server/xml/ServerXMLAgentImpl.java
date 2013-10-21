@@ -69,9 +69,9 @@ public class ServerXMLAgentImpl implements ServerNetworkObserver, ServerXMLAgent
     }
 
     @Override
-    public void send(int sessionId, Message message) {
+    public void send(int networkId, Message message) {
         // TODO encode the message to plain String        
         String xmlMessage = message.getXML();
-        serverNetworkAgent.send(sessionId, xmlMessage);
+        serverNetworkAgent.send(networkId, xmlMessage);
     }
 }

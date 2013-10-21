@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  */
 public class ServerNetworkAgentImpl implements ServerNetworkAgent {
 
-    private static int sessionIdCounter = 0;
+    private static int networkIdCounter = 0;
     private State state;
     // port number, that server uses
     private int port;
@@ -40,12 +40,12 @@ public class ServerNetworkAgentImpl implements ServerNetworkAgent {
     }
 
     /**
-     * Returns the sessionId of the current ClientHandler instance
+     * Returns the networkId of the current ClientHandler instance
      *
-     * @return sessionId of the current ClientHandler instance
+     * @return networkId of the current ClientHandler instance
      */
-    public int getSessionId() {
-        return sessionIdCounter++;
+    public int getNetworkId() {
+        return networkIdCounter++;
     }
 
     /**
@@ -139,14 +139,14 @@ public class ServerNetworkAgentImpl implements ServerNetworkAgent {
     }
 
     @Override
-    public void send(int sessionId, String message) {
+    public void send(int networkId, String message) {
         for (ClientHandlerImpl c : clientHandlerList) {
-            if (c.getSessionId() == sessionId) {
+            if (c.getNetworkId() == networkId) {
                 c.send(message);
                 return;
             }
         }
-        logger.log(Level.SEVERE, "Unable to send message, sessionId probably does not exist.");
+        logger.log(Level.SEVERE, "Unable to send message, networkId probably does not exist.");
     }
 
     /**

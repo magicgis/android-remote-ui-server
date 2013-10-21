@@ -28,7 +28,7 @@ public interface ServerNetworkAgent {
      *
      * @param message
      */
-    public void send(int sessionId, String message);
+    public void send(int networkId, String message);
 
     /**
      * Adds new observer to the list of observers

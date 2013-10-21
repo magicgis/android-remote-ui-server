@@ -20,12 +20,12 @@ public interface ServerXMLAgent {
     public void broadcast(Message message);
 
     /**
-     * Sends the message to particular client identified by unique sessionId
+     * Sends the message to particular client identified by unique networkId
      *
-     * @param sessionId sessionId of the client
+     * @param networkId networkId of the client
      * @param message Message object for the client
      */
-    public void send(int sessionId, Message message);
+    public void send(int networkId, Message message);
 
     /**
      * Adds new ServerXMLAgentObserver into the list of observers.

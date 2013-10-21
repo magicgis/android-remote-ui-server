@@ -4,6 +4,7 @@
  */
 package cz.ctu.guiproject.server.business;
 
+import cz.ctu.guiproject.server.helper.SessionNetworkIdMapper;
 import cz.ctu.guiproject.server.xml.ServerXMLAgent;
 import cz.ctu.guiproject.server.xml.ServerXMLAgentImpl;
 import cz.ctu.guiproject.server.xml.ServerXMLObserver;
@@ -17,7 +18,8 @@ public class ServerBusinessAgentImpl implements ServerBusinessAgent, ServerXMLOb
 
     // singleton related instance
     private static ServerBusinessAgent instance;
-    private ServerXMLAgent serverXMLAgent;
+    private static ServerXMLAgent serverXMLAgent;
+    private SessionNetworkIdMapper sessionNetworkIdMapper;
 
     /**
      * Private constructor, used in ServerBusinessAgentImpl singleton design
@@ -25,7 +27,16 @@ public class ServerBusinessAgentImpl implements ServerBusinessAgent, ServerXMLOb
      */
     private ServerBusinessAgentImpl() {
         serverXMLAgent = new ServerXMLAgentImpl();
-        serverXMLAgent.registerObserver(this);
+        sessionNetworkIdMapper = SessionNetworkIdMapper.getInstance();
+    }
+
+    /**
+     * Main execution logic goes here
+     */
+    private static void initMainLoop() {
+        // main execution logic goes here
+        // after client introduces itself, initial layout is sent to him
+        // then events on client causes appropriate action on server app
     }
 
     /**
@@ -36,6 +47,8 @@ public class ServerBusinessAgentImpl implements ServerBusinessAgent, ServerXMLOb
     public static ServerBusinessAgent getInstance() {
         if (instance == null) {
             instance = new ServerBusinessAgentImpl();
+            serverXMLAgent.registerObserver((ServerXMLObserver) instance);
+            initMainLoop();
         }
         return instance;
     }
@@ -46,12 +59,21 @@ public class ServerBusinessAgentImpl implements ServerBusinessAgent, ServerXMLOb
     }
 
     /**
-     * Based on the information of the message header decides to send the
+     * Based on the information of the message "header" decides to send the
      * message to particular client or broadcasts to all clients.
      *
      * @param message Message to be sent to a particular client
      */
     private void send(Message message) {
-        // TODO broadcast or not??
+        String sessionId = message.getSessionId();
+        switch (sessionId) {
+            case "BROADCAST":
+                serverXMLAgent.broadcast(message);
+                break;
+            default:
+                // map sessionId to networkId
+                int networkId = sessionNetworkIdMapper.getNetworkId(sessionId);
+                serverXMLAgent.send(networkId, message);
+        }
     }
 }

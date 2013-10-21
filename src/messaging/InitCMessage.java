@@ -64,10 +64,10 @@ public class InitCMessage extends Message {
     public void setXML() {
         throw new RuntimeException("There is no need to setXML at server side!");
     }
-    
+
     @Override
     public void decodeXML(String xml) {
-        
+
         try {
 
             XMLInputFactory inputFactory = XMLInputFactory.newInstance();
@@ -143,5 +143,10 @@ public class InitCMessage extends Message {
         } catch (IOException | XMLStreamException ex) {
             ex.printStackTrace();
         }
-    } 
+    }
+
+    @Override
+    public String toString() {
+        return InitCMessage.class.getName();
+    }
 }

@@ -42,7 +42,7 @@ public class EventCMessage extends Message {
         this.eventType = eventType;
         altered = true;
     }
-    
+
     public void setAction(String action) {
         this.action = action;
     }
@@ -58,7 +58,7 @@ public class EventCMessage extends Message {
     public String getEventType() {
         return eventType;
     }
-    
+
     public String getAction() {
         return action;
     }
@@ -140,5 +140,10 @@ public class EventCMessage extends Message {
         } catch (IOException | XMLStreamException ex) {
             ex.printStackTrace();
         }
+    }
+
+    @Override
+    public String toString() {
+        return EventCMessage.class.getName();
     }
 }
