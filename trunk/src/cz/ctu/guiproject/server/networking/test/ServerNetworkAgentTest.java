@@ -41,9 +41,9 @@ public class ServerNetworkAgentTest implements ServerNetworkObserver{
                 while(!stop) {
                     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
                     try {
-                        int sessionId = Integer.parseInt(br.readLine());
+                        int networkId = Integer.parseInt(br.readLine());
                         String message = br.readLine();
-                        server.send(sessionId, message);
+                        server.send(networkId, message);
                         
                     } catch (IOException ex) {
                         logger.log(Level.SEVERE, ex.getMessage());

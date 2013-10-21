@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  */
 public class ClientHandlerImpl implements ClientHandler {
 
-    private int sessionId;
+    private int networkId;
     private Socket socket;
     private ObjectInputStream input;
     private ObjectOutputStream output;
@@ -28,7 +28,7 @@ public class ClientHandlerImpl implements ClientHandler {
     public ClientHandlerImpl(Socket socket, ServerNetworkAgentImpl serverAgent) {
         this.socket = socket;
         this.server = serverAgent;
-        sessionId = serverAgent.getSessionId();
+        networkId = serverAgent.getNetworkId();
 
         try {
             output = new ObjectOutputStream(socket.getOutputStream());
@@ -39,8 +39,8 @@ public class ClientHandlerImpl implements ClientHandler {
         }
     }
 
-    public int getSessionId() {
-        return sessionId;
+    public int getNetworkId() {
+        return networkId;
     }
 
     @Override
@@ -59,10 +59,10 @@ public class ClientHandlerImpl implements ClientHandler {
             try {
 
                 Object message = input.readObject();
-                server.messageReceived("(" + sessionId + ") " + message.toString());
+                server.messageReceived("(" + networkId + ") " + message.toString());
 
             } catch (IOException ex) {
-                logger.log(Level.WARNING, "Premature end of ClientHandler (" + sessionId + ")");
+                logger.log(Level.WARNING, "Premature end of ClientHandler (" + networkId + ")");
                 running = false;
             } catch (ClassNotFoundException ex) {
                 logger.log(Level.SEVERE, ex.getMessage());
@@ -94,7 +94,7 @@ public class ClientHandlerImpl implements ClientHandler {
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 89 * hash + this.sessionId;
+        hash = 89 * hash + this.networkId;
         return hash;
     }
 
@@ -107,7 +107,7 @@ public class ClientHandlerImpl implements ClientHandler {
             return false;
         }
         final ClientHandlerImpl other = (ClientHandlerImpl) obj;
-        if (this.sessionId != other.sessionId) {
+        if (this.networkId != other.networkId) {
             return false;
         }
         return true;

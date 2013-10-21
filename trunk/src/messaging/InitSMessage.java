@@ -116,4 +116,9 @@ public class InitSMessage extends Message {
     public void decodeXML(String xml) {
         throw new RuntimeException("There is no need to use decodeXML at server side!");
     }
+
+    @Override
+    public String toString() {
+        return InitSMessage.class.getName();
+    }
 }
