@@ -5,6 +5,7 @@
 package cz.ctu.guiproject.server.business.test;
 
 import cz.ctu.guiproject.server.business.ServerBusinessAgent;
+import cz.ctu.guiproject.server.observers.EventObserver;
 import cz.ctu.guiproject.server.xml.ServerXMLAgent;
 import cz.ctu.guiproject.server.xml.ServerXMLAgentImpl;
 import cz.ctu.guiproject.server.xml.ServerXMLObserver;
@@ -57,5 +58,20 @@ public class ServerBusinessAgentTest implements ServerBusinessAgent, ServerXMLOb
     
     public static void main(String[] args) {
         new ServerBusinessAgentTest();
+    }
+
+    @Override
+    public void registerObserver(EventObserver o) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void removeObserver(EventObserver o) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void notifyEventObservers() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
