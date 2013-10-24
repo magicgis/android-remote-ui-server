@@ -4,38 +4,44 @@
  */
 package cz.ctu.guiproject.server.sample;
 
+import cz.ctu.guiproject.server.events.ClickEvent;
+import cz.ctu.guiproject.server.events.TouchEvent;
+import cz.ctu.guiproject.server.main.AndroidServer;
+import cz.ctu.guiproject.server.main.AndroidServerImpl;
+import cz.ctu.guiproject.server.observers.ClickObserver;
+import cz.ctu.guiproject.server.observers.TouchObserver;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author tomas.buk
  */
-public class Main {
-//    public Main() {
-//        init();
-//    }
-//
-//    private void init() {
-//        AndroidServer server = new AndroidServerImpl();
-//        server.registerTouchObserver((TouchObserver)this);
-//        server.registerClickObserver((ClickObserver)this);
-//
-//    }
-//
-//    public static void main(String[] args) {
-//        new Main();
-//    }
-//
-//    @Override
-//    public void update(TouchEvent e) {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//    }
-//
-//    @Override
-//    public void update(ClickEvent e) {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//    }
-//
-//    @Override
-//    public void update(AndroidEvent e) {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//    }
+public class Main implements ClickObserver, TouchObserver {
+
+    private static final Logger logger = Logger.getLogger(Main.class.getName());
+
+    public Main() {
+        init();
+    }
+
+    private void init() {
+        AndroidServer server = new AndroidServerImpl();
+        server.registerClickObserver(this);
+        server.registerTouchObserver(this);
+    }
+
+    public static void main(String[] args) {
+        new Main();
+    }
+
+    @Override
+    public void update(ClickEvent e) {
+        logger.log(Level.INFO, "ClickEvent occured: " + e);
+    }
+
+    @Override
+    public void update(TouchEvent e) {
+        logger.log(Level.INFO, "TouchEvent occured: " + e);
+    }
 }
