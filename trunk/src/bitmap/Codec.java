@@ -8,6 +8,8 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
@@ -17,6 +19,8 @@ import sun.misc.BASE64Encoder;
  * @author tomique
  */
 public class Codec {
+
+    private static final Logger logger = Logger.getLogger(Codec.class.getName());
 
     public static String encodeToBase64(BufferedImage image, String type) {
         String imageString = null;
@@ -31,7 +35,7 @@ public class Codec {
 
             bos.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, e.getMessage());
         }
         return imageString;
     }
@@ -48,7 +52,7 @@ public class Codec {
                 image = ImageIO.read(bis);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, e.getMessage());
         }
         return image;
     }

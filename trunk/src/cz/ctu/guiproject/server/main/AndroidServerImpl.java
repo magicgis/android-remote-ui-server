@@ -12,8 +12,6 @@ import cz.ctu.guiproject.server.observers.ClickObserver;
 import cz.ctu.guiproject.server.observers.TouchObserver;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -21,7 +19,6 @@ import java.util.logging.Logger;
  */
 public class AndroidServerImpl implements AndroidServer, ClickObserver, TouchObserver {
 
-    private static final Logger logger = Logger.getLogger(AndroidServerImpl.class.getName());
     private ServerBusinessAgent serverBusinessAgent;
     private List<TouchObserver> touchObservers;
     private List<ClickObserver> clickObservers;
@@ -33,23 +30,8 @@ public class AndroidServerImpl implements AndroidServer, ClickObserver, TouchObs
         touchObservers = new ArrayList<>();
         clickObservers = new ArrayList<>();
         serverBusinessAgent = ServerBusinessAgentImpl.getInstance();
-        // must be the last thing to execute right before entering the main loop
+        // must be the last thing to execute
         serverBusinessAgent.registerObserver(this);
-        initMainLoop();
-    }
-
-    /**
-     * Infinite loop causes the server thread to keep working.
-     */
-    private void initMainLoop() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                logger.log(Level.INFO, "Main loop initiated.");
-                while (true) {
-                }
-            }
-        }).start();
     }
 
     /**
