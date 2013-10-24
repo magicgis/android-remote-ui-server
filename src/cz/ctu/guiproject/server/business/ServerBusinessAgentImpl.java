@@ -42,15 +42,6 @@ public class ServerBusinessAgentImpl implements ServerBusinessAgent, ServerXMLOb
     }
 
     /**
-     * Main execution logic goes here
-     */
-    private static void initMainLoop() {
-        // main execution logic goes here
-        // after client introduces itself, initial layout is sent to him
-        // then events on client causes appropriate action on server app
-    }
-
-    /**
      * Returns the only existing instance of class ServerBusinessAgentImpl
      *
      * @return The only existing instance of class ServerBusinessAgentImpl
@@ -64,9 +55,29 @@ public class ServerBusinessAgentImpl implements ServerBusinessAgent, ServerXMLOb
         }
         return instance;
     }
-    
+
+    /**
+     * Main execution logic goes here
+     */
+    private static void initMainLoop() {
+        // main execution logic goes here
+        // after client introduces itself, initial layout is sent to him
+        // then events on client causes appropriate action on server app
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                }
+            }
+        }).start();
+    }
+
     @Override
     public void update(Message message) {
+        
+//        if(message instanceof ...)
+        
+        // incomming message might be new event, decide and if so, notify observers
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -99,27 +110,27 @@ public class ServerBusinessAgentImpl implements ServerBusinessAgent, ServerXMLOb
         currentEvent = e;
         notifyEventObservers();
     }
-    
+
     @Override
     public void registerObserver(EventObserver o) {
         if (!eventObservers.contains(o)) {
             eventObservers.add(o);
         }
     }
-    
+
     @Override
     public void removeObserver(EventObserver o) {
         eventObservers.remove(o);
     }
-    
+
     @Override
     public void notifyEventObservers() {
         for (EventObserver o : eventObservers) {
-            
+
             if (o instanceof TouchObserver) {
                 ((TouchObserver) o).update((TouchEvent) currentEvent);
             }
-            
+
             if (o instanceof ClickObserver) {
                 ((ClickObserver) o).update((ClickEvent) currentEvent);
             }
