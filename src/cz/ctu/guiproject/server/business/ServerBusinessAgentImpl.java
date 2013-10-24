@@ -5,8 +5,12 @@
 package cz.ctu.guiproject.server.business;
 
 import cz.ctu.guiproject.server.events.AndroidEvent;
+import cz.ctu.guiproject.server.events.ClickEvent;
+import cz.ctu.guiproject.server.events.TouchEvent;
 import cz.ctu.guiproject.server.helper.SessionNetworkIdMapper;
+import cz.ctu.guiproject.server.observers.ClickObserver;
 import cz.ctu.guiproject.server.observers.EventObserver;
+import cz.ctu.guiproject.server.observers.TouchObserver;
 import cz.ctu.guiproject.server.xml.ServerXMLAgent;
 import cz.ctu.guiproject.server.xml.ServerXMLAgentImpl;
 import cz.ctu.guiproject.server.xml.ServerXMLObserver;
@@ -55,11 +59,12 @@ public class ServerBusinessAgentImpl implements ServerBusinessAgent, ServerXMLOb
         if (instance == null) {
             instance = new ServerBusinessAgentImpl();
             serverXMLAgent.registerObserver((ServerXMLObserver) instance);
+            // TODO inside new thread??
             initMainLoop();
         }
         return instance;
     }
-
+    
     @Override
     public void update(Message message) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -94,23 +99,30 @@ public class ServerBusinessAgentImpl implements ServerBusinessAgent, ServerXMLOb
         currentEvent = e;
         notifyEventObservers();
     }
-
+    
     @Override
     public void registerObserver(EventObserver o) {
         if (!eventObservers.contains(o)) {
             eventObservers.add(o);
         }
     }
-
+    
     @Override
     public void removeObserver(EventObserver o) {
         eventObservers.remove(o);
     }
-
+    
     @Override
     public void notifyEventObservers() {
         for (EventObserver o : eventObservers) {
-            o.update(currentEvent);
+            
+            if (o instanceof TouchObserver) {
+                ((TouchObserver) o).update((TouchEvent) currentEvent);
+            }
+            
+            if (o instanceof ClickObserver) {
+                ((ClickObserver) o).update((ClickEvent) currentEvent);
+            }
         }
     }
 }

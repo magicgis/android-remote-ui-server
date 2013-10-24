@@ -10,6 +10,12 @@ import cz.ctu.guiproject.server.events.ClickEvent;
  *
  * @author tomas.buk
  */
-public interface ClickObserver extends EventObserver<ClickEvent> {
-    // TODO tady se pravdepodobne uzije generika (lower/upper bound)
+public interface ClickObserver extends EventObserver {
+    /**
+     * When new ClickEvent occurs, all registered ClickObservers are notified
+     * within the update method
+     *
+     * @param e ClickEvent, that currently occured
+     */
+    public void update(ClickEvent e);
 }
