@@ -14,11 +14,21 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author tomas.buk
  */
 @XmlRootElement
-public class DragEvent extends AndroidEvent {
+public class DragEvent extends AndroidEvent<DragEvent> {
 
     /**
      * Default constructor
      */
     public DragEvent() {
+    }
+
+    @Override
+    public String getXml() {
+        return super.getXml(this);
+    }
+
+    @Override
+    public DragEvent getEventInstance(String xml) {
+        return super.getEventInstance(xml, this);
     }
 }

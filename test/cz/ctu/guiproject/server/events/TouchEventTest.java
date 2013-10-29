@@ -4,11 +4,6 @@
  */
 package cz.ctu.guiproject.server.events;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -17,12 +12,10 @@ import static org.junit.Assert.*;
  * @author tomas.buk
  */
 public class TouchEventTest {
-    
-    private static final Logger logger = Logger.getLogger(TouchEventTest.class.getName());
-    
+
     public TouchEventTest() {
     }
-    
+
     /**
      * Test of getMask method, of class TouchEvent.
      */
@@ -36,23 +29,35 @@ public class TouchEventTest {
     @Test
     public void testSetMask() {
     }
-    
+
+    /**
+     * Test of getXml method, of class TouchEvent.
+     */
     @Test
-    public void testInit() {
-        int[] arr = {1, 2, 3, 4, 5, 10};
-        TouchEvent event = new TouchEvent();
-        event.setPoint(arr);
-        event.setMask("USER_UP");
+    public void testGetXml() {
+        System.out.println("getXml");
+        TouchEvent expResult = new TouchEvent();
+        int[] points = {1, 2, 3, 4, 5, 1};
+        expResult.setPoint(points);
+        expResult.setMask("USER_UP");
+        String xml = expResult.getXml();
+        TouchEvent result = new TouchEvent();
+        result = result.getEventInstance(xml);
+        assertEquals(expResult, result);
+    }
 
-        try {
-            JAXBContext jaxbContext = JAXBContext.newInstance(TouchEvent.class);
-            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            jaxbMarshaller.marshal(event, System.out);
-
-        } catch (JAXBException ex) {
-            logger.log(Level.SEVERE, ex.getMessage());
-            fail("Failed to convert to XML.");
-        }
+    /**
+     * Test of getEventInstance method, of class TouchEvent.
+     */
+    @Test
+    public void testGetEventInstance() {
+        System.out.println("getEventInstance");
+        TouchEvent expResult = new TouchEvent();
+        int[] points = {1, 2, 3, 4};
+        expResult.setPoint(points);
+        expResult.setMask("USER_DOWN");
+        String xml = expResult.getXml();
+        TouchEvent result = expResult.getEventInstance(xml);
+        assertEquals(expResult, result);
     }
 }
