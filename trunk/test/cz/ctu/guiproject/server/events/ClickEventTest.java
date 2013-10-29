@@ -4,11 +4,6 @@
  */
 package cz.ctu.guiproject.server.events;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -18,27 +13,36 @@ import static org.junit.Assert.*;
  */
 public class ClickEventTest {
 
-    private static final Logger logger = Logger.getLogger(ClickEventTest.class.getName());
-
     public ClickEventTest() {
     }
 
+    /**
+     * Test of getXml method, of class ClickEvent.
+     */
     @Test
-    public void testSomeMethod() {
+    public void testGetXml() {
+        System.out.println("getXml");
+        ClickEvent expResult = new ClickEvent();
+        int[] points = {1, 2, 3, 4, 57, 8, 9, 0};
+        expResult.setPoint(points);
+        String xml = expResult.getXml();
+        ClickEvent result = new ClickEvent();
+        result = result.getEventInstance(xml);
+        assertEquals(expResult, result);
+    }
 
-        int[] arr = {1, 2, 3, 4, 5, 10};
-        ClickEvent event = new ClickEvent();
-        event.setPoint(arr);
+    /**
+     * Test of getEventInstance method, of class ClickEvent.
+     */
+    @Test
+    public void testGetEventInstance() {
+        System.out.println("getEventInstance");
+        ClickEvent expResult = new ClickEvent();
+        int[] points = {1, 2, 3, 45, 0};
+        expResult.setPoint(points);
+        String xml = expResult.getXml();
 
-        try {
-            JAXBContext jaxbContext = JAXBContext.newInstance(ClickEvent.class);
-            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            jaxbMarshaller.marshal(event, System.out);
-
-        } catch (JAXBException ex) {
-            logger.log(Level.SEVERE, ex.getMessage());
-            fail("Failed to convert to XML.");
-        }
+        ClickEvent result = expResult.getEventInstance(xml);
+        assertEquals(expResult, result);
     }
 }

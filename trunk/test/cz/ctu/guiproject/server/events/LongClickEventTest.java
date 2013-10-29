@@ -4,11 +4,6 @@
  */
 package cz.ctu.guiproject.server.events;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -17,27 +12,37 @@ import static org.junit.Assert.*;
  * @author tomas.buk
  */
 public class LongClickEventTest {
-    
-    private static final Logger logger = Logger.getLogger(LongClickEvent.class.getName());
-    
+
     public LongClickEventTest() {
     }
-    
+
+    /**
+     * Test of getXml method, of class LongClickEvent.
+     */
     @Test
-    public void testSomeMethod() {
-        int[] arr = {1, 2, 3, 4, 5, 10};
-        LongClickEvent event = new LongClickEvent();
-        event.setPoint(arr);
+    public void testGetXml() {
+        System.out.println("getXml");
+        LongClickEvent expResult = new LongClickEvent();
+        int[] points = {1, 2, 3, 4, 9, 0};
+        expResult.setPoint(points);
+        String xml = expResult.getXml();
+        LongClickEvent result = new LongClickEvent();
+        result = result.getEventInstance(xml);
+        assertEquals(expResult, result);
+    }
 
-        try {
-            JAXBContext jaxbContext = JAXBContext.newInstance(LongClickEvent.class);
-            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            jaxbMarshaller.marshal(event, System.out);
-
-        } catch (JAXBException ex) {
-            logger.log(Level.SEVERE, ex.getMessage());
-            fail("Failed to convert to XML.");
-        }
+    /**
+     * Test of getEventInstance method, of class LongClickEvent.
+     */
+    @Test
+    public void testGetEventInstance() {
+        System.out.println("getEventInstance");
+        LongClickEvent expResult = new LongClickEvent();
+        int[] points = {1, 2, 3, 4, 88};
+        expResult.setPoint(points);
+        String xml = expResult.getXml();
+        LongClickEvent result = new LongClickEvent();
+        result = result.getEventInstance(xml);
+        assertEquals(expResult, result);
     }
 }

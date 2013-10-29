@@ -13,12 +13,22 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author tomas.buk
  */
 @XmlRootElement
-public class LongClickEvent extends AndroidEvent {
+public class LongClickEvent extends AndroidEvent<LongClickEvent> {
 
     /**
      * Default constructor
      *
      */
     public LongClickEvent() {
+    }
+
+    @Override
+    public String getXml() {
+        return super.getXml(this);
+    }
+
+    @Override
+    public LongClickEvent getEventInstance(String xml) {
+        return super.getEventInstance(xml, this);
     }
 }

@@ -13,7 +13,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author tomas.buk
  */
 @XmlRootElement
-public class TouchEvent extends AndroidEvent {
+public class TouchEvent extends AndroidEvent<TouchEvent> {
 
     // TODO predelat na enum??
     private String mask;
@@ -32,5 +32,15 @@ public class TouchEvent extends AndroidEvent {
 
     public void setMask(String mask) {
         this.mask = mask;
+    }
+
+    @Override
+    public String getXml() {
+        return super.getXml(this);
+    }
+
+    @Override
+    public TouchEvent getEventInstance(String xml) {
+        return super.getEventInstance(xml, this);
     }
 }
