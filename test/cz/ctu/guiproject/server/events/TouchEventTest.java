@@ -4,6 +4,7 @@
  */
 package cz.ctu.guiproject.server.events;
 
+import cz.ctu.guiproject.server.messaging.AndroidMessageFactory;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -41,23 +42,8 @@ public class TouchEventTest {
         expResult.setPoint(points);
         expResult.setMask("USER_UP");
         String xml = expResult.getXml();
-        TouchEvent result = new TouchEvent();
-        result = result.getEventInstance(xml);
-        assertEquals(expResult, result);
-    }
-
-    /**
-     * Test of getEventInstance method, of class TouchEvent.
-     */
-    @Test
-    public void testGetEventInstance() {
-        System.out.println("getEventInstance");
-        TouchEvent expResult = new TouchEvent();
-        int[] points = {1, 2, 3, 4};
-        expResult.setPoint(points);
-        expResult.setMask("USER_DOWN");
-        String xml = expResult.getXml();
-        TouchEvent result = expResult.getEventInstance(xml);
+        System.out.println(xml);
+        TouchEvent result = (TouchEvent) AndroidMessageFactory.createAndroidMessage(xml);
         assertEquals(expResult, result);
     }
 }

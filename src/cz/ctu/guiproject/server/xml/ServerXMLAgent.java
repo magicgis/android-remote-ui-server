@@ -4,7 +4,7 @@
  */
 package cz.ctu.guiproject.server.xml;
 
-import messaging.Message;
+import cz.ctu.guiproject.server.messaging.AndroidMessage;
 
 /**
  *
@@ -17,7 +17,7 @@ public interface ServerXMLAgent {
      *
      * @param message
      */
-    public void broadcast(Message message);
+    public void broadcast(AndroidMessage message);
 
     /**
      * Sends the message to particular client identified by unique networkId
@@ -25,7 +25,7 @@ public interface ServerXMLAgent {
      * @param networkId networkId of the client
      * @param message Message object for the client
      */
-    public void send(int networkId, Message message);
+    public void send(int networkId, AndroidMessage message);
 
     /**
      * Adds new ServerXMLAgentObserver into the list of observers.

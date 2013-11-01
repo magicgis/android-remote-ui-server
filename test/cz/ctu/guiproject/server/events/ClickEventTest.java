@@ -4,6 +4,7 @@
  */
 package cz.ctu.guiproject.server.events;
 
+import cz.ctu.guiproject.server.messaging.AndroidMessageFactory;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -26,23 +27,8 @@ public class ClickEventTest {
         int[] points = {1, 2, 3, 4, 57, 8, 9, 0};
         expResult.setPoint(points);
         String xml = expResult.getXml();
-        ClickEvent result = new ClickEvent();
-        result = result.getEventInstance(xml);
-        assertEquals(expResult, result);
-    }
-
-    /**
-     * Test of getEventInstance method, of class ClickEvent.
-     */
-    @Test
-    public void testGetEventInstance() {
-        System.out.println("getEventInstance");
-        ClickEvent expResult = new ClickEvent();
-        int[] points = {1, 2, 3, 45, 0};
-        expResult.setPoint(points);
-        String xml = expResult.getXml();
-
-        ClickEvent result = expResult.getEventInstance(xml);
+        System.out.println(xml);
+        ClickEvent result = (ClickEvent) AndroidMessageFactory.createAndroidMessage(xml);
         assertEquals(expResult, result);
     }
 }

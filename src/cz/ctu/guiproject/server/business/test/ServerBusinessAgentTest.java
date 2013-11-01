@@ -5,6 +5,7 @@
 package cz.ctu.guiproject.server.business.test;
 
 import cz.ctu.guiproject.server.business.ServerBusinessAgent;
+import cz.ctu.guiproject.server.messaging.AndroidMessage;
 import cz.ctu.guiproject.server.observers.EventObserver;
 import cz.ctu.guiproject.server.xml.ServerXMLAgent;
 import cz.ctu.guiproject.server.xml.ServerXMLAgentImpl;
@@ -14,7 +15,6 @@ import java.util.logging.Logger;
 import messaging.GUIInitSMessage;
 import messaging.InitCMessage;
 import messaging.InitSMessage;
-import messaging.Message;
 
 /**
  *
@@ -52,7 +52,7 @@ public class ServerBusinessAgentTest implements ServerBusinessAgent, ServerXMLOb
     }
     
     @Override
-    public void update(Message message) {
+    public void update(AndroidMessage message) {
         System.out.println("Observed message: " + message);
     }
     

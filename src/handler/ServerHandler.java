@@ -5,6 +5,7 @@
 package handler;
 
 import android_toolkit.AndroidDevice;
+import cz.ctu.guiproject.server.messaging.AndroidMessage;
 import event.Event;
 import event.OnClickEvent;
 import event.OnLongClickEvent;
@@ -51,9 +52,9 @@ public class ServerHandler {
         return instance;
     }
 
-    public void receive(Message message) {
+    public void receive(AndroidMessage message) {
 
-        Message resMessage = null;
+        AndroidMessage resMessage = null;
 
         // attempt to establish connection from client side
         if (message instanceof InitCMessage) {
@@ -82,7 +83,7 @@ public class ServerHandler {
             // comunication almost set, lets send some GUI!
             AndroidDevice android = ((InitCMessage) message).getDevice();
 
-            Message guiInitSMessage = new GUIInitSMessage();
+            AndroidMessage guiInitSMessage = new GUIInitSMessage();
 
             BufferedImage img = guiManager.getImage(android.getResolution());
 

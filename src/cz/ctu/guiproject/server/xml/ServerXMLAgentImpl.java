@@ -4,11 +4,11 @@
  */
 package cz.ctu.guiproject.server.xml;
 
+import cz.ctu.guiproject.server.messaging.AndroidMessage;
 import cz.ctu.guiproject.server.networking.ServerNetworkAgent;
 import cz.ctu.guiproject.server.networking.ServerNetworkAgentImpl;
 import cz.ctu.guiproject.server.networking.ServerNetworkObserver;
 import java.util.ArrayList;
-import messaging.Message;
 import xml.XMLToolkit;
 
 /**
@@ -20,7 +20,7 @@ public class ServerXMLAgentImpl implements ServerNetworkObserver, ServerXMLAgent
     // handles the network communication with client(s)
     private ServerNetworkAgent serverNetworkAgent;
     private ArrayList<ServerXMLObserver> observers;
-    private Message currentMessage;
+    private AndroidMessage currentMessage;
 
     /**
      * Default constructor of the ServerXMLAgentImpl.
@@ -62,14 +62,14 @@ public class ServerXMLAgentImpl implements ServerNetworkObserver, ServerXMLAgent
     }
 
     @Override
-    public void broadcast(Message message) {
+    public void broadcast(AndroidMessage message) {
         // TODO encode the message to plain String
-        String xmlMessage = message.getXML();
+        String xmlMessage = message.getXml();
         serverNetworkAgent.broadcast(xmlMessage);
     }
 
     @Override
-    public void send(int networkId, Message message) {
+    public void send(int networkId, AndroidMessage message) {
         // TODO encode the message to plain String        
         String xmlMessage = message.getXML();
         serverNetworkAgent.send(networkId, xmlMessage);

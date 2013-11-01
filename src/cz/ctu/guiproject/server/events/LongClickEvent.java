@@ -26,9 +26,4 @@ public class LongClickEvent extends AndroidEvent<LongClickEvent> {
     public String getXml() {
         return super.getXml(this);
     }
-
-    @Override
-    public LongClickEvent getEventInstance(String xml) {
-        return super.getEventInstance(xml, this);
-    }
 }

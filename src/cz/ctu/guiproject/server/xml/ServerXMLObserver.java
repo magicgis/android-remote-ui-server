@@ -4,7 +4,7 @@
  */
 package cz.ctu.guiproject.server.xml;
 
-import messaging.Message;
+import cz.ctu.guiproject.server.messaging.AndroidMessage;
 
 /**
  *
@@ -12,5 +12,5 @@ import messaging.Message;
  */
 public interface ServerXMLObserver {
     
-    public void update(Message message);
+    public void update(AndroidMessage message);
 }

@@ -4,6 +4,7 @@
  */
 package cz.ctu.guiproject.server.events;
 
+import cz.ctu.guiproject.server.messaging.AndroidMessageFactory;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -26,23 +27,8 @@ public class DragEventTest {
         int[] points = {1, 2, 3, 45, 5};
         expResult.setPoint(points);
         String xml = expResult.getXml();
-        DragEvent result = new DragEvent();
-        result = result.getEventInstance(xml);
-        assertEquals(expResult, result);
-    }
-
-    /**
-     * Test of getEventInstance method, of class DragEvent.
-     */
-    @Test
-    public void testGetEventInstance() {
-        System.out.println("getEventInstance");
-        DragEvent expResult = new DragEvent();
-        int[] points = {1, 2, 3, 4, 6};
-        expResult.setPoint(points);
-        String xml = expResult.getXml();
-        DragEvent result = new DragEvent();
-        result = result.getEventInstance(xml);
+        System.out.println(xml);
+        DragEvent result = (DragEvent) AndroidMessageFactory.createAndroidMessage(xml);
         assertEquals(expResult, result);
     }
 }
