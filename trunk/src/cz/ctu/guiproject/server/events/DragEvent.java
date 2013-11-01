@@ -26,9 +26,4 @@ public class DragEvent extends AndroidEvent<DragEvent> {
     public String getXml() {
         return super.getXml(this);
     }
-
-    @Override
-    public DragEvent getEventInstance(String xml) {
-        return super.getEventInstance(xml, this);
-    }
 }

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<touchEvent>
+    <points>
+        <coord>1</coord>
+        <coord>2</coord>
+        <coord>3</coord>
+        <coord>4</coord>
+        <coord>5</coord>
+        <coord>1</coord>
+    </points>
+    <mask>USER_UP</mask>
+</touchEvent>

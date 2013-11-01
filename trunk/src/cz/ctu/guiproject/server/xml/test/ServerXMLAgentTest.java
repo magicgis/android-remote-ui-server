@@ -4,6 +4,7 @@
  */
 package cz.ctu.guiproject.server.xml.test;
 
+import cz.ctu.guiproject.server.messaging.AndroidMessage;
 import cz.ctu.guiproject.server.xml.ServerXMLAgent;
 import cz.ctu.guiproject.server.xml.ServerXMLAgentImpl;
 import cz.ctu.guiproject.server.xml.ServerXMLObserver;
@@ -14,7 +15,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import messaging.InitCMessage;
 import messaging.InitSMessage;
-import messaging.Message;
 
 /**
  *
@@ -41,14 +41,14 @@ public class ServerXMLAgentTest implements ServerXMLObserver {
                 while (true) {
                     try {
                         int choice = Integer.parseInt(br.readLine());
-                        switch(choice) {
-                            case 0: 
+                        switch (choice) {
+                            case 0:
                                 serverXML.send(choice, new InitCMessage());
                             case 1:
                                 serverXML.broadcast(new InitSMessage());
                                 break;
                         }
-                        
+
                     } catch (IOException ex) {
                         break;
                     }
@@ -71,7 +71,7 @@ public class ServerXMLAgentTest implements ServerXMLObserver {
     }
 
     @Override
-    public void update(Message message) {
+    public void update(AndroidMessage message) {
         logger.log(Level.INFO, "New message received: " + message);
     }
 }

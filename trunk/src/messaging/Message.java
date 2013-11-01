@@ -8,6 +8,7 @@ package messaging;
  *
  * @author tomique
  */
+// TODO zrusit zavislost na teto tride!! Nejaka abstraktni Message by mela byt predkem vsech zprav, ktere budou chodit, napr. take zpravy o ruznych eventech!
 public abstract class Message {
 
     // TODO add sessionId info to ?all? messages (probably yes! Broadcast might be unused)

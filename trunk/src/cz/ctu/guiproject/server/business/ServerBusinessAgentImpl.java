@@ -8,6 +8,7 @@ import cz.ctu.guiproject.server.events.AndroidEvent;
 import cz.ctu.guiproject.server.events.ClickEvent;
 import cz.ctu.guiproject.server.events.TouchEvent;
 import cz.ctu.guiproject.server.helper.SessionNetworkIdMapper;
+import cz.ctu.guiproject.server.messaging.AndroidMessage;
 import cz.ctu.guiproject.server.observers.ClickObserver;
 import cz.ctu.guiproject.server.observers.EventObserver;
 import cz.ctu.guiproject.server.observers.TouchObserver;
@@ -15,7 +16,6 @@ import cz.ctu.guiproject.server.xml.ServerXMLAgent;
 import cz.ctu.guiproject.server.xml.ServerXMLAgentImpl;
 import cz.ctu.guiproject.server.xml.ServerXMLObserver;
 import java.util.ArrayList;
-import messaging.Message;
 
 /**
  *
@@ -73,10 +73,10 @@ public class ServerBusinessAgentImpl implements ServerBusinessAgent, ServerXMLOb
     }
 
     @Override
-    public void update(Message message) {
-        
+    public void update(AndroidMessage message) {
+
 //        if(message instanceof ...)
-        
+
         // incomming message might be new event, decide and if so, notify observers
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -87,7 +87,7 @@ public class ServerBusinessAgentImpl implements ServerBusinessAgent, ServerXMLOb
      *
      * @param message Message to be sent to a particular client
      */
-    private void send(Message message) {
+    private void send(AndroidMessage message) {
         String sessionId = message.getSessionId();
         switch (sessionId) {
             case "BROADCAST":

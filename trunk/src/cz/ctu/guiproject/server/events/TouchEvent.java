@@ -38,9 +38,4 @@ public class TouchEvent extends AndroidEvent<TouchEvent> {
     public String getXml() {
         return super.getXml(this);
     }
-
-    @Override
-    public TouchEvent getEventInstance(String xml) {
-        return super.getEventInstance(xml, this);
-    }
 }
