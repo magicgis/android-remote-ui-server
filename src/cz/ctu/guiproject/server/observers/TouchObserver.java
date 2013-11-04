@@ -10,13 +10,13 @@ import cz.ctu.guiproject.server.events.TouchEvent;
  *
  * @author tomas.buk
  */
-public interface TouchObserver extends EventObserver {
-
+public interface TouchObserver {
+    // TODO somehow inherit from EventObserver??
     /**
      * When new TouchEvent occurs, all registered TouchObservers are notified
      * within the update method
      *
      * @param e TouchEvent, that currently occured
      */
-    public void update(TouchEvent e);
+    public void update(TouchEvent event);
 }

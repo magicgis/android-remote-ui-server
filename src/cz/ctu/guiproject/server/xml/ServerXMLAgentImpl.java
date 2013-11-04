@@ -5,6 +5,7 @@
 package cz.ctu.guiproject.server.xml;
 
 import cz.ctu.guiproject.server.messaging.AndroidMessage;
+import cz.ctu.guiproject.server.messaging.AndroidMessageFactory;
 import cz.ctu.guiproject.server.networking.ServerNetworkAgent;
 import cz.ctu.guiproject.server.networking.ServerNetworkAgentImpl;
 import cz.ctu.guiproject.server.networking.ServerNetworkObserver;
@@ -25,18 +26,18 @@ public class ServerXMLAgentImpl implements ServerNetworkObserver, ServerXMLAgent
     /**
      * Default constructor of the ServerXMLAgentImpl.
      */
+    @SuppressWarnings("LeakingThisInConstructor")
     public ServerXMLAgentImpl() {
         // TODO parse port number from xml config file
         // TODO set port number from network layer!!
+        observers = new ArrayList<>();
         serverNetworkAgent = new ServerNetworkAgentImpl(6789);
         serverNetworkAgent.registerObserver(this);
-        observers = new ArrayList<>();
     }
 
     @Override
     public void update(String message) {
-        // TODO parse message, get message object and send it to the superior layer
-        currentMessage = XMLToolkit.decodeXML(message);
+        currentMessage = AndroidMessageFactory.createAndroidMessage(message);
         notifyObservers();
     }
 
@@ -56,6 +57,7 @@ public class ServerXMLAgentImpl implements ServerNetworkObserver, ServerXMLAgent
 
     @Override
     public void notifyObservers() {
+        // TODO zajistit, aby observer prepsal equals a hashcode
         for (ServerXMLObserver observer : observers) {
             observer.update(currentMessage);
         }
@@ -63,15 +65,13 @@ public class ServerXMLAgentImpl implements ServerNetworkObserver, ServerXMLAgent
 
     @Override
     public void broadcast(AndroidMessage message) {
-        // TODO encode the message to plain String
         String xmlMessage = message.getXml();
         serverNetworkAgent.broadcast(xmlMessage);
     }
 
     @Override
     public void send(int networkId, AndroidMessage message) {
-        // TODO encode the message to plain String        
-        String xmlMessage = message.getXML();
+        String xmlMessage = message.getXml();
         serverNetworkAgent.send(networkId, xmlMessage);
     }
 }

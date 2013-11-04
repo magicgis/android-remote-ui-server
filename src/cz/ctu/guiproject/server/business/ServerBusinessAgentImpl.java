@@ -5,13 +5,9 @@
 package cz.ctu.guiproject.server.business;
 
 import cz.ctu.guiproject.server.events.AndroidEvent;
-import cz.ctu.guiproject.server.events.ClickEvent;
-import cz.ctu.guiproject.server.events.TouchEvent;
 import cz.ctu.guiproject.server.helper.SessionNetworkIdMapper;
 import cz.ctu.guiproject.server.messaging.AndroidMessage;
-import cz.ctu.guiproject.server.observers.ClickObserver;
 import cz.ctu.guiproject.server.observers.EventObserver;
-import cz.ctu.guiproject.server.observers.TouchObserver;
 import cz.ctu.guiproject.server.xml.ServerXMLAgent;
 import cz.ctu.guiproject.server.xml.ServerXMLAgentImpl;
 import cz.ctu.guiproject.server.xml.ServerXMLObserver;
@@ -27,7 +23,7 @@ public class ServerBusinessAgentImpl implements ServerBusinessAgent, ServerXMLOb
     private static ServerBusinessAgent instance;
     private static ServerXMLAgent serverXMLAgent;
     private SessionNetworkIdMapper sessionNetworkIdMapper;
-    private ArrayList<EventObserver> eventObservers;
+    private ArrayList<EventObserver<AndroidEvent>> eventObservers;
     // currently received event from android device
     private AndroidEvent currentEvent;
 
@@ -74,8 +70,13 @@ public class ServerBusinessAgentImpl implements ServerBusinessAgent, ServerXMLOb
 
     @Override
     public void update(AndroidMessage message) {
+        // decide between regular message and event message
+        if (message instanceof AndroidEvent) {
+            eventOccured((AndroidEvent) message);
+            return;
+        }
+        // TODO how to handle regular messages??
 
-//        if(message instanceof ...)
 
         // incomming message might be new event, decide and if so, notify observers
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -106,8 +107,9 @@ public class ServerBusinessAgentImpl implements ServerBusinessAgent, ServerXMLOb
      *
      * @param e
      */
-    private void eventOccured(AndroidEvent e) {
-        currentEvent = e;
+    private void eventOccured(AndroidEvent event) {
+        // call business logic, some actions to take(ie. redraw connected devices??)
+        currentEvent = event;
         notifyEventObservers();
     }
 
@@ -125,15 +127,8 @@ public class ServerBusinessAgentImpl implements ServerBusinessAgent, ServerXMLOb
 
     @Override
     public void notifyEventObservers() {
-        for (EventObserver o : eventObservers) {
-
-            if (o instanceof TouchObserver) {
-                ((TouchObserver) o).update((TouchEvent) currentEvent);
-            }
-
-            if (o instanceof ClickObserver) {
-                ((ClickObserver) o).update((ClickEvent) currentEvent);
-            }
+        for (EventObserver<AndroidEvent> o : eventObservers) {
+            o.update(currentEvent);
         }
     }
 }

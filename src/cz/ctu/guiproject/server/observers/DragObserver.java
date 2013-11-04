@@ -4,19 +4,19 @@
  */
 package cz.ctu.guiproject.server.observers;
 
-import cz.ctu.guiproject.server.events.ClickEvent;
+import cz.ctu.guiproject.server.events.DragEvent;
 
 /**
  *
  * @author tomas.buk
  */
-public interface ClickObserver {
+public interface DragObserver {
     // TODO somehow inherit from EventObserver??
     /**
-     * When new ClickEvent occurs, all registered ClickObservers are notified
+     * When new DragEvent occurs, all registered DragObservers are notified
      * within the update method
      *
-     * @param e ClickEvent, that currently occured
+     * @param event DragEvent, that currently occured
      */
-    public void update(ClickEvent event);
+    public void update(DragEvent event);
 }

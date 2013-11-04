@@ -8,6 +8,13 @@ package cz.ctu.guiproject.server.observers;
  *
  * @author tomas.buk
  */
-public interface EventObserver {
-    // TODO tady se pravdepodobne uzije generika (lower/upper bound) ???
+public interface EventObserver<T> {
+
+    /**
+     * When new Event occurs, all registered Observers are notified within the
+     * update method
+     *
+     * @param event Event, that currently occured
+     */
+    public void update(T event);
 }
