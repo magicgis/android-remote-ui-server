@@ -4,19 +4,19 @@
  */
 package cz.ctu.guiproject.server.observers;
 
-import cz.ctu.guiproject.server.events.ClickEvent;
+import cz.ctu.guiproject.server.events.LongClickEvent;
 
 /**
  *
  * @author tomas.buk
  */
-public interface ClickObserver {
+public interface LongClickObserver {
     // TODO somehow inherit from EventObserver??
     /**
-     * When new ClickEvent occurs, all registered ClickObservers are notified
+     * When new LongClickEvent occurs, all registered LongClickObservers are notified
      * within the update method
      *
-     * @param e ClickEvent, that currently occured
+     * @param event LongClickEvent, that currently occured
      */
-    public void update(ClickEvent event);
+    public void update(LongClickEvent event);
 }

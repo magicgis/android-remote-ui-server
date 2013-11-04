@@ -5,6 +5,8 @@
 package cz.ctu.guiproject.server.main;
 
 import cz.ctu.guiproject.server.observers.ClickObserver;
+import cz.ctu.guiproject.server.observers.DragObserver;
+import cz.ctu.guiproject.server.observers.LongClickObserver;
 import cz.ctu.guiproject.server.observers.TouchObserver;
 
 /**
@@ -14,6 +16,44 @@ import cz.ctu.guiproject.server.observers.TouchObserver;
 public interface AndroidServer {
 
     /**
+     * Registers new LongClickObserver instance
+     *
+     * @param o new LongClickObserver instance
+     */
+    public void registerLongClickObserver(LongClickObserver o);
+
+    /**
+     * Removes LongClickObserver instance
+     *
+     * @param o new LongClickObserver instance
+     */
+    public void removeLongClickObserver(LongClickObserver o);
+
+    /**
+     * Notify all registered observers, that new LongClickEvent occured
+     */
+    public void notifyLongClickObservers();
+
+    /**
+     * Registers new DragObserver instance
+     *
+     * @param o new DragObserver instance
+     */
+    public void registerDragObserver(DragObserver o);
+
+    /**
+     * Removes DragObserver instance
+     *
+     * @param o new DragObserver instance
+     */
+    public void removeDragObserver(DragObserver o);
+
+    /**
+     * Notify all registered observers, that new DragEvent occured
+     */
+    public void notifyDragObservers();
+
+    /**
      * Registers new TouchObserver instance
      *
      * @param o new TouchObserver instance
@@ -21,7 +61,7 @@ public interface AndroidServer {
     public void registerTouchObserver(TouchObserver o);
 
     /**
-     * Removes TouchServer instance
+     * Removes TouchObserver instance
      *
      * @param o new TouchObserver instance
      */
