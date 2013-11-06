@@ -26,6 +26,7 @@ public class ClickEventTest {
         ClickEvent expResult = new ClickEvent();
         int[] points = {1, 2, 3, 4, 57, 8, 9, 0};
         expResult.setPoint(points);
+        expResult.setSessionId("AndroidDeviceSHA9990001");
         String xml = expResult.getXml();
         System.out.println(xml);
         ClickEvent result = (ClickEvent) AndroidMessageFactory.createAndroidMessage(xml);

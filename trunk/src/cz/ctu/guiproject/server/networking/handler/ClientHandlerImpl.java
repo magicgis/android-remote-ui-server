@@ -59,10 +59,10 @@ public class ClientHandlerImpl implements ClientHandler {
             try {
 
                 Object message = input.readObject();
-                server.messageReceived("(" + networkId + ") " + message.toString());
+                server.messageReceived("[" + networkId + "]" + message.toString());
 
             } catch (IOException ex) {
-                logger.log(Level.WARNING, "Premature end of ClientHandler (" + networkId + ")");
+                logger.log(Level.WARNING, "Premature end of ClientHandler (" + networkId + ") " + ex.getMessage());
                 running = false;
             } catch (ClassNotFoundException ex) {
                 logger.log(Level.SEVERE, ex.getMessage());

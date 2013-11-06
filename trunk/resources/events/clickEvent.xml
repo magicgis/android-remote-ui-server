@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <clickEvent>
+    <sessionId>AndroidDeviceSHA9990001</sessionId>
     <points>
         <coord>1</coord>
         <coord>2</coord>
@@ -11,4 +12,3 @@
         <coord>0</coord>
     </points>
 </clickEvent>
-</root>

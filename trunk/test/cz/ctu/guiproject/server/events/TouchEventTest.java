@@ -41,6 +41,7 @@ public class TouchEventTest {
         int[] points = {1, 2, 3, 4, 5, 1};
         expResult.setPoint(points);
         expResult.setMask("USER_UP");
+        expResult.setSessionId("DeviceAndroid999000AAA");
         String xml = expResult.getXml();
         System.out.println(xml);
         TouchEvent result = (TouchEvent) AndroidMessageFactory.createAndroidMessage(xml);

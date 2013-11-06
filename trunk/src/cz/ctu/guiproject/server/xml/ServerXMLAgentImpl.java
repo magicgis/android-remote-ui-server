@@ -10,7 +10,6 @@ import cz.ctu.guiproject.server.networking.ServerNetworkAgent;
 import cz.ctu.guiproject.server.networking.ServerNetworkAgentImpl;
 import cz.ctu.guiproject.server.networking.ServerNetworkObserver;
 import java.util.ArrayList;
-import xml.XMLToolkit;
 
 /**
  *
