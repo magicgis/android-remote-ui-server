@@ -26,6 +26,7 @@ public class LongClickEventTest {
         LongClickEvent expResult = new LongClickEvent();
         int[] points = {1, 2, 3, 4, 9, 0};
         expResult.setPoint(points);
+        expResult.setSessionId("AndroidDeviceBBAAAA9999");
         String xml = expResult.getXml();
         System.out.println(xml);
         LongClickEvent result = (LongClickEvent) AndroidMessageFactory.createAndroidMessage(xml);

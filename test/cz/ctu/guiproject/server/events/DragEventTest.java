@@ -26,6 +26,7 @@ public class DragEventTest {
         DragEvent expResult = new DragEvent();
         int[] points = {1, 2, 3, 45, 5};
         expResult.setPoint(points);
+        expResult.setSessionId("AndroidDeviceAABBB00001");
         String xml = expResult.getXml();
         System.out.println(xml);
         DragEvent result = (DragEvent) AndroidMessageFactory.createAndroidMessage(xml);
