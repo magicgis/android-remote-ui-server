@@ -4,13 +4,13 @@
  */
 package cz.ctu.guiproject.server.events;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import org.simpleframework.xml.Root;
 
 /**
  *
  * @author tomas.buk
  */
-@XmlRootElement
+@Root
 public class ClickEvent extends AndroidEvent<ClickEvent> {
 
     /**

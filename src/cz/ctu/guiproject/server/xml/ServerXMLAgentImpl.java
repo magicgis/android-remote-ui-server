@@ -4,6 +4,8 @@
  */
 package cz.ctu.guiproject.server.xml;
 
+import cz.ctu.guiproject.server.helper.IdParser;
+import cz.ctu.guiproject.server.helper.SessionNetworkIdMapper;
 import cz.ctu.guiproject.server.messaging.AndroidMessage;
 import cz.ctu.guiproject.server.messaging.AndroidMessageFactory;
 import cz.ctu.guiproject.server.networking.ServerNetworkAgent;
@@ -21,6 +23,7 @@ public class ServerXMLAgentImpl implements ServerNetworkObserver, ServerXMLAgent
     private ServerNetworkAgent serverNetworkAgent;
     private ArrayList<ServerXMLObserver> observers;
     private AndroidMessage currentMessage;
+    private SessionNetworkIdMapper sessionNetworkIdMapper;
 
     /**
      * Default constructor of the ServerXMLAgentImpl.
@@ -31,11 +34,22 @@ public class ServerXMLAgentImpl implements ServerNetworkObserver, ServerXMLAgent
         // TODO set port number from network layer!!
         observers = new ArrayList<>();
         serverNetworkAgent = new ServerNetworkAgentImpl(6789);
+        sessionNetworkIdMapper = SessionNetworkIdMapper.getInstance();
         serverNetworkAgent.registerObserver(this);
     }
 
     @Override
     public void update(String message) {
+        // parse network and session ids
+        String sessionId = IdParser.getSessionId(message);
+        int networkId = IdParser.getNetworkId(message);
+        // test, whether sessionId is already assigned to networkId
+        if (sessionNetworkIdMapper.isAssigned(sessionId, networkId)) {
+            sessionNetworkIdMapper.assign(sessionId, networkId);
+        }
+        // trim incomming xml message, so that is does not contain networkId information
+        message = message.substring(message.indexOf("]") + 1);
+        // unmarshall message object
         currentMessage = AndroidMessageFactory.createAndroidMessage(message);
         notifyObservers();
     }

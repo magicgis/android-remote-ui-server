@@ -4,7 +4,7 @@
  */
 package cz.ctu.guiproject.server.events;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import org.simpleframework.xml.Root;
 
 /**
  * Occurs, when user touches, pauses and then releases. The whole event must be
@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author tomas.buk
  */
-@XmlRootElement
+@Root
 public class LongClickEvent extends AndroidEvent<LongClickEvent> {
 
     /**

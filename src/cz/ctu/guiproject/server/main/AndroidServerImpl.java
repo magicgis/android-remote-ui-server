@@ -44,6 +44,11 @@ public class AndroidServerImpl implements AndroidServer, EventObserver<AndroidEv
         serverBusinessAgent = ServerBusinessAgentImpl.getInstance();
         // must be the last thing to execute
         serverBusinessAgent.registerObserver(this);
+        // TODO sdelit serveru, zda se zpravy, ktere zpusobi vykresleni 
+        // prvku GUI na strane klienta budou posilat ve formatu Base64, 
+        // nebo formou prikazu pro vykresleni konkretnich primitiv 
+        // (pokud bude vykreslovani v zavislosti na uzivatelske akce 
+        // ridit sam uzivatel, bude vzdy pouzito formatu Base64!)
     }
 
     /**

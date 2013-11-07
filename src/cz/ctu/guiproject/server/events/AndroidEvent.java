@@ -5,8 +5,7 @@
 package cz.ctu.guiproject.server.events;
 
 import cz.ctu.guiproject.server.messaging.AndroidMessage;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
+import org.simpleframework.xml.Element;
 
 /**
  *
@@ -16,6 +15,7 @@ public abstract class AndroidEvent<T> extends AndroidMessage<T> {
 
     // x and y coordinates of particular event
     // TODO always even length, if touch happenes, longer array than size 2 is returned
+    @Element
     private int[] point;
 
     /**
@@ -23,8 +23,6 @@ public abstract class AndroidEvent<T> extends AndroidMessage<T> {
      *
      * @return the x and y coordinates of particular event
      */
-    @XmlElement(name = "coord")
-    @XmlElementWrapper(name = "points")
     public int[] getPoint() {
         return point;
     }
