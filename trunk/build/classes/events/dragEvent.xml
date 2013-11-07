@@ -1,11 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <dragEvent>
-    <sessionId>AndroidDeviceAABBB00001</sessionId>
-    <points>
-        <coord>1</coord>
-        <coord>2</coord>
-        <coord>3</coord>
-        <coord>45</coord>
-        <coord>5</coord>
-    </points>
+   <sessionId>AndroidDeviceAABBB00001</sessionId>
+   <point length="5">1, 2, 3, 45, 5</point>
 </dragEvent>

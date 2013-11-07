@@ -1,13 +1,6 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <touchEvent>
-    <sessionId>DeviceAndroid999000AAA</sessionId>
-    <points>
-        <coord>1</coord>
-        <coord>2</coord>
-        <coord>3</coord>
-        <coord>4</coord>
-        <coord>5</coord>
-        <coord>1</coord>
-    </points>
-    <mask>USER_UP</mask>
+   <sessionId>DeviceAndroid999000AAA</sessionId>
+   <point length="6">1, 2, 3, 4, 5, 1</point>
+   <mask>USER_UP</mask>
 </touchEvent>

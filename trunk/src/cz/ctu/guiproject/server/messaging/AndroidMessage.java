@@ -5,12 +5,13 @@
 package cz.ctu.guiproject.server.messaging;
 
 import java.io.StringWriter;
+import org.simpleframework.xml.stream.Format;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
+import org.simpleframework.xml.Element;
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.core.Persister;
 
 /**
  *
@@ -20,6 +21,7 @@ public abstract class AndroidMessage<T> {
 
     private static final Logger logger = Logger.getLogger(AndroidMessage.class.getName());
     // Uniquely identifies client session
+    @Element
     private String sessionId;
 
 //    public abstract void setMessageType();
@@ -59,17 +61,27 @@ public abstract class AndroidMessage<T> {
 
         StringWriter sw = new StringWriter();
 
+        Serializer serializer = new Persister(
+                new Format("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"));
         try {
-
-            JAXBContext jaxbContext = JAXBContext.newInstance(instance.getClass());
-            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            jaxbMarshaller.marshal(instance, sw);
-
-        } catch (JAXBException ex) {
-            logger.log(Level.SEVERE, ex.getCause().getMessage());
-            return null;
+            serializer.write(instance, sw);
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, ex.getMessage());
+            throw new RuntimeException("Unable to marshall object into XML String!");
         }
+
+
+//        try {
+//
+//            JAXBContext jaxbContext = JAXBContext.newInstance(instance.getClass());
+//            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+//            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+//            jaxbMarshaller.marshal(instance, sw);
+//
+//        } catch (JAXBException ex) {
+//            logger.log(Level.SEVERE, ex.getCause().getMessage());
+//            return null;
+//        }
 
         return sw.toString();
     }

@@ -1,12 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <longClickEvent>
-    <sessionId>AndroidDeviceBBAAAA9999</sessionId>
-    <points>
-        <coord>1</coord>
-        <coord>2</coord>
-        <coord>3</coord>
-        <coord>4</coord>
-        <coord>9</coord>
-        <coord>0</coord>
-    </points>
+   <sessionId>AndroidDeviceBBAAAA9999</sessionId>
+   <point length="6">1, 2, 3, 4, 9, 0</point>
 </longClickEvent>

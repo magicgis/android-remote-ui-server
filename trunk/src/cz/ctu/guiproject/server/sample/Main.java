@@ -43,21 +43,21 @@ public class Main implements TouchObserver, ClickObserver, DragObserver, LongCli
 
     @Override
     public void update(ClickEvent event) {
-        logger.log(Level.INFO, "ClickEvent occured: " + event);
+        logger.log(Level.INFO, "ClickEvent occured: " + event.getSessionId());
     }
 
     @Override
     public void update(TouchEvent event) {
-        logger.log(Level.INFO, "TouchEvent occured: " + event);
+        logger.log(Level.INFO, "TouchEvent occured: " + event.getSessionId());
     }
 
     @Override
     public void update(DragEvent event) {
-        logger.log(Level.INFO, "DragEvent occured: " + event);
+        logger.log(Level.INFO, "DragEvent occured: " + event.getSessionId());
     }
 
     @Override
     public void update(LongClickEvent event) {
-        logger.log(Level.INFO, "LongClickEvent occured: " + event);
+        logger.log(Level.INFO, "LongClickEvent occured: " + event.getSessionId());
     }
 }

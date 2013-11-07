@@ -70,6 +70,7 @@ public class ServerBusinessAgentImpl implements ServerBusinessAgent, ServerXMLOb
 
     @Override
     public void update(AndroidMessage message) {
+        Object tmp = null;
         // decide between regular message and event message
         if (message instanceof AndroidEvent) {
             eventOccured((AndroidEvent) message);

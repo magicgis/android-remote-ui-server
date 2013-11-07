@@ -8,12 +8,10 @@ import cz.ctu.guiproject.server.events.ClickEvent;
 import cz.ctu.guiproject.server.events.DragEvent;
 import cz.ctu.guiproject.server.events.LongClickEvent;
 import cz.ctu.guiproject.server.events.TouchEvent;
-import java.io.StringReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.core.Persister;
 
 /**
  *
@@ -35,16 +33,25 @@ public class AndroidMessageFactory {
 
         AndroidMessage eventInstance = null;
 
+        Serializer serializer = new Persister();
         try {
-            JAXBContext jaxbContext = JAXBContext.newInstance(target);
-            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            StringReader reader = new StringReader(xml);
-            eventInstance = (AndroidMessage) jaxbUnmarshaller.unmarshal(reader);
-
-        } catch (JAXBException ex) {
+            eventInstance = (AndroidMessage) serializer.read(target, xml);
+        } catch (Exception ex) {
             logger.log(Level.SEVERE, ex.getMessage());
-            throw new RuntimeException("Unable to create instance of AndroidMessage in AndroidMessageFactory!");
+            throw new RuntimeException("Unable to unmarshall AndroidMessage instance in AndroidMessageFactory!");
         }
+
+//        
+//        try {
+//            JAXBContext jaxbContext = JAXBContext.newInstance(target);
+//            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+//            StringReader reader = new StringReader(xml);
+//            eventInstance = (AndroidMessage) jaxbUnmarshaller.unmarshal(reader);
+//
+//        } catch (JAXBException ex) {
+//            logger.log(Level.SEVERE, ex.getMessage());
+//            throw new RuntimeException("Unable to create instance of AndroidMessage in AndroidMessageFactory!");
+//        }
 
         return eventInstance;
     }
