@@ -41,18 +41,6 @@ public class AndroidMessageFactory {
             throw new RuntimeException("Unable to unmarshall AndroidMessage instance in AndroidMessageFactory!");
         }
 
-//        
-//        try {
-//            JAXBContext jaxbContext = JAXBContext.newInstance(target);
-//            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-//            StringReader reader = new StringReader(xml);
-//            eventInstance = (AndroidMessage) jaxbUnmarshaller.unmarshal(reader);
-//
-//        } catch (JAXBException ex) {
-//            logger.log(Level.SEVERE, ex.getMessage());
-//            throw new RuntimeException("Unable to create instance of AndroidMessage in AndroidMessageFactory!");
-//        }
-
         return eventInstance;
     }
 
@@ -82,6 +70,10 @@ public class AndroidMessageFactory {
                 return LongClickEvent.class;
             case "touchEvent":
                 return TouchEvent.class;
+            case "clientInitRequestMessage":
+                return ClientInitRequestMessage.class;
+            case "clientInitResponseMessage":
+                return ClientInitResponseMessage.class;
             default:
                 throw new RuntimeException("Unsupported target class, new case scenario must be added!");
         }

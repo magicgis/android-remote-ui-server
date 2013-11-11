@@ -17,10 +17,10 @@ import java.util.logging.Logger;
  *
  * @author tomas.buk
  */
-public class ServerNetworkAgentTest implements ServerNetworkObserver{
+public class ServerNetworkAgentTest implements ServerNetworkObserver {
 
     private static final Logger logger = Logger.getLogger(ServerNetworkAgentTest.class.getName());
-    
+
     public ServerNetworkAgentTest() {
         init();
     }
@@ -34,17 +34,21 @@ public class ServerNetworkAgentTest implements ServerNetworkObserver{
             logger.log(Level.SEVERE, ex.getMessage());
         }
         new Thread(new Runnable() {
-
             @Override
             public void run() {
                 boolean stop = false;
-                while(!stop) {
+                while (!stop) {
                     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
                     try {
                         int networkId = Integer.parseInt(br.readLine());
-                        String message = br.readLine();
+                        StringBuilder sb = new StringBuilder();
+                        sb.append(br.readLine());
+                        while (br.ready()) {
+                            sb.append(br.readLine());
+                        }
+                        String message = sb.toString();
                         server.send(networkId, message);
-                        
+
                     } catch (IOException ex) {
                         logger.log(Level.SEVERE, ex.getMessage());
                         stop = true;

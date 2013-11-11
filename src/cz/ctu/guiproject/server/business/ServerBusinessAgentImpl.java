@@ -5,13 +5,20 @@
 package cz.ctu.guiproject.server.business;
 
 import cz.ctu.guiproject.server.events.AndroidEvent;
-import cz.ctu.guiproject.server.helper.SessionNetworkIdMapper;
+import cz.ctu.guiproject.server.gui.device.ClientDevice;
+import cz.ctu.guiproject.server.gui.manager.DeviceManager;
+import cz.ctu.guiproject.server.gui.renderer.DefaultRenderer;
+import cz.ctu.guiproject.server.gui.renderer.Renderer;
 import cz.ctu.guiproject.server.messaging.AndroidMessage;
+import cz.ctu.guiproject.server.messaging.ClientInitRequestMessage;
+import cz.ctu.guiproject.server.messaging.ClientInitResponseMessage;
 import cz.ctu.guiproject.server.observers.EventObserver;
 import cz.ctu.guiproject.server.xml.ServerXMLAgent;
 import cz.ctu.guiproject.server.xml.ServerXMLAgentImpl;
 import cz.ctu.guiproject.server.xml.ServerXMLObserver;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -22,10 +29,13 @@ public class ServerBusinessAgentImpl implements ServerBusinessAgent, ServerXMLOb
     // singleton related instance
     private static ServerBusinessAgent instance;
     private static ServerXMLAgent serverXMLAgent;
-    private SessionNetworkIdMapper sessionNetworkIdMapper;
+    private DeviceManager deviceManager;
+    // TODO nemelo by tohle tak nahodou byt obecnejsi a prijimat typ AndroidMessage??
     private ArrayList<EventObserver<AndroidEvent>> eventObservers;
     // currently received event from android device
     private AndroidEvent currentEvent;
+    private Renderer renderer;
+    private static final Logger logger = Logger.getLogger(ServerBusinessAgentImpl.class.getName());
 
     /**
      * Private constructor, used in ServerBusinessAgentImpl singleton design
@@ -33,7 +43,8 @@ public class ServerBusinessAgentImpl implements ServerBusinessAgent, ServerXMLOb
      */
     private ServerBusinessAgentImpl() {
         serverXMLAgent = new ServerXMLAgentImpl();
-        sessionNetworkIdMapper = SessionNetworkIdMapper.getInstance();
+        deviceManager = DeviceManager.getInstance();
+        renderer = DefaultRenderer.getInstance();
         eventObservers = new ArrayList<>();
     }
 
@@ -70,17 +81,14 @@ public class ServerBusinessAgentImpl implements ServerBusinessAgent, ServerXMLOb
 
     @Override
     public void update(AndroidMessage message) {
-        Object tmp = null;
         // decide between regular message and event message
         if (message instanceof AndroidEvent) {
-            eventOccured((AndroidEvent) message);
+            eventReceived((AndroidEvent) message);
             return;
         }
-        // TODO how to handle regular messages??
 
-
-        // incomming message might be new event, decide and if so, notify observers
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // handle regular message
+        messageReceived(message);
     }
 
     /**
@@ -97,9 +105,48 @@ public class ServerBusinessAgentImpl implements ServerBusinessAgent, ServerXMLOb
                 break;
             default:
                 // map sessionId to networkId
-                int networkId = sessionNetworkIdMapper.getNetworkId(sessionId);
+                int networkId = deviceManager.getIdMapper().getNetworkId(sessionId);
                 serverXMLAgent.send(networkId, message);
         }
+    }
+
+    private void initNewClient(ClientInitRequestMessage initMessage) {
+        // get required GUI layout based on device resolution
+        ClientDevice newDevice = new ClientDevice();
+        newDevice.setId(initMessage.getSessionId());
+        newDevice.setScreenHeight(initMessage.getScreenHeight());
+        newDevice.setScreenWidth(initMessage.getScreenWidth());
+        newDevice.setName(initMessage.getName());
+        // register new device with the deviceMapper
+        deviceManager.getDeviceMapper().addDevice(newDevice);
+
+        // inform renderer about the init event
+        renderer.initMessageReceived();
+
+        if (newDevice.getContext() == null) {
+            throw new RuntimeException("Context of the device should be never null!");
+        }
+        
+        // form response message and send it to client
+        ClientInitResponseMessage responseMessage = new ClientInitResponseMessage();
+        responseMessage.setSessionId(initMessage.getSessionId());
+        // TODO ... context to Base64, ...
+    }
+
+    /**
+     * Indicates, that new AndroidMessage has been received and necessary cast
+     * operation is performed.
+     *
+     * @param message received message
+     */
+    private void messageReceived(AndroidMessage message) {
+        if (message instanceof ClientInitRequestMessage) {
+            ClientInitRequestMessage initMessage = (ClientInitRequestMessage) message;
+            System.out.println("Message received: " + initMessage.getScreenWidth() + "x" + initMessage.getScreenHeight() + ", " + initMessage.getName());
+            initNewClient(initMessage);
+            return;
+        }
+        throw new RuntimeException("Unknown message received: " + message);
     }
 
     /**
@@ -108,7 +155,7 @@ public class ServerBusinessAgentImpl implements ServerBusinessAgent, ServerXMLOb
      *
      * @param e
      */
-    private void eventOccured(AndroidEvent event) {
+    private void eventReceived(AndroidEvent event) {
         // call business logic, some actions to take(ie. redraw connected devices??)
         currentEvent = event;
         notifyEventObservers();
