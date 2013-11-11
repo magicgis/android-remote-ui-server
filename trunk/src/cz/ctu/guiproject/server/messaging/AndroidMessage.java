@@ -70,19 +70,6 @@ public abstract class AndroidMessage<T> {
             throw new RuntimeException("Unable to marshall object into XML String!");
         }
 
-
-//        try {
-//
-//            JAXBContext jaxbContext = JAXBContext.newInstance(instance.getClass());
-//            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-//            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-//            jaxbMarshaller.marshal(instance, sw);
-//
-//        } catch (JAXBException ex) {
-//            logger.log(Level.SEVERE, ex.getCause().getMessage());
-//            return null;
-//        }
-
         return sw.toString();
     }
 

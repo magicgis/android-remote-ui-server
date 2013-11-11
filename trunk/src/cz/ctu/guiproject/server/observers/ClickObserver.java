@@ -12,6 +12,7 @@ import cz.ctu.guiproject.server.events.ClickEvent;
  */
 public interface ClickObserver {
     // TODO somehow inherit from EventObserver??
+    // TODO move to common package
     /**
      * When new ClickEvent occurs, all registered ClickObservers are notified
      * within the update method

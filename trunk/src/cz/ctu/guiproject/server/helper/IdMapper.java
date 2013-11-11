@@ -11,27 +11,27 @@ import java.util.Map;
  *
  * @author tomas.buk
  */
-public class SessionNetworkIdMapper {
+public class IdMapper {
 
     // singleton instance of NetworkSessionIdMapper
-    private static SessionNetworkIdMapper instance;
+    private static IdMapper instance;
     private Map<String, Integer> sessionNetworkMap;
 
     /**
      * Private constructor of NetworkSessionIdMapper singleton
      */
-    private SessionNetworkIdMapper() {
+    private IdMapper() {
         sessionNetworkMap = new HashMap<>();
     }
 
     /**
-     * Returns the only existing instance of NetworkSessionIdMapper
+     * Returns the only existing instance of IdMapper
      *
-     * @return the only existing instance of NetworkSessionIdMapper
+     * @return the only existing instance of IdMapper
      */
-    public static SessionNetworkIdMapper getInstance() {
+    public static IdMapper getInstance() {
         if (instance == null) {
-            instance = new SessionNetworkIdMapper();
+            instance = new IdMapper();
         }
         return instance;
     }

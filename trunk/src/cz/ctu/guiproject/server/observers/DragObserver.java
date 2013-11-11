@@ -12,6 +12,7 @@ import cz.ctu.guiproject.server.events.DragEvent;
  */
 public interface DragObserver {
     // TODO somehow inherit from EventObserver??
+    // TODO move to common package
     /**
      * When new DragEvent occurs, all registered DragObservers are notified
      * within the update method

@@ -12,6 +12,7 @@ import cz.ctu.guiproject.server.events.LongClickEvent;
  */
 public interface LongClickObserver {
     // TODO somehow inherit from EventObserver??
+    // TODO move to common package
     /**
      * When new LongClickEvent occurs, all registered LongClickObservers are notified
      * within the update method

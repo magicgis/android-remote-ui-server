@@ -26,7 +26,7 @@ public class SessionNetworkIdMapperTest {
     @Test
     public void testGetInstance() {
         System.out.println("getInstance");
-        SessionNetworkIdMapper result = SessionNetworkIdMapper.getInstance();
+        IdMapper result = IdMapper.getInstance();
         assertNotNull(result);
     }
 
@@ -41,7 +41,7 @@ public class SessionNetworkIdMapperTest {
 
         int networkId1 = 55;
         int networkId2 = 101;
-        SessionNetworkIdMapper mapper = SessionNetworkIdMapper.getInstance();
+        IdMapper mapper = IdMapper.getInstance();
         mapper.assign(sessionId1, networkId1);
         mapper.assign(sessionId2, networkId2);
         int expResult1 = networkId1;
@@ -55,7 +55,7 @@ public class SessionNetworkIdMapperTest {
     @Test(expected = RuntimeException.class)
     public void testGetNetworkIdException() {
         System.out.println("getNetworkId [exception]");
-        SessionNetworkIdMapper mapper = SessionNetworkIdMapper.getInstance();
+        IdMapper mapper = IdMapper.getInstance();
         String sessionId3 = "sessionNonExisting";
         mapper.getNetworkId(sessionId3);
     }
@@ -70,7 +70,7 @@ public class SessionNetworkIdMapperTest {
         String sessionId2 = "session5";
         int networkId1 = 0;
         int networkId2 = 809;
-        SessionNetworkIdMapper mapper = SessionNetworkIdMapper.getInstance();
+        IdMapper mapper = IdMapper.getInstance();
         mapper.assign(sessionId1, networkId1);
         mapper.assign(sessionId2, networkId2);
         int expResult1 = networkId1;
@@ -91,7 +91,7 @@ public class SessionNetworkIdMapperTest {
         String sessionId2 = "session1";
         int networkId1 = 0;
         int networkId2 = 1;
-        SessionNetworkIdMapper instance = SessionNetworkIdMapper.getInstance();
+        IdMapper instance = IdMapper.getInstance();
         instance.assign(sessionId1, networkId1);
         boolean expResult1 = true;
         boolean expResult2 = false;
