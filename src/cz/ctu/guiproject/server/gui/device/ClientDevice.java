@@ -6,7 +6,6 @@ package cz.ctu.guiproject.server.gui.device;
 
 import cz.ctu.guiproject.server.gui.renderer.DefaultRenderer;
 import cz.ctu.guiproject.server.gui.renderer.Renderer;
-import java.awt.image.BufferedImage;
 import java.util.Objects;
 
 /**
@@ -20,7 +19,7 @@ public class ClientDevice implements RendererObserver {
     private int screenWidth;
     private int screenHeight;
     // graphic context of the device
-    private BufferedImage context;
+    private String context;
     private Renderer renderer;
 
     @SuppressWarnings("LeakingThisInConstructor")
@@ -62,8 +61,12 @@ public class ClientDevice implements RendererObserver {
         this.screenHeight = screenHeight;
     }
 
-    public BufferedImage getContext() {
+    public String getContext() {
         return context;
+    }
+    
+    public void setContext(String context) {
+        this.context = context;
     }
 
     @Override
@@ -105,4 +108,6 @@ public class ClientDevice implements RendererObserver {
         // TODO call renderer and request gui with adequate resolution
         context = renderer.getContext(this);
     }
+
+    
 }

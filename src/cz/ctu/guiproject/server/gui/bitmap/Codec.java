@@ -22,12 +22,12 @@ public class Codec {
 
     private static final Logger logger = Logger.getLogger(Codec.class.getName());
 
-    public static String encodeToBase64(BufferedImage image, String type) {
+    public static String encodeToBase64(BufferedImage image, String format) {
         String imageString = null;
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
         try {
-            ImageIO.write(image, type, bos);
+            ImageIO.write(image, format, bos);
             byte[] imageBytes = bos.toByteArray();
 
             BASE64Encoder encoder = new BASE64Encoder();

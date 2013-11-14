@@ -6,7 +6,6 @@ package cz.ctu.guiproject.server.gui.renderer;
 
 import cz.ctu.guiproject.server.gui.device.ClientDevice;
 import cz.ctu.guiproject.server.gui.device.RendererObserver;
-import java.awt.image.BufferedImage;
 
 /**
  *
@@ -20,8 +19,6 @@ public interface Renderer {
     
     public void notifyObservers();
     
-    public BufferedImage getContext(ClientDevice clientDevice);
+    public String getContext(ClientDevice clientDevice);
 
-    public void initMessageReceived();
-    
 }

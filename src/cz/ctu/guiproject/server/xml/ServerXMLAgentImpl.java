@@ -5,8 +5,8 @@
 package cz.ctu.guiproject.server.xml;
 
 import cz.ctu.guiproject.server.gui.manager.DeviceManager;
-import cz.ctu.guiproject.server.helper.IdParser;
 import cz.ctu.guiproject.server.helper.IdMapper;
+import cz.ctu.guiproject.server.helper.IdParser;
 import cz.ctu.guiproject.server.messaging.AndroidMessage;
 import cz.ctu.guiproject.server.messaging.AndroidMessageFactory;
 import cz.ctu.guiproject.server.networking.ServerNetworkAgent;
@@ -45,8 +45,8 @@ public class ServerXMLAgentImpl implements ServerNetworkObserver, ServerXMLAgent
         String sessionId = IdParser.getSessionId(message);
         int networkId = IdParser.getNetworkId(message);
         // test, whether sessionId is already assigned to networkId
-        IdMapper idMapper = clientManager.getIdMapper();
-        if (idMapper.isAssigned(sessionId, networkId)) {
+        IdMapper idMapper =  clientManager.getIdMapper();
+        if (!idMapper.isAssigned(sessionId, networkId)) {
             idMapper.assign(sessionId, networkId);
         }
         // trim incomming xml message, so that is does not contain networkId information

@@ -5,7 +5,6 @@
 package cz.ctu.guiproject.server.helper;
 
 import cz.ctu.guiproject.server.gui.device.ClientDevice;
-import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;

@@ -6,6 +6,8 @@ package cz.ctu.guiproject.server.helper;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -16,6 +18,7 @@ public class IdMapper {
     // singleton instance of NetworkSessionIdMapper
     private static IdMapper instance;
     private Map<String, Integer> sessionNetworkMap;
+    private static final Logger logger = Logger.getLogger(IdMapper.class.getName());
 
     /**
      * Private constructor of NetworkSessionIdMapper singleton
@@ -31,6 +34,7 @@ public class IdMapper {
      */
     public static IdMapper getInstance() {
         if (instance == null) {
+            logger.log(Level.INFO, "private constructor called!");
             instance = new IdMapper();
         }
         return instance;
@@ -46,7 +50,7 @@ public class IdMapper {
         if (sessionNetworkMap.containsKey(sessionId)) {
             return sessionNetworkMap.get(sessionId);
         }
-        throw new RuntimeException("Requested sessionId is not contained in the map!");
+        throw new RuntimeException("Requested sessionId is not contained in the map: " + sessionId + " (" + sessionNetworkMap.size() + ")");
     }
 
     /**
