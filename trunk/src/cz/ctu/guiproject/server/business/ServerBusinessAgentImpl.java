@@ -120,17 +120,20 @@ public class ServerBusinessAgentImpl implements ServerBusinessAgent, ServerXMLOb
         // register new device with the deviceMapper
         deviceManager.getDeviceMapper().addDevice(newDevice);
 
-        // inform renderer about the init event
-        renderer.initMessageReceived();
+        // set the context of new device
+        newDevice.setContext(renderer.getContext(newDevice));
 
         if (newDevice.getContext() == null) {
             throw new RuntimeException("Context of the device should be never null!");
         }
-        
+
         // form response message and send it to client
         ClientInitResponseMessage responseMessage = new ClientInitResponseMessage();
         responseMessage.setSessionId(initMessage.getSessionId());
-        // TODO ... context to Base64, ...
+        // TODO how to choose format
+        responseMessage.setFormat("png");
+        responseMessage.setContext(newDevice.getContext());
+        send(responseMessage);
     }
 
     /**
@@ -142,7 +145,7 @@ public class ServerBusinessAgentImpl implements ServerBusinessAgent, ServerXMLOb
     private void messageReceived(AndroidMessage message) {
         if (message instanceof ClientInitRequestMessage) {
             ClientInitRequestMessage initMessage = (ClientInitRequestMessage) message;
-            System.out.println("Message received: " + initMessage.getScreenWidth() + "x" + initMessage.getScreenHeight() + ", " + initMessage.getName());
+            logger.log(Level.INFO, "Message received: " + initMessage.getScreenWidth() + "x" + initMessage.getScreenHeight() + ", " + initMessage.getName());
             initNewClient(initMessage);
             return;
         }
