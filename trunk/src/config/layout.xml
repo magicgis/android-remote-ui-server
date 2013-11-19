@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout>
+   <background>#ff00ff</background>
+   <components class="java.util.ArrayList">
+      <component class="cz.ctu.guiproject.server.gui.entity.DefaultRadioButton">
+         <label>CustomLabel</label>
+      </component>
+   </components>
+</layout>
