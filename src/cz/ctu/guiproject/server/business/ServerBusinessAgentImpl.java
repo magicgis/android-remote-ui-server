@@ -92,51 +92,6 @@ public class ServerBusinessAgentImpl implements ServerBusinessAgent, ServerXMLOb
     }
 
     /**
-     * Based on the information of the message "header" decides to send the
-     * message to particular client or broadcasts to all clients.
-     *
-     * @param message Message to be sent to a particular client
-     */
-    private void send(AndroidMessage message) {
-        String sessionId = message.getSessionId();
-        switch (sessionId) {
-            case "BROADCAST":
-                serverXMLAgent.broadcast(message);
-                break;
-            default:
-                // map sessionId to networkId
-                int networkId = deviceManager.getIdMapper().getNetworkId(sessionId);
-                serverXMLAgent.send(networkId, message);
-        }
-    }
-
-    private void initNewClient(ClientInitRequestMessage initMessage) {
-        // get required GUI layout based on device resolution
-        ClientDevice newDevice = new ClientDevice();
-        newDevice.setId(initMessage.getSessionId());
-        newDevice.setScreenHeight(initMessage.getScreenHeight());
-        newDevice.setScreenWidth(initMessage.getScreenWidth());
-        newDevice.setName(initMessage.getName());
-        // register new device with the deviceMapper
-        deviceManager.getDeviceMapper().addDevice(newDevice);
-
-        // set the context of new device
-        newDevice.setContext(renderer.getContext(newDevice));
-
-        if (newDevice.getContext() == null) {
-            throw new RuntimeException("Context of the device should be never null!");
-        }
-
-        // form response message and send it to client
-        ClientInitResponseMessage responseMessage = new ClientInitResponseMessage();
-        responseMessage.setSessionId(initMessage.getSessionId());
-        // TODO how to choose format
-        responseMessage.setFormat("png");
-        responseMessage.setContext(newDevice.getContext());
-        send(responseMessage);
-    }
-
-    /**
      * Indicates, that new AndroidMessage has been received and necessary cast
      * operation is performed.
      *
@@ -162,6 +117,58 @@ public class ServerBusinessAgentImpl implements ServerBusinessAgent, ServerXMLOb
         // call business logic, some actions to take(ie. redraw connected devices??)
         currentEvent = event;
         notifyEventObservers();
+    }
+
+    /**
+     * Based on the information of the message "header" decides to send the
+     * message to particular client or broadcasts to all clients.
+     *
+     * @param message Message to be sent to a particular client
+     */
+    private void send(AndroidMessage message) {
+        String sessionId = message.getSessionId();
+        switch (sessionId) {
+            case "BROADCAST":
+                serverXMLAgent.broadcast(message);
+                break;
+            default:
+                // map sessionId to networkId
+                int networkId = deviceManager.getIdMapper().getNetworkId(sessionId);
+                serverXMLAgent.send(networkId, message);
+        }
+    }
+
+    /**
+     * Creates new client device based on information from initMessage, adds
+     * this device to deviceManager, sets its context based on informations from
+     * renderer, then forms responseMessage and sends it back to client
+     *
+     * @param initMessage
+     */
+    private void initNewClient(ClientInitRequestMessage initMessage) {
+        // get required GUI layout based on device resolution
+        ClientDevice newDevice = new ClientDevice();
+        newDevice.setId(initMessage.getSessionId());
+        newDevice.setScreenHeight(initMessage.getScreenHeight());
+        newDevice.setScreenWidth(initMessage.getScreenWidth());
+        newDevice.setName(initMessage.getName());
+        // register new device with the deviceMapper
+        deviceManager.getDeviceMapper().addDevice(newDevice);
+
+        // set the context of new device
+        newDevice.setContext(renderer.getContext(newDevice));
+
+        if (newDevice.getContext() == null) {
+            throw new RuntimeException("Context of the device should be never null!");
+        }
+
+        // form response message and send it to client
+        ClientInitResponseMessage responseMessage = new ClientInitResponseMessage();
+        responseMessage.setSessionId(initMessage.getSessionId());
+        // TODO how to choose format
+        responseMessage.setFormat("png");
+        responseMessage.setContext(newDevice.getContext());
+        send(responseMessage);
     }
 
     @Override
