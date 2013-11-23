@@ -4,29 +4,30 @@
  */
 package cz.ctu.guiproject.server.gui.device;
 
-import cz.ctu.guiproject.server.gui.renderer.DefaultRenderer;
-import cz.ctu.guiproject.server.gui.renderer.Renderer;
+import cz.ctu.guiproject.server.business.ContextObserver;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author tomas.buk
  */
-public class ClientDevice implements RendererObserver {
+public class ClientDevice {
 
+    private final static Logger logger = Logger.getLogger(ClientDevice.class.getName());
     private String id;
     private String name;
-    private int screenWidth;
-    private int screenHeight;
     // graphic context of the device
     private String context;
-    private Renderer renderer;
+    private int screenWidth;
+    private int screenHeight;
+    private List<ContextObserver> observers;
 
-    @SuppressWarnings("LeakingThisInConstructor")
     public ClientDevice() {
-        context = null;
-        renderer = DefaultRenderer.getInstance();
-        renderer.registerObserver(this);
+        observers = new ArrayList<>();
     }
 
     public String getId() {
@@ -45,27 +46,13 @@ public class ClientDevice implements RendererObserver {
         this.name = name;
     }
 
-    public int getScreenWidth() {
-        return screenWidth;
-    }
-
-    public void setScreenWidth(int screenWidth) {
-        this.screenWidth = screenWidth;
-    }
-
-    public int getScreenHeight() {
-        return screenHeight;
-    }
-
-    public void setScreenHeight(int screenHeight) {
-        this.screenHeight = screenHeight;
-    }
-
     public String getContext() {
+        logger.log(Level.INFO, "getContext() called");
         return context;
     }
-    
+
     public void setContext(String context) {
+        logger.log(Level.INFO, "setContext() called");
         this.context = context;
     }
 
@@ -74,8 +61,8 @@ public class ClientDevice implements RendererObserver {
         int hash = 7;
         hash = 67 * hash + Objects.hashCode(this.id);
         hash = 67 * hash + Objects.hashCode(this.name);
-        hash = 67 * hash + this.screenWidth;
-        hash = 67 * hash + this.screenHeight;
+        hash = 67 * hash + screenWidth;
+        hash = 67 * hash + screenHeight;
         return hash;
     }
 
@@ -94,7 +81,7 @@ public class ClientDevice implements RendererObserver {
         if (!Objects.equals(this.name, other.name)) {
             return false;
         }
-        if (this.screenWidth != other.screenWidth) {
+        if (screenWidth != other.screenWidth) {
             return false;
         }
         if (this.screenHeight != other.screenHeight) {
@@ -103,11 +90,41 @@ public class ClientDevice implements RendererObserver {
         return true;
     }
 
-    @Override
-    public void update() {
-        // TODO call renderer and request gui with adequate resolution
-        context = renderer.getContext(this);
+    public int getScreenWidth() {
+        return screenWidth;
     }
 
+    public void setScreenWidth(int screenWidth) {
+        this.screenWidth = screenWidth;
+    }
+
+    public int getScreenHeight() {
+        return screenHeight;
+    }
+
+    public void setScreenHeight(int screenHeight) {
+        this.screenHeight = screenHeight;
+    }
+
+    public void update(String context) {
+        // TODO maybe remove setContext(context), because they perform the same operation 
+        this.context = context;
+        notifyObservers();
+    }
+
+    public void registerObserver(ContextObserver observer) {
+        if (!observers.contains(observer)) {
+            observers.add(observer);
+        }
+    }
     
+    public void removeObserver(ContextObserver observer) {
+        observers.remove(observer);
+    }
+    
+    public void notifyObservers() {
+        for(ContextObserver observer : observers) {
+            observer.update(context, this);
+        }
+    }
 }

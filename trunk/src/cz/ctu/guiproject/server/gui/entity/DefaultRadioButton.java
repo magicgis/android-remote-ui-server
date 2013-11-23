@@ -14,23 +14,23 @@ import org.simpleframework.xml.Root;
 @Root
 public class DefaultRadioButton extends Component {
 
-    @Element(required=false)
+    @Element(required = false)
     private int outerDiameter;
-    @Element(required=false)
+    @Element(required = false)
     private int border;
-    @Element(required=false)
+    @Element(required = false)
     private int innerDiameter;
-    @Element(required=false)
+    @Element
     private String label;
-    @Element(required=false)
+    @Element(required = false)
     private String borderColor;
-    @Element(required=false)
+    @Element(required = false)
     private String outerColor;
-    @Element(required=false)
+    @Element(required = false)
     private String innerColor;
-    @Element(required=false)
+    @Element(required = false)
     private String labelColor;
-    @Element(required=false)
+    @Element(required = false)
     private int labelSize;
 
     public String getBorderColor() {
@@ -103,5 +103,33 @@ public class DefaultRadioButton extends Component {
 
     public void setLabelSize(int labelSize) {
         this.labelSize = labelSize;
+    }
+
+    @Override
+    public int[] getActionArea() {
+        int xMin = getPosX();
+        int yMin = getPosY();
+        int xMax = xMin + outerDiameter;
+        int yMax = yMin + outerDiameter;
+        
+        int[] actionArea = {xMin, yMin, xMax, yMax};
+        return actionArea;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("posX: ").append(getPosX()).append("\n");
+        sb.append("posY: ").append(getPosY()).append("\n");
+        sb.append("borderColor: ").append(borderColor).append("\n");
+        sb.append("outerColor: ").append(outerColor).append("\n");
+        sb.append("innerColor: ").append(innerColor).append("\n");
+        sb.append("outerDiameter: ").append(outerDiameter).append("\n");
+        sb.append("innerDiameter: ").append(innerDiameter).append("\n");
+        sb.append("label: ").append(label).append("\n");
+        sb.append("labelColor: ").append(labelColor).append("\n");
+        sb.append("labelSize: ").append(labelSize).append("\n");
+        return sb.toString();
     }
 }

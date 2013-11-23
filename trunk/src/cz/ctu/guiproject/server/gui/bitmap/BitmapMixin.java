@@ -21,6 +21,14 @@ public class BitmapMixin {
 
     private static final Logger logger = Logger.getLogger(BitmapMixin.class.getName());
 
+    public static boolean intersects(int x, int y, int[] aabb) {
+        
+        if(x < aabb[0] || x > aabb[2]) {
+            return false;
+        }
+        return (y >= aabb[1] && y <= aabb[3]);
+    }
+    
     /**
      * Converts given BufferedImage to byte array
      *

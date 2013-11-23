@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <defaultRadioButton>
-   <posX>20</posX>
-   <posY>20</posY>
-   <outerDiameter>70</outerDiameter>
-   <border>4</border>
-   <innerDiameter>50</innerDiameter>
-   <label>undefined</label>
-   <borderColor>#000000</borderColor>
-   <outerColor>#ffffff</outerColor>
-   <innerColor>#ff0000</innerColor>
-   <labelColor>#ffff00</labelColor>
-   <labelSize>30</labelSize>
+    <posX>0</posX>
+    <posY>0</posY>
+    <outerDiameter>50</outerDiameter>
+    <border>2</border>
+    <innerDiameter>30</innerDiameter>
+    <label>undefined</label>
+    <borderColor>#000000</borderColor>
+    <outerColor>#ffffff</outerColor>
+    <innerColor>#ff0000</innerColor>
+    <labelColor>#ffff00</labelColor>
+    <labelSize>30</labelSize>
 </defaultRadioButton>

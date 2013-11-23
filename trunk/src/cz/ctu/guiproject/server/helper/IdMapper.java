@@ -34,7 +34,6 @@ public class IdMapper {
      */
     public static IdMapper getInstance() {
         if (instance == null) {
-            logger.log(Level.INFO, "private constructor called!");
             instance = new IdMapper();
         }
         return instance;
