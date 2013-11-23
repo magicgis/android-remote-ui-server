@@ -5,20 +5,19 @@
 package cz.ctu.guiproject.server.gui.renderer;
 
 import cz.ctu.guiproject.server.gui.device.ClientDevice;
-import cz.ctu.guiproject.server.gui.device.RendererObserver;
+import cz.ctu.guiproject.server.gui.entity.Layout;
 
 /**
  *
  * @author tomas.buk
  */
 public interface Renderer {
-    
-    public void registerObserver(RendererObserver o);
-    
-    public void removeObserver(RendererObserver o);
-    
-    public void notifyObservers();
-    
-    public String getContext(ClientDevice clientDevice);
 
+    public Layout getLayout();
+
+    public void registerObserver(ClientDevice device);
+
+    public void removeObserver(ClientDevice device);
+
+    public void notifyObservers();
 }

@@ -5,7 +5,10 @@
 package cz.ctu.guiproject.server.business;
 
 import cz.ctu.guiproject.server.events.AndroidEvent;
+import cz.ctu.guiproject.server.gui.bitmap.BitmapMixin;
 import cz.ctu.guiproject.server.gui.device.ClientDevice;
+import cz.ctu.guiproject.server.gui.entity.Component;
+import cz.ctu.guiproject.server.gui.entity.Layout;
 import cz.ctu.guiproject.server.gui.manager.DeviceManager;
 import cz.ctu.guiproject.server.gui.renderer.DefaultRenderer;
 import cz.ctu.guiproject.server.gui.renderer.Renderer;
@@ -24,7 +27,7 @@ import java.util.logging.Logger;
  *
  * @author tomas.buk
  */
-public class ServerBusinessAgentImpl implements ServerBusinessAgent, ServerXMLObserver {
+public class ServerBusinessAgentImpl implements ServerBusinessAgent, ServerXMLObserver, ContextObserver {
 
     // singleton related instance
     private static ServerBusinessAgent instance;
@@ -34,8 +37,8 @@ public class ServerBusinessAgentImpl implements ServerBusinessAgent, ServerXMLOb
     private ArrayList<EventObserver<AndroidEvent>> eventObservers;
     // currently received event from android device
     private AndroidEvent currentEvent;
-    private Renderer renderer;
     private static final Logger logger = Logger.getLogger(ServerBusinessAgentImpl.class.getName());
+    private Renderer renderer;
 
     /**
      * Private constructor, used in ServerBusinessAgentImpl singleton design
@@ -44,8 +47,8 @@ public class ServerBusinessAgentImpl implements ServerBusinessAgent, ServerXMLOb
     private ServerBusinessAgentImpl() {
         serverXMLAgent = new ServerXMLAgentImpl();
         deviceManager = DeviceManager.getInstance();
-        renderer = DefaultRenderer.getInstance();
         eventObservers = new ArrayList<>();
+        renderer = DefaultRenderer.getInstance();
     }
 
     /**
@@ -92,6 +95,27 @@ public class ServerBusinessAgentImpl implements ServerBusinessAgent, ServerXMLOb
     }
 
     /**
+     * Indicates, that new AndroidEvent occured and causes all EventObservers to
+     * be informed
+     *
+     * @param e
+     */
+    private void eventReceived(AndroidEvent event) {
+        // call business logic, some actions to take(ie. redraw connected devices??)
+        Layout layout = renderer.getLayout();
+        int[] coord = event.getPoint();
+        for(Component comp : layout.getComponents()) {
+            if(BitmapMixin.intersects(coord[0], coord[1], comp.getActionArea())) {
+                // update particular layout component
+                break;
+            }
+        }
+        
+        currentEvent = event;
+        notifyEventObservers();
+    }
+
+    /**
      * Indicates, that new AndroidMessage has been received and necessary cast
      * operation is performed.
      *
@@ -108,15 +132,25 @@ public class ServerBusinessAgentImpl implements ServerBusinessAgent, ServerXMLOb
     }
 
     /**
-     * Indicates, that new AndroidEvent occured and causes all EventObservers to
-     * be informed
+     * Creates new client device based on information from initMessage, adds
+     * this device to deviceManager, sets its context based on informations from
+     * renderer, then forms responseMessage and sends it back to client
      *
-     * @param e
+     * @param initMessage
      */
-    private void eventReceived(AndroidEvent event) {
-        // call business logic, some actions to take(ie. redraw connected devices??)
-        currentEvent = event;
-        notifyEventObservers();
+    private void initNewClient(ClientInitRequestMessage initMessage) {
+        // get required GUI layout based on device resolution
+        ClientDevice newDevice = new ClientDevice();
+        newDevice.setId(initMessage.getSessionId());
+        newDevice.setScreenHeight(initMessage.getScreenHeight());
+        newDevice.setScreenWidth(initMessage.getScreenWidth());
+        newDevice.setName(initMessage.getName());
+        // register new device with the deviceMapper
+        deviceManager.getDeviceMapper().addDevice(newDevice);
+        
+        newDevice.registerObserver(this);
+        renderer.registerObserver(newDevice);
+
     }
 
     /**
@@ -138,39 +172,6 @@ public class ServerBusinessAgentImpl implements ServerBusinessAgent, ServerXMLOb
         }
     }
 
-    /**
-     * Creates new client device based on information from initMessage, adds
-     * this device to deviceManager, sets its context based on informations from
-     * renderer, then forms responseMessage and sends it back to client
-     *
-     * @param initMessage
-     */
-    private void initNewClient(ClientInitRequestMessage initMessage) {
-        // get required GUI layout based on device resolution
-        ClientDevice newDevice = new ClientDevice();
-        newDevice.setId(initMessage.getSessionId());
-        newDevice.setScreenHeight(initMessage.getScreenHeight());
-        newDevice.setScreenWidth(initMessage.getScreenWidth());
-        newDevice.setName(initMessage.getName());
-        // register new device with the deviceMapper
-        deviceManager.getDeviceMapper().addDevice(newDevice);
-
-        // set the context of new device
-        newDevice.setContext(renderer.getContext(newDevice));
-
-        if (newDevice.getContext() == null) {
-            throw new RuntimeException("Context of the device should be never null!");
-        }
-
-        // form response message and send it to client
-        ClientInitResponseMessage responseMessage = new ClientInitResponseMessage();
-        responseMessage.setSessionId(initMessage.getSessionId());
-        // TODO how to choose format
-        responseMessage.setFormat("png");
-        responseMessage.setContext(newDevice.getContext());
-        send(responseMessage);
-    }
-
     @Override
     public void registerObserver(EventObserver o) {
         if (!eventObservers.contains(o)) {
@@ -188,5 +189,17 @@ public class ServerBusinessAgentImpl implements ServerBusinessAgent, ServerXMLOb
         for (EventObserver<AndroidEvent> o : eventObservers) {
             o.update(currentEvent);
         }
+    }
+
+    @Override
+    public void update(String context, ClientDevice device) {
+        logger.log(Level.INFO, "ServerBusinessAgentImpl just UPDATED!");
+        // form response message and send it to client
+        ClientInitResponseMessage responseMessage = new ClientInitResponseMessage();
+        responseMessage.setSessionId(device.getId());
+        // TODO how to choose format
+        responseMessage.setFormat("png");
+        responseMessage.setContext(device.getContext());
+        send(responseMessage);
     }
 }

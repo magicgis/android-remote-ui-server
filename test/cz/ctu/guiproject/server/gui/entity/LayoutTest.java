@@ -24,21 +24,6 @@ public class LayoutTest {
     public LayoutTest() {
     }
 
-//    @BeforeClass
-//    public static void setUpClass() {
-//    }
-//    
-//    @AfterClass
-//    public static void tearDownClass() {
-//    }
-//    
-//    @Before
-//    public void setUp() {
-//    }
-//    
-//    @After
-//    public void tearDown() {
-//    }
     /**
      * Test of getBackground method, of class Layout.
      */
@@ -49,8 +34,8 @@ public class LayoutTest {
         instance.setBackground("#ff00ff");
         instance.setComponents(new ArrayList<Component>());
         DefaultRadioButton radio = new DefaultRadioButton();
-//        radio.setPosX(20);
-//        radio.setPosY(20);
+        radio.setPosX(20);
+        radio.setPosY(20);
 //        radio.setBorder(1);
 //        radio.setOuterDiameter(40);
 //        radio.setInnerDiameter(10);
