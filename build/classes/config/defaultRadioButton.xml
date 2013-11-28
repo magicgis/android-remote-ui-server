@@ -11,4 +11,5 @@
     <innerColor>#ff0000</innerColor>
     <labelColor>#ffff00</labelColor>
     <labelSize>30</labelSize>
+    <name>default_radio</name>
 </defaultRadioButton>

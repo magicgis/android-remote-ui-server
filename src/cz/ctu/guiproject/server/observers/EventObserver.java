@@ -4,6 +4,8 @@
  */
 package cz.ctu.guiproject.server.observers;
 
+import cz.ctu.guiproject.server.gui.entity.Component;
+
 /**
  *
  * @author tomas.buk

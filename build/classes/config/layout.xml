@@ -1,16 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <layout>
-    <background>#ff00ff</background>
+    <background>#00ff00</background>
     <components class="java.util.ArrayList">
         <component class="cz.ctu.guiproject.server.gui.entity.DefaultRadioButton">
+            <name>radio_1</name>
             <posX>20</posX>
             <posY>20</posY>
             <label>CustomLabel</label>
+            <selected>true</selected>
         </component>
         <component class="cz.ctu.guiproject.server.gui.entity.DefaultRadioButton">
+            <name>radio_2</name>
+            <posX>20</posX>
+            <posY>200</posY>
+            <label>CustomLabel 2</label>
+            <selected>false</selected>
+        </component>
+        <component class="cz.ctu.guiproject.server.gui.entity.DefaultComboBox">
+            <name>combo_1</name>
             <posX>20</posX>
             <posY>100</posY>
-            <label>CustomLabel 2</label>
+            <values length="3">foo, bar, zero</values>
         </component>
     </components>
 </layout>

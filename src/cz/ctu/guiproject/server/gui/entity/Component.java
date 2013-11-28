@@ -16,6 +16,8 @@ public abstract class Component {
     private int posX;
     @Element
     private int posY;
+    @Element
+    private String name;
 
     /**
      * Returns x position of the component
@@ -51,6 +53,24 @@ public abstract class Component {
      */
     public void setPosY(int posY) {
         this.posY = posY;
+    }
+
+    /**
+     * Returns the name of the component
+     *
+     * @return
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Sets then name of the component
+     *
+     * @param name
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**

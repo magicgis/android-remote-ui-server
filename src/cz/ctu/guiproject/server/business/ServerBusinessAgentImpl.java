@@ -5,10 +5,12 @@
 package cz.ctu.guiproject.server.business;
 
 import cz.ctu.guiproject.server.events.AndroidEvent;
-import cz.ctu.guiproject.server.gui.bitmap.BitmapMixin;
+import cz.ctu.guiproject.server.events.ClickEvent;
+import cz.ctu.guiproject.server.events.LongClickEvent;
+import cz.ctu.guiproject.server.events.TouchEvent;
 import cz.ctu.guiproject.server.gui.device.ClientDevice;
 import cz.ctu.guiproject.server.gui.entity.Component;
-import cz.ctu.guiproject.server.gui.entity.Layout;
+import cz.ctu.guiproject.server.gui.entity.LayoutManager;
 import cz.ctu.guiproject.server.gui.manager.DeviceManager;
 import cz.ctu.guiproject.server.gui.renderer.DefaultRenderer;
 import cz.ctu.guiproject.server.gui.renderer.Renderer;
@@ -39,6 +41,7 @@ public class ServerBusinessAgentImpl implements ServerBusinessAgent, ServerXMLOb
     private AndroidEvent currentEvent;
     private static final Logger logger = Logger.getLogger(ServerBusinessAgentImpl.class.getName());
     private Renderer renderer;
+    private LayoutManager layoutManager;
 
     /**
      * Private constructor, used in ServerBusinessAgentImpl singleton design
@@ -48,6 +51,7 @@ public class ServerBusinessAgentImpl implements ServerBusinessAgent, ServerXMLOb
         serverXMLAgent = new ServerXMLAgentImpl();
         deviceManager = DeviceManager.getInstance();
         eventObservers = new ArrayList<>();
+        layoutManager = LayoutManager.getInstance();
         renderer = DefaultRenderer.getInstance();
     }
 
@@ -84,6 +88,7 @@ public class ServerBusinessAgentImpl implements ServerBusinessAgent, ServerXMLOb
 
     @Override
     public void update(AndroidMessage message) {
+        logger.log(Level.INFO, "message received!!!!!!");
         // decide between regular message and event message
         if (message instanceof AndroidEvent) {
             eventReceived((AndroidEvent) message);
@@ -101,17 +106,29 @@ public class ServerBusinessAgentImpl implements ServerBusinessAgent, ServerXMLOb
      * @param e
      */
     private void eventReceived(AndroidEvent event) {
+        Component source = null;
         // call business logic, some actions to take(ie. redraw connected devices??)
-        Layout layout = renderer.getLayout();
-        int[] coord = event.getPoint();
-        for(Component comp : layout.getComponents()) {
-            if(BitmapMixin.intersects(coord[0], coord[1], comp.getActionArea())) {
-                // update particular layout component
-                break;
-            }
+        if (event instanceof TouchEvent) {
+//            int[] coord = event.getPoint();
+//            layoutManager.updateLayout(coord[0], coord[1]);
+//            source = layoutManager.getComponent();
+            logger.log(Level.INFO, "MASK: " + ((TouchEvent) event).getMask());
+
+        } else if (event instanceof ClickEvent) {
+            int[] coord = event.getPoint();
+            layoutManager.updateLayout(coord[0], coord[1]);
+            source = layoutManager.getComponent();
+//            logger.log(Level.INFO, "No mask, just click!!");
+        } else if (event instanceof LongClickEvent) {
+//            int[] coord = event.getPoint();
+//            layoutManager.updateLayout(coord[coord.length - 2], coord[coord.length - 1]);
         }
-        
+        // updateClient
+        renderer.notifyObservers();
         currentEvent = event;
+        if (source != null) {
+            currentEvent.setSource(source);
+        }
         notifyEventObservers();
     }
 
@@ -147,10 +164,9 @@ public class ServerBusinessAgentImpl implements ServerBusinessAgent, ServerXMLOb
         newDevice.setName(initMessage.getName());
         // register new device with the deviceMapper
         deviceManager.getDeviceMapper().addDevice(newDevice);
-        
+
         newDevice.registerObserver(this);
         renderer.registerObserver(newDevice);
-
     }
 
     /**
