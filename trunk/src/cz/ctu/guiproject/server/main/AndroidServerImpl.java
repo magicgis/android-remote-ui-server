@@ -11,6 +11,8 @@ import cz.ctu.guiproject.server.events.ClickEvent;
 import cz.ctu.guiproject.server.events.DragEvent;
 import cz.ctu.guiproject.server.events.LongClickEvent;
 import cz.ctu.guiproject.server.events.TouchEvent;
+import cz.ctu.guiproject.server.gui.entity.Component;
+import cz.ctu.guiproject.server.gui.entity.DefaultRadioButton;
 import cz.ctu.guiproject.server.observers.ClickObserver;
 import cz.ctu.guiproject.server.observers.DragObserver;
 import cz.ctu.guiproject.server.observers.EventObserver;

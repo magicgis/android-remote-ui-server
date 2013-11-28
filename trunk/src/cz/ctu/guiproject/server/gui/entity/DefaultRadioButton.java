@@ -15,6 +15,8 @@ import org.simpleframework.xml.Root;
 public class DefaultRadioButton extends Component {
 
     @Element(required = false)
+    private boolean selected;
+    @Element(required = false)
     private int outerDiameter;
     @Element(required = false)
     private int border;
@@ -32,6 +34,14 @@ public class DefaultRadioButton extends Component {
     private String labelColor;
     @Element(required = false)
     private int labelSize;
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
 
     public String getBorderColor() {
         return borderColor;
@@ -111,7 +121,7 @@ public class DefaultRadioButton extends Component {
         int yMin = getPosY();
         int xMax = xMin + outerDiameter;
         int yMax = yMin + outerDiameter;
-        
+
         int[] actionArea = {xMin, yMin, xMax, yMax};
         return actionArea;
     }
@@ -130,6 +140,8 @@ public class DefaultRadioButton extends Component {
         sb.append("label: ").append(label).append("\n");
         sb.append("labelColor: ").append(labelColor).append("\n");
         sb.append("labelSize: ").append(labelSize).append("\n");
+        sb.append("selected: ").append(labelSize).append("\n");
+        
         return sb.toString();
     }
 }

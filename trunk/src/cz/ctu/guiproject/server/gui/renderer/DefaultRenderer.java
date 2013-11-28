@@ -6,10 +6,6 @@ package cz.ctu.guiproject.server.gui.renderer;
 
 import cz.ctu.guiproject.server.gui.bitmap.Codec;
 import cz.ctu.guiproject.server.gui.device.ClientDevice;
-import cz.ctu.guiproject.server.gui.entity.Component;
-import cz.ctu.guiproject.server.gui.entity.DefaultRadioButton;
-import cz.ctu.guiproject.server.gui.entity.Layout;
-import cz.ctu.guiproject.server.gui.loader.Loader;
 import cz.ctu.guiproject.server.gui.painter.DefaultPainter;
 import cz.ctu.guiproject.server.gui.painter.Painter;
 import java.util.ArrayList;
@@ -23,7 +19,6 @@ public class DefaultRenderer implements Renderer {
 
     private static DefaultRenderer instance;
     private Painter painter;
-    private Layout layout;
     private List<ClientDevice> observers;
     private String currentContext;
 
@@ -31,8 +26,7 @@ public class DefaultRenderer implements Renderer {
      * Private constructor, that fulfills the needs of singleton design pattern
      */
     private DefaultRenderer() {
-        initLayout();
-        painter = new DefaultPainter(layout);
+        painter = new DefaultPainter();
         observers = new ArrayList<>();
     }
 
@@ -46,30 +40,6 @@ public class DefaultRenderer implements Renderer {
             instance = new DefaultRenderer();
         }
         return instance;
-    }
-
-    @Override
-    public Layout getLayout() {
-        return layout;
-    }
-
-    private void initLayout() {
-        layout = Loader.loadLayout();
-        DefaultRadioButton defaultRadio = Loader.loadDefaultRadioButton();
-        // add default components
-        for (Component comp : layout.getComponents()) {
-            if (comp instanceof DefaultRadioButton) {
-                ((DefaultRadioButton) comp).setBorder(defaultRadio.getBorder());
-                ((DefaultRadioButton) comp).setBorderColor(defaultRadio.getBorderColor());
-                ((DefaultRadioButton) comp).setInnerColor(defaultRadio.getInnerColor());
-                ((DefaultRadioButton) comp).setInnerDiameter(defaultRadio.getInnerDiameter());
-                ((DefaultRadioButton) comp).setLabelColor(defaultRadio.getLabelColor());
-                ((DefaultRadioButton) comp).setLabelSize(defaultRadio.getLabelSize());
-                ((DefaultRadioButton) comp).setOuterColor(defaultRadio.getOuterColor());
-                ((DefaultRadioButton) comp).setOuterDiameter(defaultRadio.getOuterDiameter());
-                continue;
-            }
-        }
     }
 
     @Override
@@ -91,6 +61,8 @@ public class DefaultRenderer implements Renderer {
     @Override
     public void notifyObservers() {
         for (ClientDevice device : observers) {
+            painter.setContext(device.getScreenWidth(), device.getScreenHeight());
+            currentContext = Codec.encodeToBase64(painter.getContext(), "png");
             device.update(currentContext);
         }
     }

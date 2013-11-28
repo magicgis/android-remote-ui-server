@@ -4,6 +4,7 @@
  */
 package cz.ctu.guiproject.server.events;
 
+import cz.ctu.guiproject.server.gui.entity.Component;
 import cz.ctu.guiproject.server.messaging.AndroidMessage;
 import org.simpleframework.xml.Element;
 
@@ -13,6 +14,8 @@ import org.simpleframework.xml.Element;
  */
 public abstract class AndroidEvent<T> extends AndroidMessage<T> {
 
+    @Element(required = false)
+    private Component source;
     // x and y coordinates of particular event
     // TODO always even length, if touch happenes, longer array than size 2 is returned
     @Element
@@ -35,6 +38,23 @@ public abstract class AndroidEvent<T> extends AndroidMessage<T> {
     public void setPoint(int[] point) {
         this.point = point;
     }
-    
+
+    /**
+     * Returns source component of the event
+     *
+     * @return source component of the event
+     */
+    public Component getSource() {
+        return source;
+    }
+
+    /**
+     * Sets the current source component of the event
+     *
+     * @param source component of the event
+     */
+    public void setSource(Component source) {
+        this.source = source;
+    }
     // TODO override equals and hashcode??
 }

@@ -33,17 +33,33 @@ public class LayoutTest {
         Layout instance = new Layout();
         instance.setBackground("#ff00ff");
         instance.setComponents(new ArrayList<Component>());
-        DefaultRadioButton radio = new DefaultRadioButton();
-        radio.setPosX(20);
-        radio.setPosY(20);
-//        radio.setBorder(1);
-//        radio.setOuterDiameter(40);
-//        radio.setInnerDiameter(10);
-//        radio.setLabel("Radio button");
-//        radio.set
-        radio.setLabel("RadioButton");
-        instance.getComponents().add(radio);
+//        DefaultRadioButton radio = new DefaultRadioButton();
+//        radio.setPosX(20);
+//        radio.setPosY(20);
+////        radio.setBorder(1);
+////        radio.setOuterDiameter(40);
+////        radio.setInnerDiameter(10);
+////        radio.setLabel("Radio button");
+////        radio.set
+//        radio.setLabel("RadioButton");
+//        instance.getComponents().add(radio);
 
+        DefaultComboBox combo =  new DefaultComboBox();
+        combo.setPosX(20);
+        combo.setPosY(20);
+        combo.setOuterWidth(100);
+        combo.setOuterHeight(25);
+        combo.setBorder(2);
+        combo.setBorderColor("#ff0000");
+        int[] arrowCoords = {0, 0, 7, 10, 14, 0};
+        combo.setArrowCoords(arrowCoords);
+        combo.setArrowColor("#ffff00");
+        combo.setName("Combo01");
+        
+        String[] values = {"one", "two", "three"};
+        combo.setValues(values);
+        instance.getComponents().add(combo);
+        
         StringWriter sw = new StringWriter();
 
         Serializer serializer = new Persister(
@@ -58,26 +74,26 @@ public class LayoutTest {
         String xml = sw.toString();
         System.out.println(xml);
 
-        // convert back to object
-        Layout unmarshalled = null;
-
-        xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-                + "<layout>\n"
-                + "   <background>#ff00ff</background>\n"
-                + "   <components class=\"java.util.ArrayList\">\n"
-                + "      <component class=\"cz.ctu.guiproject.server.gui.entity.DefaultRadioButton\">\n"
-                + "         <label>RadioButton</label>\n"
-                + "      </component>\n"
-                + "   </components>\n"
-                + "</layout>";
-
-        serializer = new Persister();
-        try {
-            unmarshalled = (Layout) serializer.read(Layout.class, xml);
-        } catch (Exception ex) {
-            logger.log(Level.SEVERE, ex.getMessage());
-        }
-        System.out.println("ok");
+//        // convert back to object
+//        Layout unmarshalled = null;
+//
+//        xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+//                + "<layout>\n"
+//                + "   <background>#ff00ff</background>\n"
+//                + "   <components class=\"java.util.ArrayList\">\n"
+//                + "      <component class=\"cz.ctu.guiproject.server.gui.entity.DefaultRadioButton\">\n"
+//                + "         <label>RadioButton</label>\n"
+//                + "      </component>\n"
+//                + "   </components>\n"
+//                + "</layout>";
+//
+//        serializer = new Persister();
+//        try {
+//            unmarshalled = (Layout) serializer.read(Layout.class, xml);
+//        } catch (Exception ex) {
+//            logger.log(Level.SEVERE, ex.getMessage());
+//        }
+//        System.out.println("ok");
     }
 //    /**
 //     * Test of setBackground method, of class Layout.

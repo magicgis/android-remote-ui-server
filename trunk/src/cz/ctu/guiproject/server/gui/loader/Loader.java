@@ -4,6 +4,7 @@
  */
 package cz.ctu.guiproject.server.gui.loader;
 
+import cz.ctu.guiproject.server.gui.entity.DefaultComboBox;
 import cz.ctu.guiproject.server.gui.entity.Layout;
 import cz.ctu.guiproject.server.gui.entity.DefaultRadioButton;
 import java.io.BufferedReader;
@@ -24,6 +25,7 @@ public class Loader {
     private static final Logger logger = Logger.getLogger(Loader.class.getName());
     private static final String CONFIG_PATH = "src/config/layout.xml";
     private static final String DEFAULT_RADIO_PATH = "src/config/defaultRadioButton.xml";
+    private static final String DEFAULT_COMBO_PATH = "src/config/defaultComboBox.xml";
 
     public static Layout loadLayout() {
 
@@ -55,6 +57,37 @@ public class Loader {
         }
         return layout;
     }
+    
+    public static DefaultComboBox loadDefaultComboBox() {
+        
+        // load from disc
+        String xml = null;
+        try {
+
+            BufferedReader br = new BufferedReader(new FileReader(DEFAULT_COMBO_PATH));
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+            }
+            xml = sb.toString();
+
+        } catch (FileNotFoundException ex) {
+            logger.log(Level.SEVERE, ex.getMessage());
+        } catch (IOException ex) {
+            logger.log(Level.SEVERE, ex.getMessage());
+        }
+
+        // now its time to unmarshall it
+        DefaultComboBox combo = null;
+        Serializer serializer = new Persister();
+        try {
+            combo = serializer.read(DefaultComboBox.class, xml);
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, ex.getMessage());
+        }
+        return combo;
+    }
 
     public static DefaultRadioButton loadDefaultRadioButton() {
 
@@ -77,13 +110,13 @@ public class Loader {
         }
 
         // now its time to unmarshall it
-        DefaultRadioButton layout = null;
+        DefaultRadioButton radio = null;
         Serializer serializer = new Persister();
         try {
-            layout = serializer.read(DefaultRadioButton.class, xml);
+            radio = serializer.read(DefaultRadioButton.class, xml);
         } catch (Exception ex) {
             logger.log(Level.SEVERE, ex.getMessage());
         }
-        return layout;
+        return radio;
     }
 }
