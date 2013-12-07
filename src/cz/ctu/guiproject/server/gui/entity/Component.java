@@ -4,6 +4,7 @@
  */
 package cz.ctu.guiproject.server.gui.entity;
 
+import java.util.Objects;
 import org.simpleframework.xml.Element;
 
 /**
@@ -12,6 +13,8 @@ import org.simpleframework.xml.Element;
  */
 public abstract class Component {
 
+    @Element(required = false)
+    private boolean renderable;
     @Element
     private int posX;
     @Element
@@ -74,10 +77,54 @@ public abstract class Component {
     }
 
     /**
+     * Returns true, if the component is renderable
+     *
+     * @return
+     */
+    public boolean isRenderable() {
+        return renderable;
+    }
+
+    /**
+     * Sets the renderability of the component
+     *
+     * @param renderable
+     */
+    public void setRenderable(boolean renderable) {
+        this.renderable = renderable;
+    }
+
+    /**
      * Returns x_min, y_min and x_max, y_max coordinates, that uniquely identify
      * the action area
      *
      * @return array[x_min, y_min, x_max, y_max]
      */
     public abstract int[] getActionArea();
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 31 * hash + (this.renderable ? 1 : 0);
+        hash = 31 * hash + Objects.hashCode(this.name);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Component other = (Component) obj;
+        if (this.renderable != other.renderable) {
+            return false;
+        }
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        return true;
+    }
 }

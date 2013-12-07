@@ -5,6 +5,8 @@
 package cz.ctu.guiproject.server.gui.device;
 
 import cz.ctu.guiproject.server.business.ContextObserver;
+import cz.ctu.guiproject.server.gui.bitmap.Codec;
+import cz.ctu.guiproject.server.gui.painter.CustomPainter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -24,10 +26,27 @@ public class ClientDevice {
     private String context;
     private int screenWidth;
     private int screenHeight;
+    private int dpi;
+    private ClientLayout clientLayout;
     private List<ContextObserver> observers;
+    private CustomPainter painter;
 
     public ClientDevice() {
         observers = new ArrayList<>();
+        clientLayout = new ClientLayout();
+        painter = CustomPainter.getInstance();
+    }
+
+    public ClientLayout getClientLayout() {
+        return clientLayout;
+    }
+
+    public int getDpi() {
+        return dpi;
+    }
+
+    public void setDpi(int dpi) {
+        this.dpi = dpi;
     }
 
     public String getId() {
@@ -51,9 +70,47 @@ public class ClientDevice {
         return context;
     }
 
-    public void setContext(String context) {
-        logger.log(Level.INFO, "setContext() called");
+    public int getScreenWidth() {
+        return screenWidth;
+    }
+
+    public void setScreenWidth(int screenWidth) {
+        this.screenWidth = screenWidth;
+    }
+
+    public int getScreenHeight() {
+        return screenHeight;
+    }
+
+    public void setScreenHeight(int screenHeight) {
+        this.screenHeight = screenHeight;
+    }
+
+    public void updateContext() {
+        this.context = Codec.encodeToBase64(painter.getContext(this, clientLayout.getLayout()), "png");
+        notifyObservers();
+    }
+
+    public void update(String context) {
+        // TODO maybe remove setContext(context), because they perform the same operation 
         this.context = context;
+        notifyObservers();
+    }
+
+    public void registerObserver(ContextObserver observer) {
+        if (!observers.contains(observer)) {
+            observers.add(observer);
+        }
+    }
+
+    public void removeObserver(ContextObserver observer) {
+        observers.remove(observer);
+    }
+
+    public void notifyObservers() {
+        for (ContextObserver observer : observers) {
+            observer.update(context, this);
+        }
     }
 
     @Override
@@ -90,41 +147,16 @@ public class ClientDevice {
         return true;
     }
 
-    public int getScreenWidth() {
-        return screenWidth;
-    }
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
 
-    public void setScreenWidth(int screenWidth) {
-        this.screenWidth = screenWidth;
-    }
+        sb.append("ClientDevice: [id: ").append(id);
+        sb.append(", name: ").append(name);
+        sb.append(", screenWidth: ").append(screenWidth);
+        sb.append(", screenHeight: ").append(screenHeight);
+        sb.append(", dpi: ").append(dpi).append("]");
 
-    public int getScreenHeight() {
-        return screenHeight;
-    }
-
-    public void setScreenHeight(int screenHeight) {
-        this.screenHeight = screenHeight;
-    }
-
-    public void update(String context) {
-        // TODO maybe remove setContext(context), because they perform the same operation 
-        this.context = context;
-        notifyObservers();
-    }
-
-    public void registerObserver(ContextObserver observer) {
-        if (!observers.contains(observer)) {
-            observers.add(observer);
-        }
-    }
-    
-    public void removeObserver(ContextObserver observer) {
-        observers.remove(observer);
-    }
-    
-    public void notifyObservers() {
-        for(ContextObserver observer : observers) {
-            observer.update(context, this);
-        }
+        return sb.toString();
     }
 }

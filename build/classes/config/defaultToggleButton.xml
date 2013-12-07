@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<defaultToggleButton>
+    <renderable>true</renderable>
+    <posX>0</posX>
+    <posY>0</posY>
+    <name>button01</name>
+    <pressed>false</pressed>
+    <outerWidth>200</outerWidth>
+    <outerHeight>50</outerHeight>
+    <border>2</border>
+    <label>button_1</label>
+    <labelSize>30</labelSize>
+    <borderColor>#000000</borderColor>
+    <innerColor>#ffffff</innerColor>
+    <labelColor>#000000</labelColor>
+    <borderColorPressed>#ff0000</borderColorPressed>
+    <innerColorPressed>#bbbbbb</innerColorPressed>
+    <labelColorPressed>#ff0000</labelColorPressed>
+</defaultToggleButton>

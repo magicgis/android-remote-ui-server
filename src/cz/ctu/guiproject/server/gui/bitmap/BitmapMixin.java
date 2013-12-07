@@ -21,14 +21,25 @@ public class BitmapMixin {
 
     private static final Logger logger = Logger.getLogger(BitmapMixin.class.getName());
 
+    /**
+     * Converts length in mm to number of pixels with regards to dpi
+     *
+     * @param mm
+     * @param dpi
+     * @return
+     */
+    public static int getPixelCount(int mm, int dpi) {
+        return (int) ((dpi * mm) / 25.4);
+    }
+
     public static boolean intersects(int x, int y, int[] aabb) {
-        
-        if(x < aabb[0] || x > aabb[2]) {
+
+        if (x < aabb[0] || x > aabb[2]) {
             return false;
         }
         return (y >= aabb[1] && y <= aabb[3]);
     }
-    
+
     /**
      * Converts given BufferedImage to byte array
      *
