@@ -20,6 +20,8 @@ public class ClientInitRequestMessage extends AndroidMessage<ClientInitRequestMe
     private int screenHeight;
     @Element
     private String name;
+    @Element
+    private int dpi;
 
     /**
      * Default constructor
@@ -49,6 +51,14 @@ public class ClientInitRequestMessage extends AndroidMessage<ClientInitRequestMe
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getDpi() {
+        return dpi;
+    }
+
+    public void setDpi(int dpi) {
+        this.dpi = dpi;
     }
 
     @Override

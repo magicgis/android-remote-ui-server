@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <defaultRadioButton>
+    <renderable>true</renderable>
     <posX>0</posX>
     <posY>0</posY>
     <outerDiameter>50</outerDiameter>

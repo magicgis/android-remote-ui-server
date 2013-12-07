@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<defaultComboBox>
+    <renderable>true</renderable>
+    <posX>20</posX>
+    <posY>20</posY>
+    <name>Combo01</name>
+    <outerWidth>250</outerWidth>
+    <outerHeight>50</outerHeight>
+    <outerColor>#ffffff</outerColor>
+    <border>2</border>
+    <borderColor>#ff0000</borderColor>
+    <arrowCoords length="6">0, 0, 15, 20, 30, 0</arrowCoords>
+    <arrowColor>#ff0000</arrowColor>
+    <values length="3">one, two, three</values>
+    <valueColor>#000000</valueColor>
+    <valueSize>30</valueSize>
+    <selected>false</selected>
+    <downOddColor>#ffffff</downOddColor>
+    <downEvenColor>#ff0000</downEvenColor>
+    <!-- TODO remove!-->
+    <downRowHeight>50</downRowHeight>
+</defaultComboBox>

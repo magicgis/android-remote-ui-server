@@ -4,36 +4,45 @@
  */
 package cz.ctu.guiproject.server.gui.painter;
 
+import cz.ctu.guiproject.server.gui.device.ClientDevice;
 import cz.ctu.guiproject.server.gui.entity.Component;
-import cz.ctu.guiproject.server.gui.entity.DefaultToggleButton;
 import cz.ctu.guiproject.server.gui.entity.DefaultComboBox;
 import cz.ctu.guiproject.server.gui.entity.DefaultRadioButton;
+import cz.ctu.guiproject.server.gui.entity.DefaultToggleButton;
 import cz.ctu.guiproject.server.gui.entity.Layout;
-import cz.ctu.guiproject.server.gui.entity.LayoutManager;
-import cz.ctu.guiproject.server.gui.entity.LayoutObserver;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.util.logging.Logger;
 
 /**
  *
  * @author tomas.buk
  */
-public class DefaultPainter implements Painter, LayoutObserver {
+public class CustomPainter {
 
+    private static CustomPainter instance;
     private Layout layout;
     private BufferedImage context;
     private Graphics2D g2d;
-    private static final Logger logger = Logger.getLogger(DefaultPainter.class.getName());
 
-    @SuppressWarnings("LeakingThisInConstructor")
-    public DefaultPainter() {
-        LayoutManager layoutManager = LayoutManager.getInstance();
-        layoutManager.registerObserver(this);
-        layout = layoutManager.getInitialLayout();
+    private CustomPainter() {
+    }
+
+    public static CustomPainter getInstance() {
+        if (instance == null) {
+            instance = new CustomPainter();
+        }
+        return instance;
+    }
+
+    public BufferedImage getContext(ClientDevice clientDevice, Layout layout) {
+        this.layout = layout;
+        context = new BufferedImage(clientDevice.getScreenWidth(), clientDevice.getScreenHeight(), BufferedImage.TYPE_3BYTE_BGR);
+        g2d = context.createGraphics();
+        paint();
+        return context;
     }
 
     /**
@@ -125,25 +134,6 @@ public class DefaultPainter implements Painter, LayoutObserver {
         g2d.fillPolygon(xCoords, yCoords, 3);
     }
 
-    @Override
-    public BufferedImage getContext() {
-        return context;
-    }
-
-    /**
-     * Receives screen dimensions in pixels
-     *
-     * @param width
-     * @param height
-     * @param dpi
-     */
-    @Override
-    public void setContext(int width, int height) {
-        context = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
-        g2d = context.createGraphics();
-        paint();
-    }
-
     /**
      * Paints current layout with its corresponding components into current
      * context
@@ -156,11 +146,6 @@ public class DefaultPainter implements Painter, LayoutObserver {
             if (comp instanceof DefaultRadioButton) {
                 DefaultRadioButton r = (DefaultRadioButton) comp;
 //                int outerDiameter = BitmapMixin.getPixelCount(r.getOuterDiameter(), dpi);
-//                int innerDiameter = BitmapMixin.getPixelCount(r.getInnerDiameter(), dpi);
-//                int posX = BitmapMixin.getPixelCount(r.getPosX(), dpi);
-//                int posY = BitmapMixin.getPixelCount(r.getPosY(), dpi);
-//                int border = BitmapMixin.getPixelCount(r.getBorder(), dpi);
-//                int labelSize = BitmapMixin.getPixelCount(r.getLabelSize(), dpi);
                 int outerDiameter = r.getOuterDiameter();
                 int innerDiameter = r.getInnerDiameter();
                 int posX = r.getPosX();
@@ -235,7 +220,7 @@ public class DefaultPainter implements Painter, LayoutObserver {
             } else if (comp instanceof DefaultToggleButton) {
                 DefaultToggleButton b = (DefaultToggleButton) comp;
 
-                
+
                 int textY = b.getPosY() + (b.getOuterHeight() / 2) + (b.getLabelSize() / 2) - 5;
 
                 if (((DefaultToggleButton) comp).isPressed()) {
@@ -249,10 +234,5 @@ public class DefaultPainter implements Painter, LayoutObserver {
                 }
             }
         }
-    }
-
-    @Override
-    public void update(Layout layout) {
-        this.layout = layout;
     }
 }

@@ -24,6 +24,22 @@ public class BitmapMixinTest {
     public BitmapMixinTest() {
     }
 
+    @BeforeClass
+    public static void setUpClass() throws Exception {
+    }
+
+    @AfterClass
+    public static void tearDownClass() throws Exception {
+    }
+
+    @Before
+    public void setUp() throws Exception {
+    }
+
+    @After
+    public void tearDown() throws Exception {
+    }
+
 //    @BeforeClass
 //    public static void setUpClass() throws Exception {
 //    }
@@ -39,16 +55,16 @@ public class BitmapMixinTest {
 //    @After
 //    public void tearDown() throws Exception {
 //    }
-    
-    @Test
-    public void testIntersects() {
-        System.out.println("intersects");
-        
-        int[] arr = {2, 3, 8, 5};
-        int x = 2, y = 2;
-        assertEquals(true, BitmapMixin.intersects(x, y, arr));
-        
-    }
+//    
+//    @Test
+//    public void testIntersects() {
+//        System.out.println("intersects");
+//        
+//        int[] arr = {2, 3, 8, 5};
+//        int x = 2, y = 2;
+//        assertEquals(true, BitmapMixin.intersects(x, y, arr));
+//        
+//    }
     
 //    /**
 //     * Test of toByteArray method, of class BitmapMixin.
@@ -84,6 +100,48 @@ public class BitmapMixinTest {
 //        fail("The test case is a prototype.");
 //    }
 
+//    /**
+//     * Test of toBufferedImage method, of class BitmapMixin.
+//     */
+//    @Test
+//    public void testToBufferedImage() {
+//        System.out.println("toBufferedImage");
+//        byte[] buffer = null;
+//        BufferedImage expResult = null;
+//        BufferedImage result = BitmapMixin.toBufferedImage(buffer);
+//        assertEquals(expResult, result);
+//        // TODO review the generated test code and remove the default call to fail.
+//        fail("The test case is a prototype.");
+//    }
+
+    /**
+     * Test of getPixelNo method, of class BitmapMixin.
+     */
+    @Test
+    public void testGetPixelNo() {
+        System.out.println("getPixelNo");
+        int mm = 10;
+        int dpi = 240;
+        int expResult = 94;
+        int result = BitmapMixin.getPixelCount(mm, dpi);
+        assertEquals(expResult, result);
+    }
+
+//    /**
+//     * Test of toByteArray method, of class BitmapMixin.
+//     */
+//    @Test
+//    public void testToByteArray() {
+//        System.out.println("toByteArray");
+//        BufferedImage image = null;
+//        String format = "";
+//        byte[] expResult = null;
+//        byte[] result = BitmapMixin.toByteArray(image, format);
+//        assertArrayEquals(expResult, result);
+//        // TODO review the generated test code and remove the default call to fail.
+//        fail("The test case is a prototype.");
+//    }
+//
 //    /**
 //     * Test of toBufferedImage method, of class BitmapMixin.
 //     */

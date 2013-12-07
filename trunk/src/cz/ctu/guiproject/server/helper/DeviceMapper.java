@@ -41,4 +41,23 @@ public class DeviceMapper {
         map.put(newDevice.getId(), newDevice);
         logger.log(Level.INFO, "New device has been added: " + newDevice.getId());
     }
+
+    /**
+     * Returns ClientDevice based on given unique sessionId
+     *
+     * @param sessionId
+     * @return
+     */
+    public ClientDevice getDevice(String sessionId) {
+        return map.get(sessionId);
+    }
+
+    /**
+     * Returns map of all existing devices
+     *
+     * @return
+     */
+    public Map<String, ClientDevice> getDevices() {
+        return map;
+    }
 }

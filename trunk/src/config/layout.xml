@@ -4,23 +4,29 @@
     <components class="java.util.ArrayList">
         <component class="cz.ctu.guiproject.server.gui.entity.DefaultRadioButton">
             <name>radio_1</name>
-            <posX>20</posX>
-            <posY>20</posY>
+            <posX>10</posX>
+            <posY>10</posY>
             <label>CustomLabel</label>
             <selected>true</selected>
         </component>
         <component class="cz.ctu.guiproject.server.gui.entity.DefaultRadioButton">
             <name>radio_2</name>
-            <posX>20</posX>
-            <posY>200</posY>
+            <posX>10</posX>
+            <posY>100</posY>
             <label>CustomLabel 2</label>
             <selected>false</selected>
         </component>
         <component class="cz.ctu.guiproject.server.gui.entity.DefaultComboBox">
             <name>combo_1</name>
-            <posX>20</posX>
-            <posY>100</posY>
+            <posX>10</posX>
+            <posY>200</posY>
             <values length="3">foo, bar, zero</values>
+        </component>
+        <component class="cz.ctu.guiproject.server.gui.entity.DefaultToggleButton">
+            <name>button_1</name>
+            <posX>10</posX>
+            <posY>300</posY>
+            <label>my button</label>
         </component>
     </components>
 </layout>
