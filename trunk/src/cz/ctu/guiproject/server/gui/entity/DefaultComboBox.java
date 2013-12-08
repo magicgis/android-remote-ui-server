@@ -46,8 +46,8 @@ public class DefaultComboBox extends Component {
     private String downOddColor;
     @Element(required = false)
     private String downEvenColor;
-    @Element(required = false)
-    private int downRowHeight;
+    private int[] actionAreaSelected;
+    private int[] actionAreaDeselected;
 
     public String getSelectedValue() {
         return selectedValue;
@@ -79,14 +79,6 @@ public class DefaultComboBox extends Component {
 
     public void setValueSize(int valueSize) {
         this.valueSize = valueSize;
-    }
-
-    public int getDownRowHeight() {
-        return downRowHeight;
-    }
-
-    public void setDownRowHeight(int downRowHeight) {
-        this.downRowHeight = downRowHeight;
     }
 
     public boolean isSelected() {
@@ -171,24 +163,28 @@ public class DefaultComboBox extends Component {
 
     @Override
     public int[] getActionArea() {
-        int xMin, yMin, xMax, yMax;
 
         if (selected) {
-            // test, whether the event happens on drop-down list at all
-            xMin = getPosX();
-            yMin = getPosY();
-            
-            xMax = xMin + outerWidth;
-            yMax = yMin + ((values.length + 1) * outerHeight);
-            
-        } else {
-            xMin = getPosX();
-            yMin = getPosY();
-            xMax = xMin + outerWidth;
-            yMax = yMin + outerHeight;
-        }
+            if (actionAreaSelected == null) {
+                // test, whether the event happens on drop-down list at all
+                int xMin = getPosX();
+                int yMin = getPosY();
+                int xMax = xMin + outerWidth;
+                int yMax = yMin + ((values.length + 1) * outerHeight);
 
-        int[] actionArea = {xMin, yMin, xMax, yMax};
-        return actionArea;
+                actionAreaSelected = new int[]{xMin, yMin, xMax, yMax};
+            }
+            return actionAreaSelected;
+        } else {
+            if(actionAreaDeselected == null) {
+                int xMin = getPosX();
+                int yMin = getPosY();
+                int xMax = xMin + outerWidth;
+                int yMax = yMin + outerHeight;
+                
+                actionAreaDeselected = new int[]{xMin, yMin, xMax, yMax};
+            }
+            return actionAreaDeselected;
+        }
     }
 }

@@ -3,13 +3,13 @@
     <renderable>true</renderable>
     <posX>0</posX>
     <posY>0</posY>
-    <name>button01</name>
+    <name>toggleButton01</name>
     <pressed>false</pressed>
-    <outerWidth>200</outerWidth>
-    <outerHeight>50</outerHeight>
-    <border>2</border>
-    <label>button_1</label>
-    <labelSize>30</labelSize>
+    <outerWidth>30</outerWidth>
+    <outerHeight>6</outerHeight>
+    <border>0</border>
+    <label>toggleButton</label>
+    <labelSize>4</labelSize>
     <borderColor>#000000</borderColor>
     <innerColor>#ffffff</innerColor>
     <labelColor>#000000</labelColor>

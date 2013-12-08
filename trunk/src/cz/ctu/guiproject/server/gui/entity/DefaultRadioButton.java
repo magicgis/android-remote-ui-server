@@ -34,6 +34,7 @@ public class DefaultRadioButton extends Component {
     private String labelColor;
     @Element(required = false)
     private int labelSize;
+    private int[] actionArea;
 
     public boolean isSelected() {
         return selected;
@@ -117,12 +118,16 @@ public class DefaultRadioButton extends Component {
 
     @Override
     public int[] getActionArea() {
-        int xMin = getPosX();
-        int yMin = getPosY();
-        int xMax = xMin + outerDiameter;
-        int yMax = yMin + outerDiameter;
 
-        int[] actionArea = {xMin, yMin, xMax, yMax};
+        if (actionArea == null) {
+            int xMin = getPosX();
+            int yMin = getPosY();
+            int xMax = xMin + outerDiameter;
+            int yMax = yMin + outerDiameter;
+
+            actionArea = new int[]{xMin, yMin, xMax, yMax};
+        }
+
         return actionArea;
     }
 
@@ -141,7 +146,7 @@ public class DefaultRadioButton extends Component {
         sb.append("labelColor: ").append(labelColor).append("\n");
         sb.append("labelSize: ").append(labelSize).append("\n");
         sb.append("selected: ").append(labelSize).append("\n");
-        
+
         return sb.toString();
     }
 }

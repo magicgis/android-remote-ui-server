@@ -32,6 +32,21 @@ public class BitmapMixin {
         return (int) ((dpi * mm) / 25.4);
     }
 
+    /**
+     * Converts length of each array element in mm to number of pixels with
+     * regards to dpi
+     *
+     * @param arr
+     * @param dpi
+     * @return
+     */
+    public static int[] getPixelArrCount(int[] arr, int dpi) {
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = getPixelCount(arr[i], dpi);
+        }
+        return arr;
+    }
+
     public static boolean intersects(int x, int y, int[] aabb) {
 
         if (x < aabb[0] || x > aabb[2]) {

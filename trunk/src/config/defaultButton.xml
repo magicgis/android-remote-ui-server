@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<defaultButton>
+    <renderable>true</renderable>
+    <posX>0</posX>
+    <posY>0</posY>
+    <name>button01</name>
+    <pressed>false</pressed>
+    <outerWidth>30</outerWidth>
+    <outerHeight>6</outerHeight>
+    <border>0</border>
+    <outerColor>#eeeeee</outerColor>
+    <borderColor>#000000</borderColor> 
+    <label>button 1</label>
+    <labelSize>4</labelSize>
+    <labelColor>#0000ff</labelColor>
+    <outerColorPressed>#999999</outerColorPressed>
+    <borderColorPressed>#ff0000</borderColorPressed>
+    <labelColorPressed>#00ff00</labelColorPressed>
+</defaultButton>

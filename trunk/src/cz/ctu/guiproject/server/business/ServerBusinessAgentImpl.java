@@ -6,11 +6,8 @@ package cz.ctu.guiproject.server.business;
 
 import cz.ctu.guiproject.server.events.AndroidEvent;
 import cz.ctu.guiproject.server.gui.device.ClientDevice;
-import cz.ctu.guiproject.server.gui.entity.LayoutManager;
 import cz.ctu.guiproject.server.gui.manager.DeviceManager;
 import cz.ctu.guiproject.server.gui.manager.EventManager;
-import cz.ctu.guiproject.server.gui.renderer.DefaultRenderer;
-import cz.ctu.guiproject.server.gui.renderer.Renderer;
 import cz.ctu.guiproject.server.messaging.AndroidMessage;
 import cz.ctu.guiproject.server.messaging.ClientInitRequestMessage;
 import cz.ctu.guiproject.server.messaging.ClientInitResponseMessage;
@@ -37,8 +34,6 @@ public class ServerBusinessAgentImpl implements ServerBusinessAgent, ServerXMLOb
     // currently received event from android device
     private AndroidEvent currentEvent;
     private static final Logger logger = Logger.getLogger(ServerBusinessAgentImpl.class.getName());
-    private Renderer renderer;
-    private LayoutManager layoutManager;
     private EventManager eventManager;
 
     /**
@@ -49,8 +44,6 @@ public class ServerBusinessAgentImpl implements ServerBusinessAgent, ServerXMLOb
         serverXMLAgent = new ServerXMLAgentImpl();
         deviceManager = DeviceManager.getInstance();
         eventObservers = new ArrayList<>();
-        layoutManager = LayoutManager.getInstance();
-        renderer = DefaultRenderer.getInstance();
         eventManager = EventManager.getInstance();
     }
 
@@ -100,38 +93,15 @@ public class ServerBusinessAgentImpl implements ServerBusinessAgent, ServerXMLOb
 
     /**
      * Indicates, that new AndroidEvent occured and causes all EventObservers to
-     * be informed
+     * be informed. Also, EventManager is called to update all connected client
+     * devices.
      *
      * @param e
      */
     private void eventReceived(AndroidEvent event) {
-        
+
         eventManager.eventOccured(event);
-        
-//        Component source = null;
-//        // call business logic, some actions to take(ie. redraw connected devices??)
-//        if (event instanceof TouchEvent) {
-////            int[] coord = event.getPoint();
-////            layoutManager.updateLayout(coord[0], coord[1]);
-////            source = layoutManager.getComponent();
-//            logger.log(Level.INFO, "MASK: " + ((TouchEvent) event).getMask());
-//
-//        } else if (event instanceof ClickEvent) {
-//            int[] coord = event.getPoint();
-//            layoutManager.updateLayout(coord[0], coord[1]);
-//            source = layoutManager.getComponent();
-////            logger.log(Level.INFO, "No mask, just click!!");
-//        } else if (event instanceof LongClickEvent) {
-////            int[] coord = event.getPoint();
-////            layoutManager.updateLayout(coord[coord.length - 2], coord[coord.length - 1]);
-//        }
-//
         currentEvent = event;
-//        if (source != null) {
-//            // update client only when ClickEvent occurs
-//            renderer.notifyObservers();
-//            currentEvent.setSource(source);
-//        }
         notifyEventObservers();
     }
 
@@ -160,12 +130,12 @@ public class ServerBusinessAgentImpl implements ServerBusinessAgent, ServerXMLOb
      */
     private void initNewClient(ClientInitRequestMessage initMessage) {
         // get required GUI layout based on device resolution
-        ClientDevice newDevice = new ClientDevice();
-        newDevice.setId(initMessage.getSessionId());
-        newDevice.setScreenHeight(initMessage.getScreenHeight());
-        newDevice.setScreenWidth(initMessage.getScreenWidth());
-        newDevice.setName(initMessage.getName());
-        newDevice.setDpi(initMessage.getDpi());
+        ClientDevice newDevice = new ClientDevice(initMessage.getSessionId(),
+                initMessage.getName(),
+                initMessage.getScreenWidth(),
+                initMessage.getScreenHeight(),
+                initMessage.getDpi());
+
         // register new device with the deviceMapper
         deviceManager.getDeviceMapper().addDevice(newDevice);
 
