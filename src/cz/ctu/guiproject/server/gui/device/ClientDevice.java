@@ -6,7 +6,8 @@ package cz.ctu.guiproject.server.gui.device;
 
 import cz.ctu.guiproject.server.business.ContextObserver;
 import cz.ctu.guiproject.server.gui.bitmap.Codec;
-import cz.ctu.guiproject.server.gui.painter.CustomPainter;
+import cz.ctu.guiproject.server.gui.painter.DefaultPainter;
+import cz.ctu.guiproject.server.gui.painter.Painter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -29,12 +30,17 @@ public class ClientDevice {
     private int dpi;
     private ClientLayout clientLayout;
     private List<ContextObserver> observers;
-    private CustomPainter painter;
-
-    public ClientDevice() {
+    private Painter painter;
+    
+    public ClientDevice(String id, String name, int screenWidth, int screenHeight, int dpi) {
+        this.id = id;
+        this.name = name;
+        this.screenWidth = screenWidth;
+        this.screenHeight = screenHeight;
+        this.dpi = dpi;
         observers = new ArrayList<>();
-        clientLayout = new ClientLayout();
-        painter = CustomPainter.getInstance();
+        clientLayout = new ClientLayout(dpi);
+        painter = DefaultPainter.getInstance();
     }
 
     public ClientLayout getClientLayout() {

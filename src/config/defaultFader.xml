@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<defaultFader>
+    <renderable>true</renderable>
+    <posX>0</posX>
+    <posY>0</posY>
+    <name>fader_01</name>
+    <outerWidth>40</outerWidth>
+    <outerHeight>6</outerHeight>
+    <border>0</border>
+    <outerColor>#ff0000</outerColor>
+    <borderColor>#000000</borderColor>
+    <stopperWidth>4</stopperWidth>
+    <stopperHeight>6</stopperHeight>
+    <stopperBorder>0</stopperBorder>
+    <stopperColor>#00ff00</stopperColor>
+    <stopperBorderColor>#ffffff</stopperBorderColor>
+    <caretWidth>6</caretWidth>
+    <caretHeight>6</caretHeight>
+    <caretBorder>0</caretBorder>
+    <caretColor>#0000ff</caretColor>
+    <caretBorderColor>#ffffff</caretBorderColor>
+    <caretPosition>0</caretPosition>
+    <verticalOrientation>false</verticalOrientation>
+</defaultFader>

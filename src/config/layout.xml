@@ -4,29 +4,44 @@
     <components class="java.util.ArrayList">
         <component class="cz.ctu.guiproject.server.gui.entity.DefaultRadioButton">
             <name>radio_1</name>
-            <posX>10</posX>
-            <posY>10</posY>
+            <posX>2</posX>
+            <posY>2</posY>
             <label>CustomLabel</label>
             <selected>true</selected>
         </component>
         <component class="cz.ctu.guiproject.server.gui.entity.DefaultRadioButton">
             <name>radio_2</name>
-            <posX>10</posX>
-            <posY>100</posY>
+            <posX>2</posX>
+            <posY>8</posY>
             <label>CustomLabel 2</label>
             <selected>false</selected>
         </component>
         <component class="cz.ctu.guiproject.server.gui.entity.DefaultComboBox">
             <name>combo_1</name>
-            <posX>10</posX>
-            <posY>200</posY>
+            <posX>2</posX>
+            <posY>14</posY>
             <values length="3">foo, bar, zero</values>
         </component>
         <component class="cz.ctu.guiproject.server.gui.entity.DefaultToggleButton">
+            <name>toggle_1</name>
+            <posX>2</posX>
+            <posY>22</posY>
+            <label>toggle button</label>
+            <pressed>false</pressed>
+        </component>
+        <component class="cz.ctu.guiproject.server.gui.entity.DefaultButton">
             <name>button_1</name>
-            <posX>10</posX>
-            <posY>300</posY>
+            <posX>2</posX>
+            <posY>30</posY>
             <label>my button</label>
+            <pressed>false</pressed>
+        </component>
+        <component class="cz.ctu.guiproject.server.gui.entity.DefaultFader">
+            <name>fader_0</name>
+            <posX>2</posX>
+            <posY>38</posY>
+            <caretPosition>100</caretPosition>
+            <verticalOrientation>false</verticalOrientation>
         </component>
     </components>
 </layout>

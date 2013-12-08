@@ -5,15 +5,18 @@
 package cz.ctu.guiproject.server.gui.entity;
 
 import org.simpleframework.xml.Element;
+import org.simpleframework.xml.Root;
 
 /**
  *
  * @author tomas.buk
  */
-public class DefaultToggleButton extends Component {
+@Root
+public class DefaultButton extends Component {
 
     @Element(required = false)
     private boolean pressed;
+    // outer look definition
     @Element(required = false)
     private int outerWidth;
     @Element(required = false)
@@ -21,39 +24,32 @@ public class DefaultToggleButton extends Component {
     @Element(required = false)
     private int border;
     @Element(required = false)
+    private String outerColor;
+    @Element(required = false)
+    private String borderColor;
+    // label definition
+    @Element(required = false)
     private String label;
     @Element(required = false)
     private int labelSize;
     @Element(required = false)
-    private String borderColor;
-    @Element(required = false)
-    private String innerColor;
-    @Element(required = false)
     private String labelColor;
-    ////////////////////////////////////
+    // pressed outer look definition
+    @Element(required = false)
+    private String outerColorPressed;
     @Element(required = false)
     private String borderColorPressed;
-    @Element(required = false)
-    private String innerColorPressed;
+    // pressed label definition
     @Element(required = false)
     private String labelColorPressed;
-    ////////////////////////////////////
     private int[] actionArea;
-
-    public int getLabelSize() {
-        return labelSize;
-    }
-
-    public void setLabelSize(int labelSize) {
-        this.labelSize = labelSize;
-    }
 
     public boolean isPressed() {
         return pressed;
     }
 
-    public void setPressed(boolean pressed) {
-        this.pressed = pressed;
+    public void setPressed(boolean selected) {
+        this.pressed = selected;
     }
 
     public int getOuterWidth() {
@@ -80,12 +76,12 @@ public class DefaultToggleButton extends Component {
         this.border = border;
     }
 
-    public String getLabel() {
-        return label;
+    public String getOuterColor() {
+        return outerColor;
     }
 
-    public void setLabel(String label) {
-        this.label = label;
+    public void setOuterColor(String outerColor) {
+        this.outerColor = outerColor;
     }
 
     public String getBorderColor() {
@@ -96,12 +92,20 @@ public class DefaultToggleButton extends Component {
         this.borderColor = borderColor;
     }
 
-    public String getInnerColor() {
-        return innerColor;
+    public String getLabel() {
+        return label;
     }
 
-    public void setInnerColor(String innerColor) {
-        this.innerColor = innerColor;
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public int getLabelSize() {
+        return labelSize;
+    }
+
+    public void setLabelSize(int labelSize) {
+        this.labelSize = labelSize;
     }
 
     public String getLabelColor() {
@@ -112,20 +116,20 @@ public class DefaultToggleButton extends Component {
         this.labelColor = labelColor;
     }
 
+    public String getOuterColorPressed() {
+        return outerColorPressed;
+    }
+
+    public void setOuterColorPressed(String outerColorPressed) {
+        this.outerColorPressed = outerColorPressed;
+    }
+
     public String getBorderColorPressed() {
         return borderColorPressed;
     }
 
     public void setBorderColorPressed(String borderColorPressed) {
         this.borderColorPressed = borderColorPressed;
-    }
-
-    public String getInnerColorPressed() {
-        return innerColorPressed;
-    }
-
-    public void setInnerColorPressed(String innerColorPressed) {
-        this.innerColorPressed = innerColorPressed;
     }
 
     public String getLabelColorPressed() {
@@ -138,6 +142,7 @@ public class DefaultToggleButton extends Component {
 
     @Override
     public int[] getActionArea() {
+
         if (actionArea == null) {
             int xMin = getPosX();
             int yMin = getPosY();

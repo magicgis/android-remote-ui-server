@@ -3,14 +3,14 @@
     <renderable>true</renderable>
     <posX>0</posX>
     <posY>0</posY>
-    <outerDiameter>50</outerDiameter>
-    <border>2</border>
-    <innerDiameter>30</innerDiameter>
+    <outerDiameter>5</outerDiameter>
+    <border>0</border>
+    <innerDiameter>2</innerDiameter>
     <label>undefined</label>
     <borderColor>#000000</borderColor>
     <outerColor>#ffffff</outerColor>
     <innerColor>#ff0000</innerColor>
     <labelColor>#ffff00</labelColor>
-    <labelSize>30</labelSize>
+    <labelSize>4</labelSize>
     <name>default_radio</name>
 </defaultRadioButton>
