@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<defaultRadioGroup>
+   <renderable>false</renderable>
+   <posX>0</posX>
+   <posY>0</posY>
+   <name>group_01</name>
+   <radios class="java.util.ArrayList"/>
+</defaultRadioGroup>

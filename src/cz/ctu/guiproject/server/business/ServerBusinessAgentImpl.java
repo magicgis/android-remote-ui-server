@@ -140,7 +140,8 @@ public class ServerBusinessAgentImpl implements ServerBusinessAgent, ServerXMLOb
         deviceManager.getDeviceMapper().addDevice(newDevice);
 
         newDevice.registerObserver(this);
-        newDevice.updateContext();
+        // dodelat metodu pro ziskani cele stranky, ne jen vyrezu
+        newDevice.updateContext(null);
 //        renderer.registerObserver(newDevice);
     }
 
@@ -184,13 +185,25 @@ public class ServerBusinessAgentImpl implements ServerBusinessAgent, ServerXMLOb
 
     @Override
     public void update(String context, ClientDevice device) {
-        logger.log(Level.INFO, "ServerBusinessAgentImpl just UPDATED!");
+        logger.log(Level.INFO, "ServerBusinessAgentImpl just INITIALIZED!");
         // form response message and send it to client
         ClientInitResponseMessage responseMessage = new ClientInitResponseMessage();
         responseMessage.setSessionId(device.getId());
         // TODO how to choose format
         responseMessage.setFormat("png");
         responseMessage.setContext(device.getContext());
+        send(responseMessage);
+    }
+    
+    @Override
+    public void update(String context, ClientDevice device, int[] updateArea) {
+        logger.log(Level.INFO, "ServerBusinessAgentImpl just UPDATED!");
+        ClientInitResponseMessage responseMessage = new ClientInitResponseMessage();
+        responseMessage.setSessionId(device.getId());
+        
+        responseMessage.setFormat("png");
+        responseMessage.setContext(device.getContext());
+        responseMessage.setUpdateArea(updateArea);
         send(responseMessage);
     }
 }

@@ -9,7 +9,9 @@ import cz.ctu.guiproject.server.events.DragEvent;
 import cz.ctu.guiproject.server.events.LongClickEvent;
 import cz.ctu.guiproject.server.events.TouchEvent;
 import cz.ctu.guiproject.server.gui.entity.Component;
+import cz.ctu.guiproject.server.gui.entity.DefaultButton;
 import cz.ctu.guiproject.server.gui.entity.DefaultRadioButton;
+import cz.ctu.guiproject.server.gui.entity.DefaultRadioGroup;
 import cz.ctu.guiproject.server.main.AndroidServer;
 import cz.ctu.guiproject.server.main.AndroidServerImpl;
 import cz.ctu.guiproject.server.observers.ClickObserver;
@@ -50,6 +52,12 @@ public class Main implements TouchObserver, ClickObserver, DragObserver, LongCli
             if(source instanceof DefaultRadioButton) {
                 DefaultRadioButton radio = (DefaultRadioButton) source;
                 logger.log(Level.INFO, "Source component: " + source.getClass().getName() + ": " + radio.isSelected());
+            } else if(source instanceof DefaultButton) {
+                DefaultButton button = (DefaultButton) source;
+                logger.log(Level.INFO, "Source component: " + source.getClass().getName() + ": " + button.getLabel());
+            } else if(source instanceof DefaultRadioGroup) {
+                DefaultRadioGroup group = (DefaultRadioGroup) source;
+                logger.log(Level.INFO, "Source component: " + source.getClass().getName() + ": " + group.getSelectedRadio().getLabel());
             }
         }
         logger.log(Level.INFO, "ClickEvent occured: " + event.getSessionId());

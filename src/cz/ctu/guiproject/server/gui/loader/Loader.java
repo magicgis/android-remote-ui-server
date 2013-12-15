@@ -10,6 +10,7 @@ import cz.ctu.guiproject.server.gui.entity.DefaultComboBox;
 import cz.ctu.guiproject.server.gui.entity.DefaultFader;
 import cz.ctu.guiproject.server.gui.entity.Layout;
 import cz.ctu.guiproject.server.gui.entity.DefaultRadioButton;
+import cz.ctu.guiproject.server.gui.entity.DefaultRadioGroup;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -32,6 +33,7 @@ public class Loader {
     private static final String DEFAULT_TOGGLE_PATH = "src/config/defaultToggleButton.xml";
     private static final String DEFAULT_BUTTON_PATH = "src/config/defaultButton.xml";
     private static final String DEFAULT_FADER_PATH = "src/config/defaultFader.xml";
+    private static final String DEFAULT_RADIO_GROUP_PATH = "src/config/defaultRadioGroup.xml";
 
     public static Layout loadLayout() {
 
@@ -214,5 +216,35 @@ public class Loader {
             logger.log(Level.SEVERE, ex.getMessage());
         }
         return fader;
+    }
+    
+    public static DefaultRadioGroup loadDefaultRadioGroup() {
+        // load from disc
+        String xml = null;
+        try {
+
+            BufferedReader br = new BufferedReader(new FileReader(DEFAULT_RADIO_GROUP_PATH));
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+            }
+            xml = sb.toString();
+
+        } catch (FileNotFoundException ex) {
+            logger.log(Level.SEVERE, ex.getMessage());
+        } catch (IOException ex) {
+            logger.log(Level.SEVERE, ex.getMessage());
+        }
+
+        // now its time to unmarshall it
+        DefaultRadioGroup radioGroup = null;
+        Serializer serializer = new Persister();
+        try {
+            radioGroup = serializer.read(DefaultRadioGroup.class, xml);
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, ex.getMessage());
+        }
+        return radioGroup;
     }
 }

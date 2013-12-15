@@ -89,5 +89,5 @@ public interface AndroidServer {
     /**
      * Notify all registered observers, that the ClickEvent Occured
      */
-    public void notifyClickObserver();
+    public void notifyClickObservers();
 }

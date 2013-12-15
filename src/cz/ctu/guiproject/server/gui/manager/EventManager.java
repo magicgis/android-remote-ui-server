@@ -15,7 +15,9 @@ import cz.ctu.guiproject.server.gui.entity.DefaultButton;
 import cz.ctu.guiproject.server.gui.entity.DefaultComboBox;
 import cz.ctu.guiproject.server.gui.entity.DefaultFader;
 import cz.ctu.guiproject.server.gui.entity.DefaultRadioButton;
+import cz.ctu.guiproject.server.gui.entity.DefaultRadioGroup;
 import cz.ctu.guiproject.server.gui.entity.DefaultToggleButton;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,12 +46,18 @@ public class EventManager {
 
     public void eventOccured(AndroidEvent event) {
         int[] userPoint = event.getPoint();
+        // get device, that caused an event
         ClientDevice device = deviceManager.getDeviceMapper().getDevice(event.getSessionId());
+        // get intersected component on particular device
         Component comp = device.getClientLayout().getIComponent(userPoint[0], userPoint[1]);
 
         if (comp == null) {
+            logger.log(Level.INFO, "No component intersected.");
             return;
         }
+
+        event.setSource(comp);
+
         logger.log(Level.INFO, comp.getName() + " caused an event.");
 
         // iterate through all ClientDevices
@@ -62,7 +70,7 @@ public class EventManager {
                         DefaultButton button = (DefaultButton) comp;
                         if (!button.isPressed()) {
                             button.setPressed(true);
-                            clientDevice.updateContext();
+                            clientDevice.updateContext(button);
                         }
                     }
                 } else if (comp instanceof DefaultFader) {
@@ -77,7 +85,7 @@ public class EventManager {
                     DefaultRadioButton defaultRadio = (DefaultRadioButton) comp;
                     defaultRadio.setSelected(defaultRadio.isSelected() ? false : true);
 //                    clientDevice.getClientLayout().updateLayout(defaultRadio);
-                    clientDevice.updateContext();
+                    clientDevice.updateContext(defaultRadio);
 
                 } else if (comp instanceof DefaultComboBox) {
 
@@ -106,19 +114,19 @@ public class EventManager {
                     }
 
 //                    clientDevice.getClientLayout().updateLayout(defaultCombo);
-                    clientDevice.updateContext();
+                    clientDevice.updateContext(defaultCombo);
 
                 } else if (comp instanceof DefaultToggleButton) {
 
                     DefaultToggleButton defaultToggle = (DefaultToggleButton) comp;
                     defaultToggle.setPressed(defaultToggle.isPressed() ? false : true);
 //                    clientDevice.getClientLayout().updateLayout(defaultToggle);
-                    clientDevice.updateContext();
+                    clientDevice.updateContext(defaultToggle);
 
                 } else if (comp instanceof DefaultButton) {
                     DefaultButton button = (DefaultButton) comp;
                     button.setPressed(button.isPressed() ? false : true);
-                    clientDevice.updateContext();
+                    clientDevice.updateContext(button);
                 } else if (comp instanceof DefaultFader) {
                     int[] endPos = event.getPoint();
                     // difference in x axis
@@ -132,8 +140,22 @@ public class EventManager {
                     res = Math.max(0, res);
                     res = Math.min(100, res);
                     d.setCaretPosition(res);
-                    System.out.println(res);
-                    clientDevice.updateContext();
+                    clientDevice.updateContext(d);
+                } else if (comp instanceof DefaultRadioGroup) {
+                    DefaultRadioGroup g = (DefaultRadioGroup) comp;
+                    // identify clicked radio button
+                    for (DefaultRadioButton r : g.getRadios()) {
+                        int[] actionArea = r.getActionArea();
+                        if (BitmapMixin.intersects(userPoint[0], userPoint[1], actionArea)) {
+                            // decide, which component was intersected and adequately update component
+                            r.setSelected(true);
+                            g.setSelectedRadio(r);
+                        } else {
+                            r.setSelected(false);
+                        }
+                    }
+
+                    clientDevice.updateContext(g);
                 }
             } else if (event instanceof LongClickEvent) {
             }

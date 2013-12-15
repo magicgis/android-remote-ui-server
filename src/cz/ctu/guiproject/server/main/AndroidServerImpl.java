@@ -72,7 +72,7 @@ public class AndroidServerImpl implements AndroidServer, EventObserver<AndroidEv
      */
     private void clickEventOccured(ClickEvent currentClickEvent) {
         this.currentClickEvent = currentClickEvent;
-        notifyClickObserver();
+        notifyClickObservers();
     }
 
     /**
@@ -129,7 +129,7 @@ public class AndroidServerImpl implements AndroidServer, EventObserver<AndroidEv
     }
 
     @Override
-    public void notifyClickObserver() {
+    public void notifyClickObservers() {
         for (ClickObserver o : clickObservers) {
             o.update(currentClickEvent);
         }

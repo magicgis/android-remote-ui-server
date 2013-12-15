@@ -10,6 +10,7 @@ import cz.ctu.guiproject.server.gui.entity.DefaultButton;
 import cz.ctu.guiproject.server.gui.entity.DefaultComboBox;
 import cz.ctu.guiproject.server.gui.entity.DefaultFader;
 import cz.ctu.guiproject.server.gui.entity.DefaultRadioButton;
+import cz.ctu.guiproject.server.gui.entity.DefaultRadioGroup;
 import cz.ctu.guiproject.server.gui.entity.DefaultToggleButton;
 import cz.ctu.guiproject.server.gui.entity.Layout;
 import cz.ctu.guiproject.server.gui.loader.Loader;
@@ -51,6 +52,7 @@ public class ClientLayout {
         DefaultToggleButton defaultToggleButton = Loader.loadDefaultToggleButton();
         DefaultButton defaultButton = Loader.loadDefaultButton();
         DefaultFader defaultFader = Loader.loadDefaultFader();
+        DefaultRadioGroup defaultRadioGroup = Loader.loadDefaultRadioGroup();
 
         // add default components
         for (Component comp : layout.getComponents()) {
@@ -60,16 +62,18 @@ public class ClientLayout {
 
             if (comp instanceof DefaultRadioButton) {
 
-                ((DefaultRadioButton) comp).setRenderable(defaultRadio.isRenderable());
-                ((DefaultRadioButton) comp).setBorderColor(defaultRadio.getBorderColor());
-                ((DefaultRadioButton) comp).setInnerColor(defaultRadio.getInnerColor());
-                ((DefaultRadioButton) comp).setLabelColor(defaultRadio.getLabelColor());
-                ((DefaultRadioButton) comp).setOuterColor(defaultRadio.getOuterColor());
+                DefaultRadioButton r = (DefaultRadioButton) comp;
 
-                ((DefaultRadioButton) comp).setOuterDiameter(BitmapMixin.getPixelCount(defaultRadio.getOuterDiameter(), dpi));
-                ((DefaultRadioButton) comp).setBorder(BitmapMixin.getPixelCount(defaultRadio.getBorder(), dpi));
-                ((DefaultRadioButton) comp).setInnerDiameter(BitmapMixin.getPixelCount(defaultRadio.getInnerDiameter(), dpi));
-                ((DefaultRadioButton) comp).setLabelSize(BitmapMixin.getPixelCount(defaultRadio.getLabelSize(), dpi));
+                r.setRenderable(defaultRadio.isRenderable());
+                r.setBorderColor(defaultRadio.getBorderColor());
+                r.setInnerColor(defaultRadio.getInnerColor());
+                r.setLabelColor(defaultRadio.getLabelColor());
+                r.setOuterColor(defaultRadio.getOuterColor());
+
+                r.setOuterDiameter(BitmapMixin.getPixelCount(defaultRadio.getOuterDiameter(), dpi));
+                r.setBorder(BitmapMixin.getPixelCount(defaultRadio.getBorder(), dpi));
+                r.setInnerDiameter(BitmapMixin.getPixelCount(defaultRadio.getInnerDiameter(), dpi));
+                r.setLabelSize(BitmapMixin.getPixelCount(defaultRadio.getLabelSize(), dpi));
 
             } else if (comp instanceof DefaultComboBox) {
 
@@ -121,7 +125,7 @@ public class ClientLayout {
 
             } else if (comp instanceof DefaultFader) {
                 DefaultFader f = (DefaultFader) comp;
-                
+
                 f.setRenderable(defaultFader.isRenderable());
                 f.setBorderColor(defaultFader.getBorderColor());
                 f.setCaretBorderColor(defaultFader.getCaretBorderColor());
@@ -129,7 +133,7 @@ public class ClientLayout {
                 f.setOuterColor(defaultFader.getOuterColor());
                 f.setStopperBorderColor(defaultFader.getBorderColor());
                 f.setStopperColor(defaultFader.getStopperColor());
-                
+
                 f.setBorder(BitmapMixin.getPixelCount(defaultFader.getBorder(), dpi));
                 f.setCaretBorder(BitmapMixin.getPixelCount(defaultFader.getCaretBorder(), dpi));
                 f.setCaretHeight(BitmapMixin.getPixelCount(defaultFader.getCaretHeight(), dpi));
@@ -139,6 +143,24 @@ public class ClientLayout {
                 f.setStopperBorder(BitmapMixin.getPixelCount(defaultFader.getStopperBorder(), dpi));
                 f.setStopperHeight(BitmapMixin.getPixelCount(defaultFader.getStopperHeight(), dpi));
                 f.setStopperWidth(BitmapMixin.getPixelCount(defaultFader.getStopperWidth(), dpi));
+            } else if (comp instanceof DefaultRadioGroup) {
+                DefaultRadioGroup g = (DefaultRadioGroup) comp;
+
+                for (DefaultRadioButton radio : g.getRadios()) {
+
+                    radio.setRenderable(defaultRadio.isRenderable());
+                    radio.setBorderColor(defaultRadio.getBorderColor());
+                    radio.setInnerColor(defaultRadio.getInnerColor());
+                    radio.setLabelColor(defaultRadio.getLabelColor());
+                    radio.setOuterColor(defaultRadio.getOuterColor());
+
+                    radio.setPosX(BitmapMixin.getPixelCount(radio.getPosX(), dpi));
+                    radio.setPosY(BitmapMixin.getPixelCount(radio.getPosY(), dpi));
+                    radio.setOuterDiameter(BitmapMixin.getPixelCount(defaultRadio.getOuterDiameter(), dpi));
+                    radio.setBorder(BitmapMixin.getPixelCount(defaultRadio.getBorder(), dpi));
+                    radio.setInnerDiameter(BitmapMixin.getPixelCount(defaultRadio.getInnerDiameter(), dpi));
+                    radio.setLabelSize(BitmapMixin.getPixelCount(defaultRadio.getLabelSize(), dpi));
+                }
             }
         }
     }

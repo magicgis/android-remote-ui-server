@@ -5,6 +5,7 @@
 package cz.ctu.guiproject.server.gui.painter;
 
 import cz.ctu.guiproject.server.gui.device.ClientDevice;
+import cz.ctu.guiproject.server.gui.entity.Component;
 import cz.ctu.guiproject.server.gui.entity.Layout;
 import java.awt.image.BufferedImage;
 
@@ -15,4 +16,6 @@ import java.awt.image.BufferedImage;
 public interface Painter {
 
     public BufferedImage getContext(ClientDevice clientDevice, Layout layout);
+    
+    public BufferedImage getContext(ClientDevice clientDevice, Layout layout, Component component);
 }
