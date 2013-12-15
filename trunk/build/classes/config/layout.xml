@@ -43,5 +43,40 @@
             <caretPosition>100</caretPosition>
             <verticalOrientation>false</verticalOrientation>
         </component>
+        <component class="cz.ctu.guiproject.server.gui.entity.DefaultRadioGroup">
+            <name>radio_group_z</name>
+            <posX>0</posX>
+            <posY>0</posY>
+            <radios class="java.util.ArrayList">
+                <defaultRadioButton>
+                    <name>g_radio_1</name>
+                    <posX>2</posX>
+                    <posY>46</posY>
+                    <label>groupped radio 1</label>
+                    <selected>false</selected>
+                 </defaultRadioButton>
+                 <defaultRadioButton>
+                    <name>g_radio_2</name>
+                    <posX>2</posX>
+                    <posY>54</posY>
+                    <label>groupped radio 2</label>
+                    <selected>false</selected>
+                 </defaultRadioButton>
+                 <defaultRadioButton>
+                    <name>g_radio_3</name>
+                    <posX>2</posX>
+                    <posY>62</posY>
+                    <label>groupped radio 3</label>
+                    <selected>false</selected>
+                 </defaultRadioButton>
+                 <defaultRadioButton>
+                    <name>g_radio_4</name>
+                    <posX>2</posX>
+                    <posY>70</posY>
+                    <label>groupped radio 4</label>
+                    <selected>false</selected>
+                 </defaultRadioButton>
+            </radios>
+        </component>
     </components>
 </layout>

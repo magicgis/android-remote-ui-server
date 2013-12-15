@@ -4,9 +4,9 @@
  */
 package cz.ctu.guiproject.server.gui.entity;
 
-import java.util.ArrayList;
 import java.util.List;
 import org.simpleframework.xml.Element;
+import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 
 /**
@@ -16,12 +16,13 @@ import org.simpleframework.xml.Root;
 @Root
 public class DefaultRadioGroup extends Component {
 
-    @Element
+    @ElementList
     private List<DefaultRadioButton> radios;
+    @Element(required = false)
+    private DefaultRadioButton selectedRadio;
     private int[] actionArea;
-    
+
     public DefaultRadioGroup() {
-        radios = new ArrayList<>();
     }
 
     public List<DefaultRadioButton> getRadios() {
@@ -30,6 +31,14 @@ public class DefaultRadioGroup extends Component {
 
     public void setRadios(List<DefaultRadioButton> radios) {
         this.radios = radios;
+    }
+
+    public DefaultRadioButton getSelectedRadio() {
+        return selectedRadio;
+    }
+
+    public void setSelectedRadio(DefaultRadioButton selectedRadio) {
+        this.selectedRadio = selectedRadio;
     }
 
     private void setActionArea() {

@@ -12,4 +12,5 @@ import cz.ctu.guiproject.server.gui.device.ClientDevice;
  */
 public interface ContextObserver {
     public void update(String context, ClientDevice device);
+    public void update(String context, ClientDevice device, int[] updateArea);
 }

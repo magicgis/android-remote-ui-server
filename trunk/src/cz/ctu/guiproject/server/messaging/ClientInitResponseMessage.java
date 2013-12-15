@@ -18,6 +18,8 @@ public class ClientInitResponseMessage extends AndroidMessage<ClientInitResponse
     private String context;
     @Element
     private String format;
+    @Element(required = false)
+    private int[] updateArea;
 
     public String getContext() {
         return context;
@@ -33,6 +35,14 @@ public class ClientInitResponseMessage extends AndroidMessage<ClientInitResponse
 
     public void setFormat(String format) {
         this.format = format;
+    }
+
+    public int[] getUpdateArea() {
+        return updateArea;
+    }
+
+    public void setUpdateArea(int[] updateArea) {
+        this.updateArea = updateArea;
     }
 
     @Override

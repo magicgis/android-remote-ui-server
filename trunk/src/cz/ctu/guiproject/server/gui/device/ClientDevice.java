@@ -6,8 +6,10 @@ package cz.ctu.guiproject.server.gui.device;
 
 import cz.ctu.guiproject.server.business.ContextObserver;
 import cz.ctu.guiproject.server.gui.bitmap.Codec;
+import cz.ctu.guiproject.server.gui.entity.Component;
 import cz.ctu.guiproject.server.gui.painter.DefaultPainter;
 import cz.ctu.guiproject.server.gui.painter.Painter;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -31,6 +33,9 @@ public class ClientDevice {
     private ClientLayout clientLayout;
     private List<ContextObserver> observers;
     private Painter painter;
+    // flag, that indicates, that only update image will be sent
+    private boolean updateFlag;
+    private int[] updateArea;
     
     public ClientDevice(String id, String name, int screenWidth, int screenHeight, int dpi) {
         this.id = id;
@@ -92,8 +97,16 @@ public class ClientDevice {
         this.screenHeight = screenHeight;
     }
 
-    public void updateContext() {
-        this.context = Codec.encodeToBase64(painter.getContext(this, clientLayout.getLayout()), "png");
+    public void updateContext(Component updatedComponent) {
+        if(updatedComponent == null) {
+            this.context = Codec.encodeToBase64(painter.getContext(this, clientLayout.getLayout()), "png");
+            this.updateFlag = false;
+        } else {
+            BufferedImage image = painter.getContext(this, clientLayout.getLayout(), updatedComponent);
+            this.context = Codec.encodeToBase64(image, "png");
+            this.updateFlag = true;
+            this.updateArea = updatedComponent.getActionArea();
+        }
         notifyObservers();
     }
 
@@ -115,7 +128,11 @@ public class ClientDevice {
 
     public void notifyObservers() {
         for (ContextObserver observer : observers) {
-            observer.update(context, this);
+            if(updateFlag) {
+                observer.update(context, this, updateArea);
+            } else {
+                observer.update(context, this);
+            }
         }
     }
 
