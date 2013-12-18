@@ -5,7 +5,7 @@
     <posY>0</posY>
     <name>button01</name>
     <pressed>false</pressed>
-    <outerWidth>30</outerWidth>
+    <outerWidth>25</outerWidth>
     <outerHeight>6</outerHeight>
     <border>0</border>
     <outerColor>#eeeeee</outerColor>

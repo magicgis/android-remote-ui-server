@@ -119,12 +119,19 @@ public abstract class Component {
             return false;
         }
         final Component other = (Component) obj;
-        if (this.renderable != other.renderable) {
-            return false;
-        }
+//        if (this.renderable != other.renderable) {
+//            return false;
+//        }
         if (!Objects.equals(this.name, other.name)) {
             return false;
         }
         return true;
+    }
+    
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("renderable: ").append(renderable).append(", name: ").append(name);
+        return sb.toString();
     }
 }

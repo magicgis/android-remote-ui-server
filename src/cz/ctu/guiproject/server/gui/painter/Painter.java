@@ -17,5 +17,5 @@ public interface Painter {
 
     public BufferedImage getContext(ClientDevice clientDevice, Layout layout);
     
-    public BufferedImage getContext(ClientDevice clientDevice, Layout layout, Component component);
+    public BufferedImage getContext(ClientDevice clientDevice, Layout layout, Component statusComp, Component metricComp);
 }

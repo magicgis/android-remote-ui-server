@@ -5,10 +5,12 @@
 package cz.ctu.guiproject.server.gui.painter;
 
 import cz.ctu.guiproject.server.gui.device.ClientDevice;
+import cz.ctu.guiproject.server.gui.device.StateLayoutManager;
 import cz.ctu.guiproject.server.gui.entity.Component;
 import cz.ctu.guiproject.server.gui.entity.DefaultButton;
 import cz.ctu.guiproject.server.gui.entity.DefaultComboBox;
 import cz.ctu.guiproject.server.gui.entity.DefaultFader;
+import cz.ctu.guiproject.server.gui.entity.DefaultLabel;
 import cz.ctu.guiproject.server.gui.entity.DefaultRadioButton;
 import cz.ctu.guiproject.server.gui.entity.DefaultRadioGroup;
 import cz.ctu.guiproject.server.gui.entity.DefaultToggleButton;
@@ -19,6 +21,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -30,11 +33,13 @@ import java.util.Queue;
 public class DefaultPainter implements Painter {
 
     private static DefaultPainter instance;
-    private Layout layout;
+    private Layout metricLayout;
     private BufferedImage context;
     private Graphics2D g2d;
+    private Layout stateLayout;
 
     private DefaultPainter() {
+        stateLayout = StateLayoutManager.getInstance().getStateLayout();
     }
 
     public static DefaultPainter getInstance() {
@@ -45,21 +50,23 @@ public class DefaultPainter implements Painter {
     }
 
     @Override
-    public BufferedImage getContext(ClientDevice clientDevice, Layout layout) {
-        this.layout = layout;
+    public BufferedImage getContext(ClientDevice clientDevice, Layout metricLayout) {
+        this.metricLayout = metricLayout;
         context = new BufferedImage(clientDevice.getScreenWidth(), clientDevice.getScreenHeight(), BufferedImage.TYPE_3BYTE_BGR);
         g2d = context.createGraphics();
-        paint(null);
+        
+        paint(null, null);
         return context;
     }
 
     @Override
-    public BufferedImage getContext(ClientDevice clientDevice, Layout layout, Component component) {
-        this.layout = layout;
-        int[] actionArea = component.getActionArea();
+    public BufferedImage getContext(ClientDevice clientDevice, Layout layout, Component statusComp, Component metricComp) {
+        this.metricLayout = layout;
+        int[] actionArea = metricComp.getActionArea();
         context = new BufferedImage(actionArea[2] - actionArea[0], actionArea[3] - actionArea[1], BufferedImage.TYPE_3BYTE_BGR);
         g2d = context.createGraphics();
-        paint(component);
+
+        paint(statusComp, metricComp);
         return context;
     }
 
@@ -156,92 +163,107 @@ public class DefaultPainter implements Painter {
      * Paints current layout with its corresponding components into current
      * context
      */
-    private void paint(Component component) {
+    private void paint(Component stateComponent, Component metricComponent) {
         // paint background color
-        fillRect(0, 0, context.getWidth(), context.getHeight(), layout.getBackground());
+        fillRect(0, 0, context.getWidth(), context.getHeight(), metricLayout.getBackground());
         Queue<DefaultComboBox> comboQueue = new LinkedList<>();
 
-        List<Component> queue;
+        List<Component> metricQueue;
+        List<Component> stateQueue;
         boolean update;
-        if (component == null) {
-            queue = layout.getComponents();
+        if (stateComponent == null) {
+            metricQueue = metricLayout.getComponents();
+            stateQueue = stateLayout.getComponents();
             update = false;
         } else {
-            queue = new ArrayList<>();
-            queue.add(component);
+            metricQueue = new ArrayList<>();
+            metricQueue.add(metricComponent);
+            stateQueue = new ArrayList<>();
+            stateQueue.add(stateComponent);
+            // !!TODO with stateQueue
             update = true;
         }
+        
+        Iterator<Component> itState = stateQueue.iterator();
+        Iterator<Component> itMetric = metricQueue.iterator();
+        
+        while(itState.hasNext()) {
+            Component stateComp = itState.next();
+            Component metricComp = itMetric.next();
+            
+            if (stateComp instanceof DefaultRadioButton) {
 
-        for (Component comp : queue) {
-            if (comp instanceof DefaultRadioButton) {
+                paintRadioButton((DefaultRadioButton) stateComp, (DefaultRadioButton) metricComp, update, null);
 
-                paintRadioButton((DefaultRadioButton) comp, update, null);
+            } else if (stateComp instanceof DefaultComboBox) {
 
-            } else if (comp instanceof DefaultComboBox) {
+                comboQueue.add((DefaultComboBox) stateComp);
+                comboQueue.add((DefaultComboBox) metricComp);
 
-                comboQueue.add((DefaultComboBox) comp);
+            } else if (stateComp instanceof DefaultToggleButton) {
 
-            } else if (comp instanceof DefaultToggleButton) {
+                paintToggleButton((DefaultToggleButton) stateComp, (DefaultToggleButton) metricComp, update);
 
-                paintToggleButton((DefaultToggleButton) comp, update);
+            } else if (stateComp instanceof DefaultButton) {
 
-            } else if (comp instanceof DefaultButton) {
+                paintButton((DefaultButton) stateComp, (DefaultButton) metricComp, update);
 
-                paintButton((DefaultButton) comp, update);
+            } else if (stateComp instanceof DefaultFader) {
 
-            } else if (comp instanceof DefaultFader) {
+                paintFader((DefaultFader) stateComp, (DefaultFader) metricComp, update);
 
-                paintFader((DefaultFader) comp, update);
+            } else if (stateComp instanceof DefaultRadioGroup) {
 
-            } else if (comp instanceof DefaultRadioGroup) {
-
-                paintRadioGroup((DefaultRadioGroup) comp, update);
+                paintRadioGroup((DefaultRadioGroup) stateComp, (DefaultRadioGroup) metricComp, update);
+            } else if(stateComp instanceof DefaultLabel) {
+                
+                paintLabel((DefaultLabel) stateComp, (DefaultLabel) metricComp, update);
             }
         }
         // paint combo boxes at the end (they might overlay other components)
         while (!comboQueue.isEmpty()) {
-            paintComboBox(comboQueue.remove(), update);
+            paintComboBox(comboQueue.remove(), comboQueue.remove(), update);
         }
     }
 
-    private void paintComboBox(DefaultComboBox c, boolean update) {
+    private void paintComboBox(DefaultComboBox stateC, DefaultComboBox metricC, boolean update) {
 
         int x = 0, y = 0;
         if (!update) {
-            x = c.getPosX();
-            y = c.getPosY();
+            x = metricC.getPosX();
+            y = metricC.getPosY();
         }
 
         // draw outer border
-        fillRect(x, y, c.getOuterWidth(), c.getOuterHeight(), c.getOuterColor());
-        drawRect(x, y, c.getOuterWidth(), c.getOuterHeight(), c.getBorder(), c.getBorderColor());
+        fillRect(x, y, metricC.getOuterWidth(), metricC.getOuterHeight(), stateC.getOuterColor());
+        drawRect(x, y, metricC.getOuterWidth(), metricC.getOuterHeight(), metricC.getBorder(), stateC.getBorderColor());
 
         // draw arrow 10 pixels from the right border
-        int[] arrow = c.getArrowCoords();
-        int diffX = x + c.getOuterWidth() - 10 - (arrow[0] + arrow[4]);
-        int diffY = y + c.getOuterHeight() - 10 - (arrow[1] + arrow[3]);
+        int[] arrow = metricC.getArrowCoords();
+        int diffX = x + metricC.getOuterWidth() - 10 - (arrow[0] + arrow[4]);
+        int diffY = y + metricC.getOuterHeight() - 10 - (arrow[1] + arrow[3]);
         int[] xCoords = {arrow[0] + diffX, arrow[2] + diffX, arrow[4] + diffX};
         int[] yCoords = {arrow[1] + diffY, arrow[3] + diffY, arrow[5] + diffY};
-        fillTriangle(xCoords, yCoords, c.getArrowColor());
-        if (c.getSelectedValue() != null) {
-            drawString(x + 10, y + c.getValueSize() + 5, c.getSelectedValue(), c.getValueSize(), c.getValueColor());
+        fillTriangle(xCoords, yCoords, stateC.getArrowColor());
+        if (stateC.getSelectedValue() != null) {
+            drawString(x + 10, y + metricC.getValueSize() + 5, stateC.getSelectedValue(), metricC.getValueSize(), stateC.getValueColor());
         }
 
-        if (c.isSelected()) {
-            String[] values = c.getValues();
+        if (stateC.isSelected()) {
+            String[] values = stateC.getValues();
 
-            int rowHeight = c.getOuterHeight();
-            int rowBeginY = y + c.getOuterHeight();
+            int rowHeight = metricC.getOuterHeight();
+            int rowBeginY = y + metricC.getOuterHeight();
             int valBeginX = x + 10;
 
             for (int i = 0; i < values.length; i++) {
                 if (i % 2 == 0) {
-                    fillRect(x, rowBeginY, c.getOuterWidth(), c.getOuterHeight(), c.getDownEvenColor());
+                    fillRect(x, rowBeginY, metricC.getOuterWidth(), metricC.getOuterHeight(), stateC.getDownEvenColor());
 
                 } else {
-                    fillRect(x, rowBeginY, c.getOuterWidth(), c.getOuterHeight(), c.getDownOddColor());
+                    fillRect(x, rowBeginY, metricC.getOuterWidth(), metricC.getOuterHeight(), stateC.getDownOddColor());
                 }
-                drawString(valBeginX, rowBeginY + c.getValueSize() + 5, values[i], c.getValueSize(), c.getValueColor());
+                drawString(valBeginX, rowBeginY + metricC.getValueSize() + 5, values[i], metricC.getValueSize(), stateC.getValueColor());
                 rowBeginY += rowHeight;
             }
 //                    // TODO remove when not DEBUGGING
@@ -250,117 +272,129 @@ public class DefaultPainter implements Painter {
         }
     }
 
-    private void paintRadioButton(DefaultRadioButton r, boolean update, int[] groupArea) {
+    private void paintRadioButton(DefaultRadioButton stateR, DefaultRadioButton metricR, boolean update, int[] groupArea) {
 
-        int outerDiameter = r.getOuterDiameter();
-        int innerDiameter = r.getInnerDiameter();
+        int outerDiameter = metricR.getOuterDiameter();
+        int innerDiameter = metricR.getInnerDiameter();
         int x, y;
 
         if (update) {
             if (groupArea == null) {
-                x = (update) ? 0 : r.getPosX();
-                y = (update) ? 0 : r.getPosY();
+                x = (update) ? 0 : metricR.getPosX();
+                y = (update) ? 0 : metricR.getPosY();
             } else {
-                x = r.getPosX() - groupArea[0];
-                y = r.getPosY() - groupArea[1];
+                x = metricR.getPosX() - groupArea[0];
+                y = metricR.getPosY() - groupArea[1];
             }
         } else {
-            x = r.getPosX();
-            y = r.getPosY();
+            x = metricR.getPosX();
+            y = metricR.getPosY();
         }
 
-        int border = r.getBorder();
-        int labelSize = r.getLabelSize();
+        int border = metricR.getBorder();
+        int labelSize = metricR.getLabelSize();
 
         int diff = (outerDiameter / 2) - innerDiameter / 2;
-        if (r.isSelected()) {
+        if (stateR.isSelected()) {
             int innerX = x + diff;
             int innerY = y + diff;
 
             // draw elements
-            fillCircle(x, y, outerDiameter, r.getOuterColor());
-            drawCircle(x, y, outerDiameter, border, r.getBorderColor());
-            fillCircle(innerX, innerY, innerDiameter, r.getInnerColor());
+            fillCircle(x, y, outerDiameter, stateR.getOuterColor());
+            drawCircle(x, y, outerDiameter, border, stateR.getBorderColor());
+            fillCircle(innerX, innerY, innerDiameter, stateR.getInnerColor());
 
             // draw label
             int textX = x + (int) (outerDiameter * 1.2);
             int textY = y + (outerDiameter / 2) + (int) (labelSize / 2.6);
-            drawString(textX, textY, r.getLabel(), labelSize, r.getLabelColor());
+            drawString(textX, textY, stateR.getLabel(), labelSize, stateR.getLabelColor());
 
         } else {
             // draw elements
-            fillCircle(x, y, outerDiameter, r.getOuterColor());
-            drawCircle(x, y, outerDiameter, border, r.getBorderColor());
+            fillCircle(x, y, outerDiameter, stateR.getOuterColor());
+            drawCircle(x, y, outerDiameter, border, stateR.getBorderColor());
 
             // draw label
             int textX = x + (int) (outerDiameter * 1.2);
             int textY = y + (outerDiameter / 2) + (int) (labelSize / 2.6);
-            drawString(textX, textY, r.getLabel(), labelSize, r.getLabelColor());
+            drawString(textX, textY, stateR.getLabel(), labelSize, stateR.getLabelColor());
         }
     }
 
-    private void paintToggleButton(DefaultToggleButton t, boolean update) {
+    private void paintToggleButton(DefaultToggleButton stateT, DefaultToggleButton metricT, boolean update) {
 
-        int x = (update) ? 0 : t.getPosX();
-        int y = (update) ? 0 : t.getPosY();
+        int x = (update) ? 0 : metricT.getPosX();
+        int y = (update) ? 0 : metricT.getPosY();
 
-        int textY = y + (t.getOuterHeight() / 2) + (t.getLabelSize() / 2) - 5;
+        int textY = y + (metricT.getOuterHeight() / 2) + (metricT.getLabelSize() / 2) - 5;
 
-        if (t.isPressed()) {
-            fillRect(x, y, t.getOuterWidth(), t.getOuterHeight(), t.getInnerColor());
-            drawRect(x, y, t.getOuterWidth(), t.getOuterHeight(), t.getBorder(), t.getBorderColor());
-            drawString(x + 10, textY, t.getLabel(), t.getLabelSize(), t.getLabelColor());
+        if (stateT.isPressed()) {
+            fillRect(x, y, metricT.getOuterWidth(), metricT.getOuterHeight(), stateT.getInnerColor());
+            drawRect(x, y, metricT.getOuterWidth(), metricT.getOuterHeight(), metricT.getBorder(), stateT.getBorderColor());
+            drawString(x + 10, textY, stateT.getLabel(), metricT.getLabelSize(), stateT.getLabelColor());
         } else {
-            fillRect(x, y, t.getOuterWidth(), t.getOuterHeight(), t.getInnerColorPressed());
-            drawRect(x, y, t.getOuterWidth(), t.getOuterHeight(), t.getBorder(), t.getBorderColorPressed());
-            drawString(x + 10, textY, t.getLabel(), t.getLabelSize(), t.getLabelColorPressed());
+            fillRect(x, y, metricT.getOuterWidth(), metricT.getOuterHeight(), stateT.getInnerColorPressed());
+            drawRect(x, y, metricT.getOuterWidth(), metricT.getOuterHeight(), metricT.getBorder(), stateT.getBorderColorPressed());
+            drawString(x + 10, textY, stateT.getLabel(), metricT.getLabelSize(), stateT.getLabelColorPressed());
         }
     }
 
-    private void paintButton(DefaultButton b, boolean update) {
+    private void paintButton(DefaultButton stateB, DefaultButton metricB, boolean update) {
 
-        int x = (update) ? 0 : b.getPosX();
-        int y = (update) ? 0 : b.getPosY();
+        int x = (update) ? 0 : metricB.getPosX();
+        int y = (update) ? 0 : metricB.getPosY();
 
-        int textY = y + (b.getOuterHeight() / 2) + (b.getLabelSize() / 2) - 5;
+        int textY = y + (metricB.getOuterHeight() / 2) + (metricB.getLabelSize() / 2) - 5;
 
-        if (b.isPressed()) {
-            fillRect(x, y, b.getOuterWidth(), b.getOuterHeight(), b.getOuterColorPressed());
-            drawRect(x, y, b.getOuterWidth(), b.getOuterHeight(), b.getBorder(), b.getBorderColorPressed());
-            drawString(x + 10, textY, b.getLabel(), b.getLabelSize(), b.getLabelColorPressed());
+        if (stateB.isPressed()) {
+            fillRect(x, y, metricB.getOuterWidth(), metricB.getOuterHeight(), stateB.getOuterColorPressed());
+            drawRect(x, y, metricB.getOuterWidth(), metricB.getOuterHeight(), metricB.getBorder(), stateB.getBorderColorPressed());
+            drawString(x + 10, textY, stateB.getLabel(), metricB.getLabelSize(), stateB.getLabelColorPressed());
         } else {
-            fillRect(x, y, b.getOuterWidth(), b.getOuterHeight(), b.getOuterColor());
-            drawRect(x, y, b.getOuterWidth(), b.getOuterHeight(), b.getBorder(), b.getBorderColor());
-            drawString(x + 10, textY, b.getLabel(), b.getLabelSize(), b.getLabelColor());
+            fillRect(x, y, metricB.getOuterWidth(), metricB.getOuterHeight(), stateB.getOuterColor());
+            drawRect(x, y, metricB.getOuterWidth(), metricB.getOuterHeight(), metricB.getBorder(), stateB.getBorderColor());
+            drawString(x + 10, textY, stateB.getLabel(), metricB.getLabelSize(), stateB.getLabelColor());
         }
     }
 
-    private void paintFader(DefaultFader f, boolean update) {
+    private void paintFader(DefaultFader stateF, DefaultFader metricF, boolean update) {
 
-        int x = (update) ? 0 : f.getPosX();
-        int y = (update) ? 0 : f.getPosY();
+        int x = (update) ? 0 : metricF.getPosX();
+        int y = (update) ? 0 : metricF.getPosY();
 
-        fillRect(x, y, f.getOuterWidth(), f.getOuterHeight(), f.getOuterColor());
-        drawRect(x, y, f.getOuterWidth(), f.getOuterHeight(), f.getBorder(), f.getBorderColor());
+        fillRect(x, y, metricF.getOuterWidth(), metricF.getOuterHeight(), stateF.getOuterColor());
+        drawRect(x, y, metricF.getOuterWidth(), metricF.getOuterHeight(), metricF.getBorder(), stateF.getBorderColor());
         // paint start stopper
-        fillRect(x, y, f.getStopperWidth(), f.getStopperHeight(), f.getStopperColor());
-        drawRect(x, y, f.getStopperWidth(), f.getStopperHeight(), f.getStopperBorder(), f.getStopperBorderColor());
+        fillRect(x, y, metricF.getStopperWidth(), metricF.getStopperHeight(), stateF.getStopperColor());
+        drawRect(x, y, metricF.getStopperWidth(), metricF.getStopperHeight(), metricF.getStopperBorder(), stateF.getStopperBorderColor());
         // paint end stopper
-        int endPosX = x + f.getOuterWidth() - f.getStopperWidth();
-        fillRect(endPosX, y, f.getStopperWidth(), f.getStopperHeight(), f.getStopperColor());
-        drawRect(endPosX, y, f.getStopperWidth(), f.getStopperHeight(), f.getStopperBorder(), f.getStopperBorderColor());
+        int endPosX = x + metricF.getOuterWidth() - metricF.getStopperWidth();
+        fillRect(endPosX, y, metricF.getStopperWidth(), metricF.getStopperHeight(), stateF.getStopperColor());
+        drawRect(endPosX, y, metricF.getStopperWidth(), metricF.getStopperHeight(), metricF.getStopperBorder(), stateF.getStopperBorderColor());
         // paint caret on specified position
-        int caretPath = f.getOuterWidth() - (2 * f.getStopperWidth()) - f.getCaretWidth();
-        int caret0 = x + f.getStopperWidth();
-        int caretPosX = caret0 + (int) ((f.getCaretPosition() / 100.f) * caretPath);
+        int caretPath = metricF.getOuterWidth() - (2 * metricF.getStopperWidth()) - metricF.getCaretWidth();
+        int caret0 = x + metricF.getStopperWidth();
+        int caretPosX = caret0 + (int) ((stateF.getCaretPosition() / 100.f) * caretPath);
 
-        fillRect(caretPosX, y, f.getCaretWidth(), f.getCaretHeight(), f.getCaretColor());
-        drawRect(caretPosX, y, f.getCaretWidth(), f.getCaretHeight(), f.getCaretBorder(), f.getCaretBorderColor());
+        fillRect(caretPosX, y, metricF.getCaretWidth(), metricF.getCaretHeight(), stateF.getCaretColor());
+        drawRect(caretPosX, y, metricF.getCaretWidth(), metricF.getCaretHeight(), metricF.getCaretBorder(), stateF.getCaretBorderColor());
     }
 
-    private void paintRadioGroup(DefaultRadioGroup g, boolean update) {
-        for (DefaultRadioButton radio : g.getRadios()) {
-            paintRadioButton(radio, update, g.getActionArea());
+    private void paintRadioGroup(DefaultRadioGroup stateG, DefaultRadioGroup metricG, boolean update) {
+        
+        Iterator<DefaultRadioButton> stateIt = stateG.getRadios().iterator();
+        Iterator<DefaultRadioButton> metricIt = metricG.getRadios().iterator();
+        
+        while(stateIt.hasNext()) {
+            paintRadioButton(stateIt.next(), metricIt.next(), update, metricG.getActionArea());
         }
+    }
+    
+    private void paintLabel(DefaultLabel stateL, DefaultLabel metricL, boolean update) {
+        int x = (update) ? 0 : metricL.getPosX();
+        int y = (update) ? 0 : metricL.getPosY();
+        
+        int textY = metricL.getLabelSize() + y;
+        drawString(x, textY, stateL.getLabel(), metricL.getLabelSize(), stateL.getLabelColor());
     }
 }

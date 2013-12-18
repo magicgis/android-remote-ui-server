@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<defaultLabel>
+    <renderable>true</renderable>
+    <posX>0</posX>
+    <posY>0</posY>
+    <name>label_01</name>
+    <label>my_neat_label</label>
+    <labelColor>#000000</labelColor>
+    <labelSize>4</labelSize>
+</defaultLabel>

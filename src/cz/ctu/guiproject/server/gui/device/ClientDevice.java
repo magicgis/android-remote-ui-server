@@ -7,9 +7,9 @@ package cz.ctu.guiproject.server.gui.device;
 import cz.ctu.guiproject.server.business.ContextObserver;
 import cz.ctu.guiproject.server.gui.bitmap.Codec;
 import cz.ctu.guiproject.server.gui.entity.Component;
+import cz.ctu.guiproject.server.gui.entity.DefaultButton;
 import cz.ctu.guiproject.server.gui.painter.DefaultPainter;
 import cz.ctu.guiproject.server.gui.painter.Painter;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -36,6 +36,7 @@ public class ClientDevice {
     // flag, that indicates, that only update image will be sent
     private boolean updateFlag;
     private int[] updateArea;
+    private StateLayoutManager layoutManager;
     
     public ClientDevice(String id, String name, int screenWidth, int screenHeight, int dpi) {
         this.id = id;
@@ -46,6 +47,7 @@ public class ClientDevice {
         observers = new ArrayList<>();
         clientLayout = new ClientLayout(dpi);
         painter = DefaultPainter.getInstance();
+        layoutManager = StateLayoutManager.getInstance();
     }
 
     public ClientLayout getClientLayout() {
@@ -97,15 +99,14 @@ public class ClientDevice {
         this.screenHeight = screenHeight;
     }
 
-    public void updateContext(Component updatedComponent) {
-        if(updatedComponent == null) {
+    public void updateContext(Component statusComp, Component metricComp) {
+        if(statusComp == null) {
             this.context = Codec.encodeToBase64(painter.getContext(this, clientLayout.getLayout()), "png");
             this.updateFlag = false;
         } else {
-            BufferedImage image = painter.getContext(this, clientLayout.getLayout(), updatedComponent);
-            this.context = Codec.encodeToBase64(image, "png");
+            this.context = Codec.encodeToBase64(painter.getContext(this, clientLayout.getLayout(), statusComp, metricComp), "png");
             this.updateFlag = true;
-            this.updateArea = updatedComponent.getActionArea();
+            this.updateArea = metricComp.getActionArea();
         }
         notifyObservers();
     }

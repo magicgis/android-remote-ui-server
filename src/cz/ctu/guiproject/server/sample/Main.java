@@ -18,6 +18,9 @@ import cz.ctu.guiproject.server.observers.ClickObserver;
 import cz.ctu.guiproject.server.observers.DragObserver;
 import cz.ctu.guiproject.server.observers.LongClickObserver;
 import cz.ctu.guiproject.server.observers.TouchObserver;
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -53,8 +56,20 @@ public class Main implements TouchObserver, ClickObserver, DragObserver, LongCli
                 DefaultRadioButton radio = (DefaultRadioButton) source;
                 logger.log(Level.INFO, "Source component: " + source.getClass().getName() + ": " + radio.isSelected());
             } else if(source instanceof DefaultButton) {
-                DefaultButton button = (DefaultButton) source;
-                logger.log(Level.INFO, "Source component: " + source.getClass().getName() + ": " + button.getLabel());
+                try {
+                    DefaultButton button = (DefaultButton) source;
+                    
+                    Robot robot = new Robot();
+                    if(button.getName().equals("button_next")) {
+                        robot.keyPress(KeyEvent.VK_RIGHT);
+                    } else if(button.getName().equals("button_prev")) {
+                        robot.keyPress(KeyEvent.VK_LEFT);
+                    }
+                    
+                    logger.log(Level.INFO, "Source component: " + source.getClass().getName() + ": " + button.getLabel());
+                } catch (AWTException ex) {
+                    Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                }
             } else if(source instanceof DefaultRadioGroup) {
                 DefaultRadioGroup group = (DefaultRadioGroup) source;
                 logger.log(Level.INFO, "Source component: " + source.getClass().getName() + ": " + group.getSelectedRadio().getLabel());
