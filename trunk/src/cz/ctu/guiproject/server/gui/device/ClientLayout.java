@@ -9,6 +9,7 @@ import cz.ctu.guiproject.server.gui.entity.Component;
 import cz.ctu.guiproject.server.gui.entity.DefaultButton;
 import cz.ctu.guiproject.server.gui.entity.DefaultComboBox;
 import cz.ctu.guiproject.server.gui.entity.DefaultFader;
+import cz.ctu.guiproject.server.gui.entity.DefaultLabel;
 import cz.ctu.guiproject.server.gui.entity.DefaultRadioButton;
 import cz.ctu.guiproject.server.gui.entity.DefaultRadioGroup;
 import cz.ctu.guiproject.server.gui.entity.DefaultToggleButton;
@@ -21,7 +22,8 @@ import cz.ctu.guiproject.server.gui.loader.Loader;
  */
 public class ClientLayout {
 
-    private Layout layout;
+    private Layout metricLayout;
+//    when painting, state information will be taken from state layout and position information will be taken from position layout
     private int dpi;
 
     public ClientLayout(int dpi) {
@@ -30,7 +32,7 @@ public class ClientLayout {
     }
 
     public Component getIComponent(int x, int y) {
-        for (Component comp : layout.getComponents()) {
+        for (Component comp : metricLayout.getComponents()) {
             int[] actionArea = comp.getActionArea();
             if (BitmapMixin.intersects(x, y, actionArea)) {
                 // decide, which component was intersected and adequately update component
@@ -39,100 +41,82 @@ public class ClientLayout {
         }
         return null;
     }
+    
+    public Component getMetricComponent(Component refComp) {
+        for(Component comp : metricLayout.getComponents()) {
+            if(comp.equals(refComp)) {
+                return comp;
+            }
+        }
+        throw new RuntimeException("Should never return null!!!");
+    }
 
     public Layout getLayout() {
-        return layout;
+        return metricLayout;
     }
 
     private void initLayout() {
-        layout = Loader.loadLayout();
-        // load default components
+        metricLayout = Loader.loadLayout();
+
         DefaultRadioButton defaultRadio = Loader.loadDefaultRadioButton();
         DefaultComboBox defaultCombo = Loader.loadDefaultComboBox();
         DefaultToggleButton defaultToggleButton = Loader.loadDefaultToggleButton();
         DefaultButton defaultButton = Loader.loadDefaultButton();
         DefaultFader defaultFader = Loader.loadDefaultFader();
-        DefaultRadioGroup defaultRadioGroup = Loader.loadDefaultRadioGroup();
+        DefaultLabel defaultLabel = Loader.loadDefaultLabel();
 
-        // add default components
-        for (Component comp : layout.getComponents()) {
-
-            comp.setPosX(BitmapMixin.getPixelCount(comp.getPosX(), dpi));
-            comp.setPosY(BitmapMixin.getPixelCount(comp.getPosY(), dpi));
-
+        for (Component comp : metricLayout.getComponents()) {
             if (comp instanceof DefaultRadioButton) {
-
                 DefaultRadioButton r = (DefaultRadioButton) comp;
 
-                r.setRenderable(defaultRadio.isRenderable());
-                r.setBorderColor(defaultRadio.getBorderColor());
-                r.setInnerColor(defaultRadio.getInnerColor());
-                r.setLabelColor(defaultRadio.getLabelColor());
-                r.setOuterColor(defaultRadio.getOuterColor());
+                // get from user-defined layout
+                r.setPosX(BitmapMixin.getPixelCount(comp.getPosX(), dpi));
+                r.setPosY(BitmapMixin.getPixelCount(comp.getPosY(), dpi));
 
+                // get from default component
                 r.setOuterDiameter(BitmapMixin.getPixelCount(defaultRadio.getOuterDiameter(), dpi));
                 r.setBorder(BitmapMixin.getPixelCount(defaultRadio.getBorder(), dpi));
                 r.setInnerDiameter(BitmapMixin.getPixelCount(defaultRadio.getInnerDiameter(), dpi));
                 r.setLabelSize(BitmapMixin.getPixelCount(defaultRadio.getLabelSize(), dpi));
-
             } else if (comp instanceof DefaultComboBox) {
+                DefaultComboBox c = (DefaultComboBox) comp;
 
-                ((DefaultComboBox) comp).setRenderable(defaultCombo.isRenderable());
-                ((DefaultComboBox) comp).setArrowColor(defaultCombo.getArrowColor());
-                ((DefaultComboBox) comp).setBorderColor(defaultCombo.getBorderColor());
-                ((DefaultComboBox) comp).setOuterColor(defaultCombo.getOuterColor());
-                ((DefaultComboBox) comp).setValueColor(defaultCombo.getValueColor());
-                ((DefaultComboBox) comp).setSelected(defaultCombo.isSelected());
-                ((DefaultComboBox) comp).setDownOddColor(defaultCombo.getDownOddColor());
-                ((DefaultComboBox) comp).setDownEvenColor(defaultCombo.getDownEvenColor());
-                ((DefaultComboBox) comp).setSelectedValue(defaultCombo.getSelectedValue());
+                c.setPosX(BitmapMixin.getPixelCount(comp.getPosX(), dpi));
+                c.setPosY(BitmapMixin.getPixelCount(comp.getPosY(), dpi));
 
-                ((DefaultComboBox) comp).setArrowCoords(BitmapMixin.getPixelArrCount(defaultCombo.getArrowCoords(), dpi));
-                ((DefaultComboBox) comp).setBorder(BitmapMixin.getPixelCount(defaultCombo.getBorder(), dpi));
-                ((DefaultComboBox) comp).setOuterHeight(BitmapMixin.getPixelCount(defaultCombo.getOuterHeight(), dpi));
-                ((DefaultComboBox) comp).setOuterWidth(BitmapMixin.getPixelCount(defaultCombo.getOuterWidth(), dpi));
-                ((DefaultComboBox) comp).setValueSize(BitmapMixin.getPixelCount(defaultCombo.getValueSize(), dpi));
+                c.setArrowCoords(BitmapMixin.getPixelArrCount(defaultCombo.getArrowCoords(), dpi));
+                c.setBorder(BitmapMixin.getPixelCount(defaultCombo.getBorder(), dpi));
+                c.setOuterHeight(BitmapMixin.getPixelCount(defaultCombo.getOuterHeight(), dpi));
+                c.setOuterWidth(BitmapMixin.getPixelCount(defaultCombo.getOuterWidth(), dpi));
+                c.setValueSize(BitmapMixin.getPixelCount(defaultCombo.getValueSize(), dpi));
 
             } else if (comp instanceof DefaultToggleButton) {
+                DefaultToggleButton t = (DefaultToggleButton) comp;
 
-                ((DefaultToggleButton) comp).setRenderable(defaultToggleButton.isRenderable());
-                ((DefaultToggleButton) comp).setBorderColor(defaultToggleButton.getBorderColor());
-                ((DefaultToggleButton) comp).setBorderColorPressed(defaultToggleButton.getBorderColorPressed());
-                ((DefaultToggleButton) comp).setInnerColor(defaultToggleButton.getInnerColor());
-                ((DefaultToggleButton) comp).setInnerColorPressed(defaultToggleButton.getInnerColorPressed());
-                ((DefaultToggleButton) comp).setLabelColor(defaultToggleButton.getLabelColor());
-                ((DefaultToggleButton) comp).setLabelColorPressed(defaultToggleButton.getLabelColorPressed());
+                t.setPosX(BitmapMixin.getPixelCount(comp.getPosX(), dpi));
+                t.setPosY(BitmapMixin.getPixelCount(comp.getPosY(), dpi));
 
-                ((DefaultToggleButton) comp).setBorder(BitmapMixin.getPixelCount(defaultToggleButton.getBorder(), dpi));
-                ((DefaultToggleButton) comp).setLabelSize(BitmapMixin.getPixelCount(defaultToggleButton.getLabelSize(), dpi));
-                ((DefaultToggleButton) comp).setOuterHeight(BitmapMixin.getPixelCount(defaultToggleButton.getOuterHeight(), dpi));
-                ((DefaultToggleButton) comp).setOuterWidth(BitmapMixin.getPixelCount(defaultToggleButton.getOuterWidth(), dpi));
+                t.setBorder(BitmapMixin.getPixelCount(defaultToggleButton.getBorder(), dpi));
+                t.setLabelSize(BitmapMixin.getPixelCount(defaultToggleButton.getLabelSize(), dpi));
+                t.setOuterHeight(BitmapMixin.getPixelCount(defaultToggleButton.getOuterHeight(), dpi));
+                t.setOuterWidth(BitmapMixin.getPixelCount(defaultToggleButton.getOuterWidth(), dpi));
 
             } else if (comp instanceof DefaultButton) {
+                DefaultButton b = (DefaultButton) comp;
 
-                ((DefaultButton) comp).setRenderable(defaultButton.isRenderable());
-                ((DefaultButton) comp).setBorderColor(defaultButton.getBorderColor());
-                ((DefaultButton) comp).setBorderColorPressed(defaultButton.getBorderColorPressed());
-                ((DefaultButton) comp).setLabelColor(defaultButton.getLabelColor());
-                ((DefaultButton) comp).setLabelColorPressed(defaultButton.getLabelColorPressed());
-                ((DefaultButton) comp).setOuterColor(defaultButton.getOuterColor());
-                ((DefaultButton) comp).setOuterColorPressed(defaultButton.getOuterColorPressed());
+                b.setPosX(BitmapMixin.getPixelCount(comp.getPosX(), dpi));
+                b.setPosY(BitmapMixin.getPixelCount(comp.getPosY(), dpi));
 
-                ((DefaultButton) comp).setBorder(BitmapMixin.getPixelCount(defaultButton.getBorder(), dpi));
-                ((DefaultButton) comp).setLabelSize(BitmapMixin.getPixelCount(defaultButton.getLabelSize(), dpi));
-                ((DefaultButton) comp).setOuterWidth(BitmapMixin.getPixelCount(defaultButton.getOuterWidth(), dpi));
-                ((DefaultButton) comp).setOuterHeight(BitmapMixin.getPixelCount(defaultButton.getOuterHeight(), dpi));
+                b.setBorder(BitmapMixin.getPixelCount(defaultButton.getBorder(), dpi));
+                b.setLabelSize(BitmapMixin.getPixelCount(defaultButton.getLabelSize(), dpi));
+                b.setOuterWidth(BitmapMixin.getPixelCount(defaultButton.getOuterWidth(), dpi));
+                b.setOuterHeight(BitmapMixin.getPixelCount(defaultButton.getOuterHeight(), dpi));
 
             } else if (comp instanceof DefaultFader) {
                 DefaultFader f = (DefaultFader) comp;
 
-                f.setRenderable(defaultFader.isRenderable());
-                f.setBorderColor(defaultFader.getBorderColor());
-                f.setCaretBorderColor(defaultFader.getCaretBorderColor());
-                f.setCaretColor(defaultFader.getCaretColor());
-                f.setOuterColor(defaultFader.getOuterColor());
-                f.setStopperBorderColor(defaultFader.getBorderColor());
-                f.setStopperColor(defaultFader.getStopperColor());
+                f.setPosX(BitmapMixin.getPixelCount(comp.getPosX(), dpi));
+                f.setPosY(BitmapMixin.getPixelCount(comp.getPosY(), dpi));
 
                 f.setBorder(BitmapMixin.getPixelCount(defaultFader.getBorder(), dpi));
                 f.setCaretBorder(BitmapMixin.getPixelCount(defaultFader.getCaretBorder(), dpi));
@@ -143,24 +127,27 @@ public class ClientLayout {
                 f.setStopperBorder(BitmapMixin.getPixelCount(defaultFader.getStopperBorder(), dpi));
                 f.setStopperHeight(BitmapMixin.getPixelCount(defaultFader.getStopperHeight(), dpi));
                 f.setStopperWidth(BitmapMixin.getPixelCount(defaultFader.getStopperWidth(), dpi));
+
             } else if (comp instanceof DefaultRadioGroup) {
                 DefaultRadioGroup g = (DefaultRadioGroup) comp;
 
-                for (DefaultRadioButton radio : g.getRadios()) {
+                for (DefaultRadioButton r : g.getRadios()) {
 
-                    radio.setRenderable(defaultRadio.isRenderable());
-                    radio.setBorderColor(defaultRadio.getBorderColor());
-                    radio.setInnerColor(defaultRadio.getInnerColor());
-                    radio.setLabelColor(defaultRadio.getLabelColor());
-                    radio.setOuterColor(defaultRadio.getOuterColor());
+                    r.setPosX(BitmapMixin.getPixelCount(r.getPosX(), dpi));
+                    r.setPosY(BitmapMixin.getPixelCount(r.getPosY(), dpi));
 
-                    radio.setPosX(BitmapMixin.getPixelCount(radio.getPosX(), dpi));
-                    radio.setPosY(BitmapMixin.getPixelCount(radio.getPosY(), dpi));
-                    radio.setOuterDiameter(BitmapMixin.getPixelCount(defaultRadio.getOuterDiameter(), dpi));
-                    radio.setBorder(BitmapMixin.getPixelCount(defaultRadio.getBorder(), dpi));
-                    radio.setInnerDiameter(BitmapMixin.getPixelCount(defaultRadio.getInnerDiameter(), dpi));
-                    radio.setLabelSize(BitmapMixin.getPixelCount(defaultRadio.getLabelSize(), dpi));
+                    r.setOuterDiameter(BitmapMixin.getPixelCount(defaultRadio.getOuterDiameter(), dpi));
+                    r.setBorder(BitmapMixin.getPixelCount(defaultRadio.getBorder(), dpi));
+                    r.setInnerDiameter(BitmapMixin.getPixelCount(defaultRadio.getInnerDiameter(), dpi));
+                    r.setLabelSize(BitmapMixin.getPixelCount(defaultRadio.getLabelSize(), dpi));
                 }
+            } else if(comp instanceof DefaultLabel) {
+                DefaultLabel l = (DefaultLabel) comp;
+                
+                l.setPosX(BitmapMixin.getPixelCount(comp.getPosX(), dpi));
+                l.setPosY(BitmapMixin.getPixelCount(comp.getPosY(), dpi));
+                
+                l.setLabelSize(BitmapMixin.getPixelCount(defaultLabel.getLabelSize(), dpi));
             }
         }
     }

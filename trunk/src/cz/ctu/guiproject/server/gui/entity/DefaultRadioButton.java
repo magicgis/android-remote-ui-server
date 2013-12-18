@@ -131,22 +131,22 @@ public class DefaultRadioButton extends Component {
         return actionArea;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-
-        sb.append("posX: ").append(getPosX()).append("\n");
-        sb.append("posY: ").append(getPosY()).append("\n");
-        sb.append("borderColor: ").append(borderColor).append("\n");
-        sb.append("outerColor: ").append(outerColor).append("\n");
-        sb.append("innerColor: ").append(innerColor).append("\n");
-        sb.append("outerDiameter: ").append(outerDiameter).append("\n");
-        sb.append("innerDiameter: ").append(innerDiameter).append("\n");
-        sb.append("label: ").append(label).append("\n");
-        sb.append("labelColor: ").append(labelColor).append("\n");
-        sb.append("labelSize: ").append(labelSize).append("\n");
-        sb.append("selected: ").append(labelSize).append("\n");
-
-        return sb.toString();
-    }
+//    @Override
+//    public String toString() {
+//        StringBuilder sb = new StringBuilder();
+//
+//        sb.append("posX: ").append(getPosX()).append("\n");
+//        sb.append("posY: ").append(getPosY()).append("\n");
+//        sb.append("borderColor: ").append(borderColor).append("\n");
+//        sb.append("outerColor: ").append(outerColor).append("\n");
+//        sb.append("innerColor: ").append(innerColor).append("\n");
+//        sb.append("outerDiameter: ").append(outerDiameter).append("\n");
+//        sb.append("innerDiameter: ").append(innerDiameter).append("\n");
+//        sb.append("label: ").append(label).append("\n");
+//        sb.append("labelColor: ").append(labelColor).append("\n");
+//        sb.append("labelSize: ").append(labelSize).append("\n");
+//        sb.append("selected: ").append(labelSize).append("\n");
+//
+//        return sb.toString();
+//    }
 }

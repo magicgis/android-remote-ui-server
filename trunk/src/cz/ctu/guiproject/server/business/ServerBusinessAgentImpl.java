@@ -141,7 +141,7 @@ public class ServerBusinessAgentImpl implements ServerBusinessAgent, ServerXMLOb
 
         newDevice.registerObserver(this);
         // dodelat metodu pro ziskani cele stranky, ne jen vyrezu
-        newDevice.updateContext(null);
+        newDevice.updateContext(null, null);
 //        renderer.registerObserver(newDevice);
     }
 

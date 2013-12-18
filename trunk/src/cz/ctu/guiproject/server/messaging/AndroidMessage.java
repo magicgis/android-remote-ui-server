@@ -5,26 +5,45 @@
 package cz.ctu.guiproject.server.messaging;
 
 import java.io.StringWriter;
-import org.simpleframework.xml.stream.Format;
-import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
+import org.simpleframework.xml.stream.Format;
 
 /**
- *
  * @author tomas.buk
  */
 public abstract class AndroidMessage<T> {
 
-    private static final Logger logger = Logger.getLogger(AndroidMessage.class.getName());
+    private static final Logger logger = Logger.getLogger(AndroidMessage.class
+            .getName());
     // Uniquely identifies client session
     @Element
     private String sessionId;
+    @Element(required = false)
+    private String messageId;
 
-//    public abstract void setMessageType();
+    /**
+     * Returns unique message id
+     *
+     * @return
+     */
+    public String getMessageId() {
+        return messageId;
+    }
+
+    /**
+     * Sets the unique message id
+     *
+     * @param messageId
+     */
+    public void setMessageId(String messageId) {
+        this.messageId = messageId;
+    }
+
     /**
      * Returns sessionId of particular server-client connection
      *
@@ -61,13 +80,15 @@ public abstract class AndroidMessage<T> {
 
         StringWriter sw = new StringWriter();
 
-        Serializer serializer = new Persister(
-                new Format("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"));
+        Serializer serializer = new Persister(new Format(
+                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"));
+
         try {
             serializer.write(instance, sw);
         } catch (Exception ex) {
             logger.log(Level.SEVERE, ex.getMessage());
-            throw new RuntimeException("Unable to marshall object into XML String!");
+            throw new RuntimeException(
+                    "Unable to marshall object into XML String!");
         }
 
         return sw.toString();
@@ -75,23 +96,43 @@ public abstract class AndroidMessage<T> {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 97 * hash + Objects.hashCode(this.sessionId);
-        return hash;
+        final int prime = 31;
+        int result = 1;
+        result = prime * result
+                + ((sessionId == null) ? 0 : sessionId.hashCode());
+        return result;
     }
 
     @Override
     public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
         if (obj == null) {
             return false;
         }
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final AndroidMessage<T> other = (AndroidMessage<T>) obj;
-        if (!Objects.equals(this.sessionId, other.sessionId)) {
+        AndroidMessage<?> other = (AndroidMessage<?>) obj;
+        if (sessionId == null) {
+            if (other.sessionId != null) {
+                return false;
+            }
+        } else if (!sessionId.equals(other.sessionId)) {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(this.getClass().getName());
+        sb.append("\n-----------------\n");
+        sb.append("sesionId: ").append(sessionId);
+
+        return sb.toString();
     }
 }

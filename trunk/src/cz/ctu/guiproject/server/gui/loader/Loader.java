@@ -8,6 +8,7 @@ import cz.ctu.guiproject.server.gui.entity.DefaultButton;
 import cz.ctu.guiproject.server.gui.entity.DefaultToggleButton;
 import cz.ctu.guiproject.server.gui.entity.DefaultComboBox;
 import cz.ctu.guiproject.server.gui.entity.DefaultFader;
+import cz.ctu.guiproject.server.gui.entity.DefaultLabel;
 import cz.ctu.guiproject.server.gui.entity.Layout;
 import cz.ctu.guiproject.server.gui.entity.DefaultRadioButton;
 import cz.ctu.guiproject.server.gui.entity.DefaultRadioGroup;
@@ -34,6 +35,7 @@ public class Loader {
     private static final String DEFAULT_BUTTON_PATH = "src/config/defaultButton.xml";
     private static final String DEFAULT_FADER_PATH = "src/config/defaultFader.xml";
     private static final String DEFAULT_RADIO_GROUP_PATH = "src/config/defaultRadioGroup.xml";
+    private static final String DEFAULT_LABEL_PATH = "src/config/defaultLabel.xml";
 
     public static Layout loadLayout() {
 
@@ -246,5 +248,35 @@ public class Loader {
             logger.log(Level.SEVERE, ex.getMessage());
         }
         return radioGroup;
+    }
+    
+    public static DefaultLabel loadDefaultLabel() {
+        // load from disc
+        String xml = null;
+        try {
+
+            BufferedReader br = new BufferedReader(new FileReader(DEFAULT_LABEL_PATH));
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+            }
+            xml = sb.toString();
+
+        } catch (FileNotFoundException ex) {
+            logger.log(Level.SEVERE, ex.getMessage());
+        } catch (IOException ex) {
+            logger.log(Level.SEVERE, ex.getMessage());
+        }
+
+        // now its time to unmarshall it
+        DefaultLabel label = null;
+        Serializer serializer = new Persister();
+        try {
+            label = serializer.read(DefaultLabel.class, xml);
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, ex.getMessage());
+        }
+        return label;
     }
 }

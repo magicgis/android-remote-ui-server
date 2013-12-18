@@ -2,81 +2,19 @@
 <layout>
     <background>#00ff00</background>
     <components class="java.util.ArrayList">
-        <component class="cz.ctu.guiproject.server.gui.entity.DefaultRadioButton">
-            <name>radio_1</name>
+        <component class="cz.ctu.guiproject.server.gui.entity.DefaultButton">
+            <name>button_prev</name>
             <posX>2</posX>
-            <posY>2</posY>
-            <label>CustomLabel</label>
-            <selected>true</selected>
-        </component>
-        <component class="cz.ctu.guiproject.server.gui.entity.DefaultRadioButton">
-            <name>radio_2</name>
-            <posX>2</posX>
-            <posY>8</posY>
-            <label>CustomLabel 2</label>
-            <selected>false</selected>
-        </component>
-        <component class="cz.ctu.guiproject.server.gui.entity.DefaultComboBox">
-            <name>combo_1</name>
-            <posX>2</posX>
-            <posY>14</posY>
-            <values length="3">foo, bar, zero</values>
-        </component>
-        <component class="cz.ctu.guiproject.server.gui.entity.DefaultToggleButton">
-            <name>toggle_1</name>
-            <posX>2</posX>
-            <posY>22</posY>
-            <label>toggle button</label>
+            <posY>10</posY>
+            <label>Previous slide</label>
             <pressed>false</pressed>
         </component>
         <component class="cz.ctu.guiproject.server.gui.entity.DefaultButton">
-            <name>button_1</name>
-            <posX>2</posX>
-            <posY>30</posY>
-            <label>my button</label>
+            <name>button_next</name>
+            <posX>30</posX>
+            <posY>10</posY>
+            <label>Next slide</label>
             <pressed>false</pressed>
-        </component>
-        <component class="cz.ctu.guiproject.server.gui.entity.DefaultFader">
-            <name>fader_0</name>
-            <posX>2</posX>
-            <posY>38</posY>
-            <caretPosition>100</caretPosition>
-            <verticalOrientation>false</verticalOrientation>
-        </component>
-        <component class="cz.ctu.guiproject.server.gui.entity.DefaultRadioGroup">
-            <name>radio_group_z</name>
-            <posX>0</posX>
-            <posY>0</posY>
-            <radios class="java.util.ArrayList">
-                <defaultRadioButton>
-                    <name>g_radio_1</name>
-                    <posX>2</posX>
-                    <posY>46</posY>
-                    <label>groupped radio 1</label>
-                    <selected>false</selected>
-                 </defaultRadioButton>
-                 <defaultRadioButton>
-                    <name>g_radio_2</name>
-                    <posX>2</posX>
-                    <posY>54</posY>
-                    <label>groupped radio 2</label>
-                    <selected>false</selected>
-                 </defaultRadioButton>
-                 <defaultRadioButton>
-                    <name>g_radio_3</name>
-                    <posX>2</posX>
-                    <posY>62</posY>
-                    <label>groupped radio 3</label>
-                    <selected>false</selected>
-                 </defaultRadioButton>
-                 <defaultRadioButton>
-                    <name>g_radio_4</name>
-                    <posX>2</posX>
-                    <posY>70</posY>
-                    <label>groupped radio 4</label>
-                    <selected>false</selected>
-                 </defaultRadioButton>
-            </radios>
         </component>
     </components>
 </layout>
