@@ -28,7 +28,7 @@ public class ServerXMLAgentTest implements ServerXMLObserver {
     }
 
     private void init() {
-        final ServerXMLAgent serverXML = new ServerXMLAgentImpl();
+        final ServerXMLAgent serverXML = new ServerXMLAgentImpl(0);
         serverXML.registerObserver(this);
         sleep(15000);
         new Thread(new Runnable() {

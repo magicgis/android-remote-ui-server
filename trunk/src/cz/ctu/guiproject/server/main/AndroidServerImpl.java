@@ -38,12 +38,12 @@ public class AndroidServerImpl implements AndroidServer, EventObserver<AndroidEv
     private LongClickEvent currentLongClickEvent;
 
     @SuppressWarnings("LeakingThisInConstructor")
-    public AndroidServerImpl() {
+    public AndroidServerImpl(int port) {
         touchObservers = new ArrayList<>();
         clickObservers = new ArrayList<>();
         dragObservers = new ArrayList<>();
         longClickObservers = new ArrayList<>();
-        serverBusinessAgent = ServerBusinessAgentImpl.getInstance();
+        serverBusinessAgent = ServerBusinessAgentImpl.getInstance(port);
         // must be the last thing to execute
         serverBusinessAgent.registerObserver(this);
         // TODO sdelit serveru, zda se zpravy, ktere zpusobi vykresleni 

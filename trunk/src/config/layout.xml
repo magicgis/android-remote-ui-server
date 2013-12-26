@@ -1,20 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <layout>
-    <background>#00ff00</background>
+    <background>#0000aa</background>
     <components class="java.util.ArrayList">
         <component class="cz.ctu.guiproject.server.gui.entity.DefaultButton">
             <name>button_prev</name>
             <posX>2</posX>
-            <posY>10</posY>
-            <label>Previous slide</label>
+            <posY>24</posY>
+            <label>prev</label>
             <pressed>false</pressed>
         </component>
         <component class="cz.ctu.guiproject.server.gui.entity.DefaultButton">
             <name>button_next</name>
             <posX>30</posX>
-            <posY>10</posY>
-            <label>Next slide</label>
+            <posY>24</posY>
+            <label>next</label>
             <pressed>false</pressed>
+        </component>
+        <component class="cz.ctu.guiproject.server.gui.entity.DefaultRadioGroup">
+            <name>radio_group_z</name>
+            <posX>0</posX>
+            <posY>0</posY>
+            <radios class="java.util.ArrayList">
+                <defaultRadioButton>
+                    <name>radio_1</name>
+                    <posX>2</posX>
+                    <posY>40</posY>
+                    <label>groupped radio 1</label>
+                    <selected>false</selected>
+                </defaultRadioButton>
+                <defaultRadioButton>
+                    <name>radio_2</name>
+                    <posX>2</posX>
+                    <posY>48</posY>
+                    <label>groupped radio 2</label>
+                    <selected>false</selected>
+                </defaultRadioButton>
+                <defaultRadioButton>
+                    <name>radio_3</name>
+                    <posX>2</posX>
+                    <posY>56</posY>
+                    <label>groupped radio 3</label>
+                    <selected>false</selected>
+                </defaultRadioButton>
+            </radios>
         </component>
     </components>
 </layout>
