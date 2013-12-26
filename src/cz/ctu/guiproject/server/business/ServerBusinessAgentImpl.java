@@ -40,8 +40,8 @@ public class ServerBusinessAgentImpl implements ServerBusinessAgent, ServerXMLOb
      * Private constructor, used in ServerBusinessAgentImpl singleton design
      * pattern
      */
-    private ServerBusinessAgentImpl() {
-        serverXMLAgent = new ServerXMLAgentImpl();
+    private ServerBusinessAgentImpl(int port) {
+        serverXMLAgent = new ServerXMLAgentImpl(port);
         deviceManager = DeviceManager.getInstance();
         eventObservers = new ArrayList<>();
         eventManager = EventManager.getInstance();
@@ -52,9 +52,9 @@ public class ServerBusinessAgentImpl implements ServerBusinessAgent, ServerXMLOb
      *
      * @return The only existing instance of class ServerBusinessAgentImpl
      */
-    public static ServerBusinessAgent getInstance() {
+    public static ServerBusinessAgent getInstance(int port) {
         if (instance == null) {
-            instance = new ServerBusinessAgentImpl();
+            instance = new ServerBusinessAgentImpl(port);
             serverXMLAgent.registerObserver((ServerXMLObserver) instance);
             // TODO inside new thread??
             initMainLoop();

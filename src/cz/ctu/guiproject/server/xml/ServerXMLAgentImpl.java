@@ -30,11 +30,11 @@ public class ServerXMLAgentImpl implements ServerNetworkObserver, ServerXMLAgent
      * Default constructor of the ServerXMLAgentImpl.
      */
     @SuppressWarnings("LeakingThisInConstructor")
-    public ServerXMLAgentImpl() {
+    public ServerXMLAgentImpl(int port) {
         // TODO parse port number from xml config file
         // TODO set port number from network layer!!
         observers = new ArrayList<>();
-        serverNetworkAgent = new ServerNetworkAgentImpl(6789);
+        serverNetworkAgent = new ServerNetworkAgentImpl(port);
         clientManager = DeviceManager.getInstance();
         serverNetworkAgent.registerObserver(this);
     }

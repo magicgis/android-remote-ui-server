@@ -25,7 +25,7 @@ public class ServerBusinessAgentTest implements ServerBusinessAgent, ServerXMLOb
 
     @SuppressWarnings("LeakingThisInConstructor")
     public ServerBusinessAgentTest() {
-        xmlAgent = new ServerXMLAgentImpl();
+        xmlAgent = new ServerXMLAgentImpl(0);
         xmlAgent.registerObserver(this);
         init();
     }

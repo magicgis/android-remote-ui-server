@@ -37,7 +37,7 @@ public class Main implements TouchObserver, ClickObserver, DragObserver, LongCli
     }
 
     private void init() {
-        AndroidServer server = new AndroidServerImpl();
+        AndroidServer server = new AndroidServerImpl(6789);
         server.registerClickObserver(this);
         server.registerTouchObserver(this);
         server.registerDragObserver(this);
@@ -51,28 +51,55 @@ public class Main implements TouchObserver, ClickObserver, DragObserver, LongCli
     @Override
     public void update(ClickEvent event) {
         Component source = event.getSource();
-        if(source != null) {
-            if(source instanceof DefaultRadioButton) {
+        if (source != null) {
+            if (source instanceof DefaultRadioButton) {
                 DefaultRadioButton radio = (DefaultRadioButton) source;
                 logger.log(Level.INFO, "Source component: " + source.getClass().getName() + ": " + radio.isSelected());
-            } else if(source instanceof DefaultButton) {
+            } else if (source instanceof DefaultButton) {
                 try {
                     DefaultButton button = (DefaultButton) source;
-                    
+
                     Robot robot = new Robot();
-                    if(button.getName().equals("button_next")) {
+                    if (button.getName().equals("button_next")) {
                         robot.keyPress(KeyEvent.VK_RIGHT);
-                    } else if(button.getName().equals("button_prev")) {
+                    } else if (button.getName().equals("button_prev")) {
                         robot.keyPress(KeyEvent.VK_LEFT);
                     }
-                    
+
                     logger.log(Level.INFO, "Source component: " + source.getClass().getName() + ": " + button.getLabel());
                 } catch (AWTException ex) {
                     Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            } else if(source instanceof DefaultRadioGroup) {
-                DefaultRadioGroup group = (DefaultRadioGroup) source;
-                logger.log(Level.INFO, "Source component: " + source.getClass().getName() + ": " + group.getSelectedRadio().getLabel());
+            } else if (source instanceof DefaultRadioGroup) {
+                try {
+                    DefaultRadioGroup group = (DefaultRadioGroup) source;
+                    
+                    Robot robot = new Robot();
+                
+                    
+
+                    for (DefaultRadioButton radio : group.getRadios()) {
+                        if (radio.isSelected()) {
+                            switch (radio.getName()) {
+                                case "g_radio_1":
+                                    robot.keyPress(KeyEvent.VK_NUMPAD1);
+                                    robot.keyPress(KeyEvent.VK_ENTER);
+                                    break;
+                                case "g_radio_5":
+                                    robot.keyPress(KeyEvent.VK_NUMPAD5);
+                                    robot.keyPress(KeyEvent.VK_ENTER);
+                                    break;
+                                case "g_radio_13":
+                                    robot.keyPress(KeyEvent.VK_NUMPAD1);
+                                    robot.keyPress(KeyEvent.VK_NUMPAD3);
+                                    robot.keyPress(KeyEvent.VK_ENTER);
+                                    break;
+                            }
+                        }
+                    }
+                } catch (AWTException ex) {
+                    Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
         logger.log(Level.INFO, "ClickEvent occured: " + event.getSessionId());
