@@ -1,0 +1,1 @@
+Remote setup of Android device UI, server side implementation.
